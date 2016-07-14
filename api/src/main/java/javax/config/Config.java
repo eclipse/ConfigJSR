@@ -27,7 +27,7 @@ import javax.config.spi.ConfigSource;
  * one with the highest ordinal. If multiple {@link ConfigSource}s have the same ordinal, their order is undefined.</p>
  *
  * <p>You can provide your own lookup paths by implementing and registering additional
- * {@link javax.config.spi.ConfigSourceProvider} implementations.</p>
+ * {@link ConfigSource}s and {@link javax.config.spi.ConfigSourceProvider} implementations.</p>
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */

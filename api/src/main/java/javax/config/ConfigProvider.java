@@ -19,7 +19,28 @@ package javax.config;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
+import javax.config.spi.ConfigSource;
+
 /**
+ * <p>This is the central class to access a {@link Config}.</p>
+ *
+ * <p>A {@link Config} contains the configuration for a certain
+ * situation. That might be the configuration found in a certain ClassLoader
+ * or even a manually created Configuration</p>
+ *
+ * <p>The default usage is to use {@link #getConfig()} to automatically
+ * pick up the 'Configuration' for the Thread Context ClassLoader
+ * (See {@link  Thread#getContextClassLoader()}). </p>
+ *
+ * <p>A 'Configuration' consists of the information collected from the registered
+ * {@link javax.config.spi.ConfigSource}s. These {@link javax.config.spi.ConfigSource}s
+ * get sorted according to their <em>ordinal</em> defined via {@link ConfigSource#getOrdinal()}.
+ * That way it is possible to overwrite configuration with lower importance from outside.</p>
+ *
+ * <p>It is also possible to register custom {@link javax.config.spi.ConfigSource}s to
+ * flexibly extend the configuration mechanism. An example would be to pick up configuration values
+ * from a database table./p>
+ *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
 public class ConfigProvider {
