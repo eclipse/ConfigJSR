@@ -1,0 +1,28 @@
+# Configuration for Java SE and EE JSR
+
+## Rational
+
+Many project artifacts should only be created once but still need to target different execution environments.
+Depending on the situation they need different configuration.
+
+This is easily achievable by having a set of default configuration values inside the project artifact.
+But be able to overwrite those default values from external.
+
+## History
+
+This very configuration approach has it's roots in the Apache OpenWebBeans internal SPI configuration.
+In 2010 it got moved over to the Apache MyFaces CODI project and enhanced to also fit the need of customer projects by Gerhard Petracek and Mark Struberg.
+In 2012 we further enhanced it while moving CODI to the Apache DeltaSpike project.
+
+## How it works
+
+A 'Configuration' consists of the information collected from the registered `javax.config.spi.ConfigSource` s.
+These `ConfigSource`s get sorted according to their _ordinal_.
+That way it is possible to overwrite configuration with lower importance from outside.
+
+By default there are 3 default ConfigSources:
+
+ * `System.getenv()` (ordinal 400)
+ * `System.getProperties()` (ordinal 300)
+ * all `META-INF/java-config.properties` files on the ClassPath. (ordinal 100, separately configurable via a config_ordinal property inside each file)
+
