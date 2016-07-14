@@ -1,5 +1,9 @@
 # Configuration for Java SE and EE JSR
 
+## Status
+
+JSR proposal!
+
 ## Rational
 
 Many project artifacts (e.g. WAR, EAR) should only be created once and then get installed at different customers, stages, etc
