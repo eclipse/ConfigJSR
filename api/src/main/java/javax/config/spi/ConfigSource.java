@@ -32,6 +32,7 @@ import java.util.Map;
  * implementation into it. </p>
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
+ * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
  */
 public interface ConfigSource {
     /**
