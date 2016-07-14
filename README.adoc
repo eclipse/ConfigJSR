@@ -2,8 +2,9 @@
 
 ## Rational
 
-Many project artifacts should only be created once but still need to target different execution environments.
-Depending on the situation they need different configuration.
+Many project artifacts (e.g. WAR, EAR) should only be created once and then get installed at different customers, stages, etc
+They need to target those different execution environments without necessity of any repackaging.
+In other words: depending on the situation they need different configuration.
 
 This is easily achievable by having a set of default configuration values inside the project artifact.
 But be able to overwrite those default values from external.
@@ -22,7 +23,14 @@ That way it is possible to overwrite configuration with lower importance from ou
 
 By default there are 3 default ConfigSources:
 
- * `System.getenv()` (ordinal 400)
- * `System.getProperties()` (ordinal 300)
- * all `META-INF/java-config.properties` files on the ClassPath. (ordinal 100, separately configurable via a config_ordinal property inside each file)
+ * `System.getenv()` (ordinal=400)
+ * `System.getProperties()` (ordinal=300)
+ * all `META-INF/java-config.properties` files on the ClassPath. (ordinal=100, separately configurable via a config_ordinal property inside each file)
 
+That means that I can put my default configuration in a `META-INF/java-config.properties` anywhere on the classpath.
+And I can later simply e.g set a system property to change this default configuration.
+
+## Custom ConfigSources
+
+It is possible to write and register custom `ConfigSource`s.
+An example would be a ConfigSource which gets the configured values from a shared database table in a cluster.
