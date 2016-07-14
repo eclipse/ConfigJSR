@@ -37,11 +37,11 @@ package javax.config.spi;
  * </pre>
  * The implementation will look like the following:
  * <pre>
- *     &#064;Exclude
  *     public class SomeSpecialPropertyFileConfig implements PropertyFileConfig {
  *         public String getPropertyFileName() {
  *             return "myconfig/specialconfig.properties"
  *         }
+ *
  *         public boolean isOptional() {
  *             return false;
  *         }

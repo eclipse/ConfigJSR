@@ -32,5 +32,5 @@ And I can later simply e.g set a system property to change this default configur
 
 ## Custom ConfigSources
 
-It is possible to write and register custom `ConfigSource`s.
+It is possible to write and register custom `ConfigSource` s.
 An example would be a ConfigSource which gets the configured values from a shared database table in a cluster.
