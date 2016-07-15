@@ -14,14 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package openjavax.config;
+package javx.config;
 
 import java.util.List;
 import java.util.Map;
 
-import openjavax.config.spi.ConfigFilter;
-import openjavax.config.spi.ConfigSource;
-import openjavax.config.spi.ConfigSourceProvider;
+import javx.config.spi.ConfigFilter;
+import javx.config.spi.ConfigSource;
+import javx.config.spi.ConfigSourceProvider;
 
 /**
  * <p>Resolves configured values of properties by going through the list of configured {@link ConfigSource}s and using the

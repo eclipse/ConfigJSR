@@ -16,7 +16,7 @@
  */
 package org.apache.geronimo.config.tck.util;
 
-import openjavax.config.spi.PropertyFileConfig;
+import javx.config.spi.PropertyFileConfig;
 
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>

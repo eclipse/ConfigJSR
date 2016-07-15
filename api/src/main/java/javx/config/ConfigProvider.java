@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package openjavax.config;
+package javx.config;
 
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
-import openjavax.config.spi.ConfigSource;
-import openjavax.config.spi.ConfigFilter;
+import javx.config.spi.ConfigFilter;
+import javx.config.spi.ConfigSource;
 
 /**
  * <p>This is the central class to access a {@link Config}.</p>

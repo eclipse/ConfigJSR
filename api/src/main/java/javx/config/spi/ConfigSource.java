@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package openjavax.config.spi;
+package javx.config.spi;
 
 import java.util.Map;
 
