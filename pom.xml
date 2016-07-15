@@ -44,5 +44,6 @@
         <module>api</module>
         <module>tck</module>
         <module>impl</module>
+        <module>spec</module>
     </modules>
 </project>

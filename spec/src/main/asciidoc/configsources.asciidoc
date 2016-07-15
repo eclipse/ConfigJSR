@@ -1,0 +1,52 @@
+[[configsources]]
+== ConfigSources
+
+A `ConfigSource` is exactly what its name says: a source for configured values.
+The `Config` uses all configured implementations of `ConfigSource` to lookup the property in question.
+
+=== ConfigSource Ordering
+
+Each `ConfigSource` has a specified `ordinal`.
+This ordinal get’s used to determine the importance of the values taken from the very `ConfigSource`.
+A higher ordinal means that the values taken from this ConfigSource will override values from less important ConfigSources.
+This is the trick which allows to amend configuration from outside a binary - given those outside ConfigSources have a higher `ordinal` than the ones who pickup the values from within the release binaries.
+
+The ordinal for property file based `ConfigSource` s can be configured using the key `config_ordinal` inside the property file.
+
+[source, text]
+----
+config_ordinal = 120
+com.acme.myproject.someserver.url = http://more_important.server/some/endpoint
+----
+
+=== Default ConfigSources
+
+A Java-config implementation must provide `ConfigSource` s for the following data out of the box:
+
+* System properties (ordinal=400)
+* Environment properties (ordinal=300)
+* An own `ConfigSource` for each property file `META-INF/java-config.properties` on the classpath. (default ordinal = 100)
+
+=== Custom ConfigSources
+
+ConfigSources are picked up using the `java.util.ServiceLoader` mechanism.
+
+To add a custom `ConfigSource`, you have to implement the interface `ConfigSource`.
+Then register your implementation in a file `/META-INF/services/javx.config.spi.ConfigSource` by writing the fully qualified class name of the custom implementation/s into it.
+
+If you need dynamic ConfigSources you can also register a `ConfigSourceProvider` in a similar way.
+This is useful if you like to dynamically pick up multiple `ConfigSource` s of the same kind.
+For example, if you like to pick up all myproject.properties files from all the JARs in your classpath.
+
+Please note that a single `ConfigSource` should be either registered directly or via a `ConfigSourceProvider`, but never both ways.
+
+
+
+=== PropertyFileConfig
+
+If you don't like to use the default property file name you can also use your own property files.
+
+=== ConfigSource and Mutable Data
+
+A `Config` instance provides no caching but iterates over all `ConfigSources` for each `getValue(String)` operation.
+A ConfigSource is allowed to cache the underlying values itself.

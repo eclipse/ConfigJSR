@@ -56,7 +56,7 @@ public class ConfigProviderTest {
         Map<String, String> env = System.getenv();
         Config config = ConfigProvider.getConfig();
         for (Map.Entry<String, String> envEntry : env.entrySet()) {
-            Assert.assertEquals(envEntry.getValue(), config.getPropertyValue(envEntry.getKey()));
+            Assert.assertEquals(envEntry.getValue(), config.getValue(envEntry.getKey()));
         }
     }
 
@@ -66,20 +66,20 @@ public class ConfigProviderTest {
         Config config = ConfigProvider.getConfig();
 
         for (Map.Entry<Object, Object> propEntry : properties.entrySet()) {
-            Assert.assertEquals(propEntry.getValue(), config.getPropertyValue((String) propEntry.getKey()));
+            Assert.assertEquals(propEntry.getValue(), config.getValue((String) propEntry.getKey()));
         }
     }
 
     @Test
     public void testDefaultPropertyFilesConfigSource() {
         Config config = ConfigProvider.getConfig();
-        Assert.assertEquals(config.getPropertyValue("tck.config.test.value1"), "VALue1");
+        Assert.assertEquals(config.getValue("tck.config.test.value1"), "VALue1");
     }
 
     @Test
     public void testCustomPropertyFilesConfigSource() {
         Config config = ConfigProvider.getConfig();
-        Assert.assertEquals(config.getPropertyValue("tck.config.test.custom.properties.key1"), "value1");
+        Assert.assertEquals(config.getValue("tck.config.test.custom.properties.key1"), "value1");
     }
 
 }

@@ -1,0 +1,69 @@
+[[architecture]]
+== Architecture
+
+This specification defines a easy to use and flexible system for application configuration.
+It also defines a way to extend the configuration mechanism itself via a SPI (Service Provider Interface).
+
+=== Rational
+
+Released binaries often contain classes which need to behave slightly different depending on the deployment.
+This might be different REST endpoints to talk with depending on the customer at which a WAR gets deployed.
+Or it might even be different features which need to be switched on and off depending on the installation.
+All this must be possible without the need to re-package the whole application binary.
+
+Java-config provides a way to achieve this goal by allowing the application to bundle default configuration within the application.
+But it also allows to overwrite them from outside, e.g. via an environment variable, a Java system property or even a database entry.
+
+=== Accessing a certain Configuration
+
+The `ConfigProvider` is the central class to access a configuration.
+It must allow access to different configurations based on the application it gets used in.
+We distinguish 3 different ways to resolve a `Config` instance:
+
+* A factory method `ConfigProvider#getConfig()` to create a `Config` object based on automatically picked up `ConfigSource` s from the current Thread Context ClassLoader classpath.
+  Subsequent calls to this method for a certain ClassLoader will return the same `Config` instance.
+
+* A factory method `ConfigProvider#getConfig(ClassLoader forClassLoader)` to create a `Config` object based on automatically picked up `ConfigSource` s from a given ClassLoader.
+  This can be used if the Thread Context ClassLoader does not represent the correct layer. E.g. if you need the Config for a class in a shared EAR lib folder.
+  Subsequent calls to this method for a certain ClassLoader will return the same `Config` instance.
+
+* A factory method `ConfigProvider#newConfig()` to to create an empty `Config` object which can be filled manually. This configuration instance will not be shared by the `ConfigProvider`
+
+
+=== Configuration Lookup Mechanism Samples
+
+Java-config is a String/String based mechanism.
+
+The configuration key might use dot-separated namespaces similar to Java package namespacing:
+
+[source, text]
+----
+com.acme.myproject.someserver.url = http://some.server/some/endpoint
+com.acme.myproject.someserver.active = true
+com.acme.other.stuff.name = Karl
+----
+
+An application can access this configuration via a `Config` instance.
+
+[source, java]
+----
+public class ConfigUsageSample {
+
+    public void useTheConfig() {
+        // get access to the Config instance
+        Config config = ConfigProvider.getConfig();
+        String serverUrl = config.getValue("com.acme.myproject.someserver.url");
+
+        callToServer(serverUrl);
+    }
+}
+----
+
+If you like to access a different server then you can e.g. change the configuration via a `-D` system property:
+
+[source, text]
+----
+$> java -jar some.jar -Dcom.acme.myproject.someserver.url=http://other.server/other/endpoint
+----
+
+Note that the way to inject this configuration into the application can be extended by providing custom `ConfigSource` s.

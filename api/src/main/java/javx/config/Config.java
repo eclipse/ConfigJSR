@@ -40,14 +40,14 @@ public interface Config {
      *
      * @param key the property key
      *
-     * @return the configured property value from the {@link ConfigSource} with the highest ordinal or null if there is
-     *         no configured value for it
+     * @return the configured property value from the {@link ConfigSource} with the highest ordinal
+     *         or {@code null} if there is no configured value for it
      */
-    String getPropertyValue(String key);
+    String getValue(String key);
 
     /**
      * Returns a Map of all properties from all scannable config sources. The values of the properties reflect the
-     * values that would be obtained by a call to {@link #getPropertyValue(java.lang.String)}, that is, the value of the
+     * values that would be obtained by a call to {@link #getValue(java.lang.String)}, that is, the value of the
      * property from the ConfigSource with the highest ordinal.
      *
      * @see ConfigSource#isScannable()
