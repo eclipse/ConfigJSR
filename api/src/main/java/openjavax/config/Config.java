@@ -14,20 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package javax.config;
+package openjavax.config;
 
 import java.util.List;
 import java.util.Map;
 
-import javax.config.spi.ConfigFilter;
-import javax.config.spi.ConfigSource;
+import openjavax.config.spi.ConfigFilter;
+import openjavax.config.spi.ConfigSource;
+import openjavax.config.spi.ConfigSourceProvider;
 
 /**
  * <p>Resolves configured values of properties by going through the list of configured {@link ConfigSource}s and using the
  * one with the highest ordinal. If multiple {@link ConfigSource}s have the same ordinal, their order is undefined.</p>
  *
  * <p>You can provide your own lookup paths by implementing and registering additional
- * {@link ConfigSource}s and {@link javax.config.spi.ConfigSourceProvider} implementations.</p>
+ * {@link ConfigSource}s and {@link ConfigSourceProvider} implementations.</p>
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */

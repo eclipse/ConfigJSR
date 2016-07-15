@@ -14,12 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package javax.config;
+package openjavax.config;
 
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
-import javax.config.spi.ConfigSource;
+import openjavax.config.spi.ConfigSource;
+import openjavax.config.spi.ConfigFilter;
 
 /**
  * <p>This is the central class to access a {@link Config}.</p>
@@ -33,11 +34,11 @@ import javax.config.spi.ConfigSource;
  * (See {@link  Thread#getContextClassLoader()}). </p>
  *
  * <p>A 'Configuration' consists of the information collected from the registered
- * {@link javax.config.spi.ConfigSource}s. These {@link javax.config.spi.ConfigSource}s
+ * {@link ConfigSource}s. These {@link ConfigSource}s
  * get sorted according to their <em>ordinal</em> defined via {@link ConfigSource#getOrdinal()}.
  * That way it is possible to overwrite configuration with lower importance from outside.</p>
  *
- * <p>It is also possible to register custom {@link javax.config.spi.ConfigSource}s to
+ * <p>It is also possible to register custom {@link ConfigSource}s to
  * flexibly extend the configuration mechanism. An example would be to pick up configuration values
  * from a database table./p>
  *
@@ -48,7 +49,7 @@ public class ConfigProvider {
     private static final SPI instance = loadSpi();
 
     /**
-     * Provide a {@link Config} based on all {@link javax.config.spi.ConfigSource}s
+     * Provide a {@link Config} based on all {@link ConfigSource}s
      * of the current Thread Context ClassLoader (TCCL)
      *
      * <p>There is exactly a single Config instance per ClassLoader</p>
@@ -58,7 +59,7 @@ public class ConfigProvider {
     }
 
     /**
-     * Provide a {@link Config} based on all {@link javax.config.spi.ConfigSource}s
+     * Provide a {@link Config} based on all {@link ConfigSource}s
      * of the given ClassLoader.
      *
      * <p>There is exactly a single Config instance per ClassLoader</p>
@@ -70,7 +71,7 @@ public class ConfigProvider {
     /**
      * Create a fresh {@link Config} instance.
      * This Config will initially contain no
-     * {@link javax.config.spi.ConfigSource} nor any {@link javax.config.spi.ConfigFilter}.
+     * {@link ConfigSource} nor any {@link ConfigFilter}.
      * Those have to be added manually.
      *
      * The ConfigProvider will not manage the Config instance internally

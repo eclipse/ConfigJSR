@@ -16,12 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package javax.config.spi;
+package openjavax.config.spi;
 
 /**
  * <p>
  * If you implement this interface, the property files with the given file name will be registered as
- * {@link javax.config.spi.ConfigSource}s.</p>
+ * {@link ConfigSource}s.</p>
  *
  **
  * <h3>Automatic pickup via {@code java.util.ServiceLoader} mechanism</h3>
@@ -54,7 +54,7 @@ public interface PropertyFileConfig
 {
     /**
      * All the property files on the classpath which have this name will get picked up and registered as
-     * {@link javax.config.spi.ConfigSource}s.
+     * {@link ConfigSource}s.
      *
      * @return the full file name (including path) of the property files to pick up.
      */

@@ -21,8 +21,8 @@ import java.net.URLClassLoader;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.config.Config;
-import javax.config.ConfigProvider;
+import openjavax.config.Config;
+import openjavax.config.ConfigProvider;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

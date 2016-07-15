@@ -16,9 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package javax.config.spi;
+package openjavax.config.spi;
 
-import javax.config.Config;
+import openjavax.config.Config;
 
 /**
  * <p>A filter which can be added to the
