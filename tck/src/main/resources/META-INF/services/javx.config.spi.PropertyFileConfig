@@ -1,1 +1,1 @@
-configsources.CustomPropertyFileConfig
+org.apache.geronimo.config.tck.configsources.CustomPropertyFileConfig
