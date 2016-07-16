@@ -4,7 +4,7 @@
 
 JSR proposal!
 
-## Rational
+== Rational
 
 Many project artifacts (e.g. WAR, EAR) should only be created once and then get installed at different customers, stages, etc
 They need to target those different execution environments without necessity of any repackaging.
@@ -13,13 +13,13 @@ In other words: depending on the situation they need different configuration.
 This is easily achievable by having a set of default configuration values inside the project artifact.
 But be able to overwrite those default values from external.
 
-## History
+== History
 
 This very configuration approach has it's roots in the Apache OpenWebBeans internal SPI configuration.
 In 2010 it got moved over to the Apache MyFaces CODI project and enhanced to also fit the need of customer projects by Gerhard Petracek and Mark Struberg.
 In 2012 we further enhanced it while moving CODI to the Apache DeltaSpike project.
 
-## How it works
+== How it works
 
 A 'Configuration' consists of the information collected from the registered `javax.config.spi.ConfigSource` s.
 These `ConfigSource`s get sorted according to their _ordinal_.
@@ -27,14 +27,20 @@ That way it is possible to overwrite configuration with lower importance from ou
 
 By default there are 3 default ConfigSources:
 
- * `System.getenv()` (ordinal=400)
- * `System.getProperties()` (ordinal=300)
- * all `META-INF/java-config.properties` files on the ClassPath. (ordinal=100, separately configurable via a config_ordinal property inside each file)
+* `System.getenv()` (ordinal=400)
+* `System.getProperties()` (ordinal=300)
+* all `META-INF/java-config.properties` files on the ClassPath. (ordinal=100, separately configurable via a config_ordinal property inside each file)
 
 That means that I can put my default configuration in a `META-INF/java-config.properties` anywhere on the classpath.
 And I can later simply e.g set a system property to change this default configuration.
 
-## Custom ConfigSources
+== Custom ConfigSources
 
 It is possible to write and register custom `ConfigSource` s.
 An example would be a ConfigSource which gets the configured values from a shared database table in a cluster.
+
+== Building
+
+`$> mvn clean install`
+
+After that the specification PDF can be found in `spec/target/generated-docs/config-spec.pdf`
