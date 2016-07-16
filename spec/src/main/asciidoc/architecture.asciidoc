@@ -24,10 +24,14 @@ We distinguish 3 different ways to resolve a `Config` instance:
   Subsequent calls to this method for a certain ClassLoader will return the same `Config` instance.
 
 * A factory method `ConfigProvider#getConfig(ClassLoader forClassLoader)` to create a `Config` object based on automatically picked up `ConfigSource` s from a given ClassLoader.
-  This can be used if the Thread Context ClassLoader does not represent the correct layer. E.g. if you need the Config for a class in a shared EAR lib folder.
+  This can be used if the Thread Context ClassLoader does not represent the correct layer.
+  E.g. if you need the Config for a class in a shared EAR lib folder.
   Subsequent calls to this method for a certain ClassLoader will return the same `Config` instance.
 
-* A factory method `ConfigProvider#newConfig()` to to create an empty `Config` object which can be filled manually. This configuration instance will not be shared by the `ConfigProvider`
+* A factory method `ConfigProvider#newConfig()` to to create an empty `Config` object which can be filled manually.
+  No automatic `ConfigSource` and `ConfigFilter` lookup will be performed.
+  This configuration instance will not be shared by the `ConfigProvider`.
+  This method is intended be used if a IoT container or any other external Factory can be used to give access to a manualy created shared `Config`.
 
 
 === Configuration Lookup Mechanism Samples

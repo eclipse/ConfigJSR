@@ -29,7 +29,7 @@ A Java-config implementation must provide `ConfigSource` s for the following dat
 
 * System properties (ordinal=400)
 * Environment properties (ordinal=300)
-* An own `ConfigSource` for each property file `META-INF/java-config.properties` on the classpath. (default ordinal = 100)
+* An own `ConfigSource` for each property file `META-INF/java-config.properties` found on the classpath. (default ordinal = 100)
 
 === Custom ConfigSources
 
@@ -87,7 +87,8 @@ An example which registers all yaml files with the name `exampleconfig.yaml`:
 
 [source, java]
 ----
-public class ExampleYamlConfigSourceProvider implements javx.config.spi.ConfigSourceProvider {
+public class ExampleYamlConfigSourceProvider
+        implements javx.config.spi.ConfigSourceProvider {
     @Override
     public List<ConfigSource> getConfigSources(ClassLoader forClassLoader) {
         List<ConfigSource> configSources = new ArrayList<>();

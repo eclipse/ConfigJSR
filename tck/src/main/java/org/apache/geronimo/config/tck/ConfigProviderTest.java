@@ -71,15 +71,9 @@ public class ConfigProviderTest {
     }
 
     @Test
-    public void testDefaultPropertyFilesConfigSource() {
+    public void testJavaConfigPropertyFilesConfigSource() {
         Config config = ConfigProvider.getConfig();
-        Assert.assertEquals(config.getValue("tck.config.test.value1"), "VALue1");
-    }
-
-    @Test
-    public void testCustomPropertyFilesConfigSource() {
-        Config config = ConfigProvider.getConfig();
-        Assert.assertEquals(config.getValue("tck.config.test.custom.properties.key1"), "value1");
+        Assert.assertEquals(config.getValue("tck.config.test.javaconfig.properties.key1"), "VALue1");
     }
 
 }
