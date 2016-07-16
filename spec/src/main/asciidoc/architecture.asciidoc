@@ -33,6 +33,10 @@ We distinguish 3 different ways to resolve a `Config` instance:
   This configuration instance will not be shared by the `ConfigProvider`.
   This method is intended be used if a IoT container or any other external Factory can be used to give access to a manualy created shared `Config`.
 
+All methods in the `ConfigProvider` and `Config` implementations are thread safe and reentrant.
+
+If a `Config` is bound to a ClassLoader ist must be made sure that it gets properly removed if the ClassLoader gets destroyed.
+It must not create any mem leaks in that case.
 
 === Configuration Lookup Mechanism Example
 

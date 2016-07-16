@@ -108,7 +108,7 @@ Please note that a single `ConfigSource` should be either registered directly or
 
 === PropertyFileConfig
 
-You can also make Java-config to pick up your own property files as `ConfigSource` s.
+You can also make Java-config pick up property files with a custom name as `ConfigSource` s.
 The following example will pick up all property files with the name `some/custom.properties` from the classpath.
 
 [source, java]
@@ -135,9 +135,9 @@ A `Config` instance provides no caching but iterates over all `ConfigSources` fo
 A ConfigSource is allowed to cache the underlying values itself.
 
 
-=== Manually adding a ConfigSource
+=== Manually adding ConfigSources
 
-A user can manually register a ConfigSource by using the method `void addConfigSources(List<ConfigSource> configSourcesToAdd)`.
+A user can manually register `ConfigSource` s by using the method `void addConfigSources(List<ConfigSource> configSourcesToAdd)`.
 This will add the given list to the already registered `ConfigSources` of the current `Config` instance.
 
 The order in which the `ConfigSources` get evaluates when using `Config#getValue(String key)` is independent from the order in which they got added to the `Config`.

@@ -91,6 +91,7 @@ public class ConfigProvider {
 
     /**
      * This interface gets implemented internally by the Config library.
+     * The implementation registers itself via {@link java.util.ServiceLoader} mechanism.
      */
     public interface SPI {
         Config getConfig();
