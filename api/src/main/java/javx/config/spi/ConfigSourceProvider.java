@@ -39,7 +39,9 @@ public interface ConfigSourceProvider
 {
 
     /**
+     * @param forClassLoader the classloader which should be used if any is needed
+     *
      * @return For each e.g. property file, we return a single ConfigSource or an empty list if no ConfigSource exists.
      */
-    List<ConfigSource> getConfigSources();
+    List<ConfigSource> getConfigSources(ClassLoader forClassLoader);
 }

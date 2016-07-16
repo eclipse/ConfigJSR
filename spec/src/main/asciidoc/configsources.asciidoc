@@ -11,6 +11,10 @@ This ordinal get’s used to determine the importance of the values taken from t
 A higher ordinal means that the values taken from this ConfigSource will override values from less important ConfigSources.
 This is the trick which allows to amend configuration from outside a binary - given those outside ConfigSources have a higher `ordinal` than the ones who pickup the values from within the release binaries.
 
+It can also be used to implement a drop-in configuration approach.
+Simply create a jar containing a `ConfigSource` with a higher ordinal and overwrite configuration values in it.
+If the jar gets added to the classpath then it will overwrite the configuration from `ConfigSource` s with lower ordinal.
+
 The ordinal for property file based `ConfigSource` s can be configured using the key `config_ordinal` inside the property file.
 
 [source, text]
@@ -31,20 +35,98 @@ A Java-config implementation must provide `ConfigSource` s for the following dat
 
 ConfigSources are picked up using the `java.util.ServiceLoader` mechanism.
 
-To add a custom `ConfigSource`, you have to implement the interface `ConfigSource`.
-Then register your implementation in a file `/META-INF/services/javx.config.spi.ConfigSource` by writing the fully qualified class name of the custom implementation/s into it.
+To add a custom `ConfigSource`, you have to implement the interface `javx.config.spi.ConfigSource`.
+
+[source, java]
+----
+public class CustomDbConfigSource implements ConfigSource {
+
+    @Override
+    public int getOrdinal() {
+        return 112;
+    }
+
+    @Override
+    public Map<String, String> getProperties() {
+        return readPropertiesFromDb();
+    }
+
+    @Override
+    public String getPropertyValue(String key) {
+        return readPropertyFromDb(key);
+    }
+
+    @Override
+    public String getConfigName() {
+        return "customDbConfig";
+    }
+
+    @Override
+    public boolean isScannable() {
+        return true;
+    }
+
+    // + methods to read from the DB
+}
+
+----
+
+Then register your implementation in a file `/META-INF/services/javx.config.spi.ConfigSource` by writing the fully qualified class name of the custom implementation into it.
+
+
+=== Custom ConfigSources via ConfigSourceProvider
 
 If you need dynamic ConfigSources you can also register a `ConfigSourceProvider` in a similar way.
 This is useful if you like to dynamically pick up multiple `ConfigSource` s of the same kind.
 For example, if you like to pick up all myproject.properties files from all the JARs in your classpath.
 
-Please note that a single `ConfigSource` should be either registered directly or via a `ConfigSourceProvider`, but never both ways.
+A custom `ConfigSourceProvider` needs to implement the interface `javx.config.spi.ConfigSourceProvider`.
+Register your implementation in a file `/META-INF/services/javx.config.spi.ConfigSourceProvider` by writing the fully qualified class name of the custom implementation/s into it.
 
+An example which registers all yaml files with the name `exampleconfig.yaml`:
+
+[source, java]
+----
+public class ExampleYamlConfigSourceProvider implements javx.config.spi.ConfigSourceProvider {
+    @Override
+    public List<ConfigSource> getConfigSources(ClassLoader forClassLoader) {
+        List<ConfigSource> configSources = new ArrayList<>();
+
+        Enumeration<URL> yamlFiles = null;
+        yamlFiles = forClassLoader.getResources("sampleconfig.yaml");
+        while (yamlFiles.hasMoreElements()) {
+            configSources.add(new SampleYamlConfigSource(yamlFiles.nextElement()));
+        }
+        return configSources;
+    }
+}
+----
+
+Please note that a single `ConfigSource` should be either registered directly or via a `ConfigSourceProvider`, but never both ways.
 
 
 === PropertyFileConfig
 
-If you don't like to use the default property file name you can also use your own property files.
+You can also make Java-config to pick up your own property files as `ConfigSource` s.
+The following example will pick up all property files with the name `some/custom.properties` from the classpath.
+
+[source, java]
+----
+public class CustomPropertyFileConfig implements PropertyFileConfig {
+    @Override
+    public String getPropertyFileName() {
+        return "some/custom.properties";
+    }
+
+    @Override
+    public boolean isOptional() {
+        return false;
+    }
+}
+----
+
+Register your implementation in a file `/META-INF/services/javx.config.spi.PropertyFileConfig` by writing the fully qualified class name of your `PropertyFileConfig` into it.
+
 
 === ConfigSource and Mutable Data
 

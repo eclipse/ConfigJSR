@@ -16,7 +16,6 @@ ifdef::backend-pdf[]
 :pagenums:
 endif::[]
 
-[preface]
 include::license-alv2.asciidoc[]
 
 
