@@ -17,6 +17,7 @@
 package org.apache.geronimo.config.tck.configsources;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 import javx.config.spi.ConfigSource;
@@ -25,8 +26,10 @@ import javx.config.spi.ConfigSource;
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  */
 public class SampleYamlConfigSource implements ConfigSource {
-    public SampleYamlConfigSource(URL url) {
+    private Map<String, String> config = new HashMap<>();
 
+    public SampleYamlConfigSource(URL url) {
+        config.put("tck.config.test.sampleyaml.key1", "yamlvalue1");
     }
 
     @Override
@@ -36,12 +39,12 @@ public class SampleYamlConfigSource implements ConfigSource {
 
     @Override
     public Map<String, String> getProperties() {
-        return null;
+        return config;
     }
 
     @Override
     public String getPropertyValue(String key) {
-        return null;
+        return config.get(key);
     }
 
     @Override

@@ -50,7 +50,6 @@ public class ConfigProviderTest {
         }
     }
 
-
     @Test
     public void testEnvironmentConfigSource() {
         Map<String, String> env = System.getenv();
@@ -71,9 +70,24 @@ public class ConfigProviderTest {
     }
 
     @Test
+    public void testDynamicValueInPropertyConfigSource() {
+        Config config = ConfigProvider.getConfig();
+        String configKey = "tck.config.test.systemproperty.dynamic.value";
+        String configValue = "myDynamicValue;";
+
+        System.setProperty(configKey, configValue);
+        Assert.assertEquals(config.getValue(configKey), configValue);
+    }
+
+    @Test
     public void testJavaConfigPropertyFilesConfigSource() {
         Config config = ConfigProvider.getConfig();
         Assert.assertEquals(config.getValue("tck.config.test.javaconfig.properties.key1"), "VALue1");
     }
 
+    @Test
+    public void testNonExistingConfigKey() {
+        Config config = ConfigProvider.getConfig();
+        Assert.assertNull(config.getValue("tck.config.test.keydoesnotexist"));
+    }
 }
