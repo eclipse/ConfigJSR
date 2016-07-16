@@ -133,3 +133,12 @@ Register your implementation in a file `/META-INF/services/javx.config.spi.Prope
 
 A `Config` instance provides no caching but iterates over all `ConfigSources` for each `getValue(String)` operation.
 A ConfigSource is allowed to cache the underlying values itself.
+
+
+=== Manually adding a ConfigSource
+
+A user can manually register a ConfigSource by using the method `void addConfigSources(List<ConfigSource> configSourcesToAdd)`.
+This will add the given list to the already registered `ConfigSources` of the current `Config` instance.
+
+The order in which the `ConfigSources` get evaluates when using `Config#getValue(String key)` is independent from the order in which they got added to the `Config`.
+It is only depending on the `ordinal` of the `ConfigSources`.

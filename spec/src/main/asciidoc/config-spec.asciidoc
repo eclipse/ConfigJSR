@@ -22,3 +22,5 @@ include::license-alv2.asciidoc[]
 include::architecture.asciidoc[]
 
 include::configsources.asciidoc[]
+
+include::configfilters.asciidoc[]

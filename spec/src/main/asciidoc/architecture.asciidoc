@@ -34,7 +34,7 @@ We distinguish 3 different ways to resolve a `Config` instance:
   This method is intended be used if a IoT container or any other external Factory can be used to give access to a manualy created shared `Config`.
 
 
-=== Configuration Lookup Mechanism Samples
+=== Configuration Lookup Mechanism Example
 
 Java-config is a String/String based mechanism.
 

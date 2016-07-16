@@ -1,0 +1,59 @@
+[[configfilters]]
+== ConfigFilters
+
+A `ConfigFilter` allows to act as a valve which is able to modify the configured values before they get handed out to the caller.
+
+The spec does not require the implementations to ship with any `ConfigFilters` enabled by default.
+
+A custom `ConfigFilter` must implement the interface `javx.config.spi.ConfigFilter`.
+You have to register your implementation in a file `/META-INF/services/javx.config.spi.ConfigFilter` by writing the fully qualified class name of the custom implementation into it.
+
+Alternative to that a user can register a `ConfigFilter` manually via `void Config#addConfigFilter(ConfigFilter configFilterToAdd)`.
+
+=== Filtering a value for Usage
+
+A `ConfigFilter` can e.g. be used to decrypt a stored password on the fly:
+
+[source, java]
+----
+public class PasswordDecryptionConfigFilter implements ConfigFilter {
+    @Override
+    public String filterValue(String key, String value) {
+        if (value != null && key.endsWith(".password")) {
+            return decrypt(value);
+        }
+        return value;
+    }
+
+    @Override
+    public String filterValueForLog(String key, String value) {
+        // do nothing
+        return value;
+    }
+}
+----
+
+=== Filtering a value for Logging
+
+To prevent passwords and other secret information to be printed out or logged away, a `ConfigFilter` can be used to mask out those values.
+
+[source, java]
+----
+public class PasswordConfigFilter implements ConfigFilter {
+    @Override
+    public String filterValue(String key, String value) {
+        // do nothing
+        return value;
+    }
+
+    @Override
+    public String filterValueForLog(String key, String value) {
+        if (value != null &&
+            (key.contains("password") || key.contains("secret"))) {
+            return "*******"; // simply star-out the password
+        }
+        return value;
+    }
+}
+
+----
