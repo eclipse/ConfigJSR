@@ -36,6 +36,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.config.spi.ConfigSource;
+import javax.config.spi.ConfigValue;
 
 /**
  * <p>
@@ -118,6 +119,13 @@ public interface Config {
      * @throws IllegalArgumentException if the property cannot be converted to the specified type.
      */
     <T> Optional<T> getOptionalValue(String propertyName, Class<T> propertyType);
+
+    /**
+     * Create a {@link ConfigValue} to access the underlying configuration.
+     *
+     * @param key the property key
+     */
+    ConfigValue<String> access(String key);
 
     /**
      * Return a collection of property names.
