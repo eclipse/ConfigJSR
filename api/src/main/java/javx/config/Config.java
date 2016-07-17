@@ -22,6 +22,7 @@ import java.util.Map;
 import javx.config.spi.ConfigFilter;
 import javx.config.spi.ConfigSource;
 import javx.config.spi.ConfigSourceProvider;
+import javx.config.spi.Converter;
 
 /**
  * <p>Resolves configured values of properties by going through the list
@@ -80,7 +81,6 @@ public interface Config {
      */
     ConfigSource[] getConfigSources();
 
-
     /**
      * This method can be used for programmatically adding {@link ConfigSource}s
      * to this very Config.
@@ -96,4 +96,11 @@ public interface Config {
      * It is not needed for normal 'usage' by end users, but only for Extension Developers!
      */
     void addConfigFilter(ConfigFilter configFilterToAdd);
+
+    /**
+     * Add a custom {@link Converter}
+     *
+     * @param converter
+     */
+    void addConverter(Converter<?> converter);
 }

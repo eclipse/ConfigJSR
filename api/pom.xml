@@ -31,4 +31,12 @@
     <groupId>org.apache.geronimo.config</groupId>
     <artifactId>config-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-annotation_1.2_spec</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
