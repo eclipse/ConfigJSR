@@ -107,4 +107,10 @@ public class ConfigValueTest {
         Thread.sleep(40);
         Assert.assertEquals(val.getValue(), "secondvalue");
     }
+
+    @Test
+    public void testWithVariable() throws Exception {
+        ConfigValue<String> val = config.access("tck.config.test.javaconfig.configvalue.withvariable.key").evaluateVariables(true);
+        Assert.assertEquals(val.getValue(), "This key needs the perfect value!");
+    }
 }
