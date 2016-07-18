@@ -61,6 +61,11 @@ import javax.config.spi.ConfigValue;
  *   Integer archivePort = cfg.getValue("my.project.archive.port", Integer.class);
  * </pre>
  *
+ * <p>For accessing a coniguration in a dynamic way you can also use {@link #access(String)}.
+ * This method returns a builder-style {@link ConfigValue} instance for the given key.
+ * You can further specify a Type of the underlying configuration, a cache time, lookup paths and
+ * many more.
+ *
  * <p>It is also possible to inject the Config if a DI container is available:
  *
  * <pre>
@@ -70,7 +75,7 @@ import javax.config.spi.ConfigValue;
  * }
  * </pre>
  *
- * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} for accessing a configured value.
+ * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} and {@link #access(String)} for accessing a configured value.
  *
  * <p>Configured values can also be accessed via injection.
  * See {@link javax.config.inject.ConfigProperty} for more information.
