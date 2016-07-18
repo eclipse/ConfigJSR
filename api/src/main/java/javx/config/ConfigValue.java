@@ -26,18 +26,6 @@ public interface ConfigValue<T> {
     <N> ConfigValue<N> as(Class<N> clazz);
 
     /**
-     * Sets the type of the configuration entry to the given class, sets the converter to the one given and
-     * returns this builder. If a converter is provided for one of the types supported by
-     * default (see {@link #as(Class)} then the provided converter is used instead of the built-in one.
-     *
-     * @param clazz The target type
-     * @param converter The converter for the target type
-     * @param <N> The target type
-     * @return This builder as a typed ConfigValue
-     */
-    <N> ConfigValue<N> as(Class<N> clazz, Converter<N> converter);
-
-    /**
      * Sets the default value to use in case the resolution returns null.
      * @param value the default value
      * @return This builder
@@ -57,11 +45,12 @@ public interface ConfigValue<T> {
      * After the time expires the next {@link #getValue()} will again resolve the value
      * from the underlying {@link Config}.
      *
-     * @param timeUnit the TimeUnit for the value
      * @param value the amount of the TimeUnit to wait
+     * @param timeUnit the TimeUnit for the value
+     *
      * @return This builder
      */
-    ConfigValue<T> cacheFor(TimeUnit timeUnit, long value);
+    ConfigValue<T> cacheFor(long value, TimeUnit timeUnit);
 
     /**
      * Whether to evaluate variables in configured values.

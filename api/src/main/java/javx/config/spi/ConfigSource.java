@@ -21,7 +21,9 @@ import java.util.Map;
 /**
  * <p>Implement this interfaces to provide a ConfigSource.
  * A ConfigSource provides properties from a specific place, like
- * JNDI configuration, a properties file, etc</p>
+ * JNDI configuration, a properties file, etc.
+ * A ConfigSource is always read-only, any potential updates of the
+ * configured values must be handled directly inside each ConfigSource.</p>
  *
  * <p>The custom implementation can be 'registered' using a
  * {@link ConfigSourceProvider} or via the

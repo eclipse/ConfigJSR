@@ -32,6 +32,14 @@ import javx.config.spi.Converter;
  * <p>You can provide your own lookup paths by implementing and registering additional
  * {@link ConfigSource}s and {@link ConfigSourceProvider} implementations.</p>
  *
+ * <p>A configured value can be accessed with {@link #getValue(String)}.</p>
+ *
+ * <p>For accessing a coniguration in a dynamic way you can also use {@link #access(String)}.
+ * This method returns a builder-style {@link ConfigValue} instance for the given key.
+ * You can further specify a Type of the underlying configuration, a cache time, lookup paths and
+ * many more.
+ * </p>
+ *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
 public interface Config {
@@ -77,6 +85,9 @@ public interface Config {
     String filterConfigValueForLog(String key, String value);
 
     /**
+     * This method might be useful for debugging purpose or to
+     * show the values of all ConfigSources in an admin page.
+     *
      * @return all currently registered {@link ConfigSource}s
      */
     ConfigSource[] getConfigSources();
