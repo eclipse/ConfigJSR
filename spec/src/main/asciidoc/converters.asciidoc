@@ -1,0 +1,29 @@
+[[converters]]
+== Converters
+
+For providing typeseafe configuration we need to convert from the configured Strings into target types.
+This happens by providing `Converter` s in the `Config`.
+
+=== Built-in Converters
+
+The following `Converter` s are provided by Java-config by default:
+
+* `Boolean` , values for `true` (case insensitive) "true", "1", "YES", "Y" "JA" "J", "OUI".
+  Any other value will be interpreted as `false`
+* `Integer`
+* `Long`
+* `Float` , a dot '.' is used to separate the fractional digits
+* `Double` , a dot '.' is used to separate the fractional digits
+
+
+=== Adding custom Converters
+
+A custom `Converter` must implement the generic interface `javx.config.spi.Converter`.
+The TypedParameter of the interface is the target type the String is converted to 
+You have to register your implementation in a file `/META-INF/services/javx.config.spi.Converter` by writing the fully qualified class name of the custom implementation into it.
+
+A custom `Converter` can define a priority with the `@javax.annotation.Priority` annotation.
+If a Priority annotation isn't applied, a default priority of 100 is assumed.
+The `Config` will use the `Converter` with the highest `Priority` for each target type.
+
+A custom `Converter` for a target type of any of the built-in Converters will overwrite the default Converter.

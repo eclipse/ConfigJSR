@@ -1,7 +1,5 @@
 package javx.config;
 
-import javx.config.spi.Converter;
-
 import java.util.concurrent.TimeUnit;
 
 /**
