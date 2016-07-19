@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
+ * @author <a href="mailto:rsmeral@jboss.org">Ron Smeral</a>
  */
 public interface ConfigValue<T> {
 

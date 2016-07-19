@@ -20,6 +20,7 @@ package javx.config.spi;
  * </p>
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
+ * @author <a href="mailto:rsmeral@jboss.org">Ron Smeral</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
  */
 public interface Converter<T> {
