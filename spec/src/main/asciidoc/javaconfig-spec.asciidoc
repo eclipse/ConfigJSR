@@ -45,3 +45,6 @@ include::configprovider.asciidoc[]
 include::configsources.asciidoc[]
 
 include::converters.asciidoc[]
+
+include::configvalues.asciidoc[]
+
