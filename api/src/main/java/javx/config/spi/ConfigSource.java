@@ -94,13 +94,4 @@ public interface ConfigSource {
      */
     String getConfigName();
 
-    /**
-     * Determines if this config source should be scanned for its list of properties.
-     *
-     * Generally, slow ConfigSources should return {@code false} here.
-     *
-     * @return {@code true} if this ConfigSource should be scanned for its list of properties,
-     *         {@code false} if it should not be scanned.
-     */
-    boolean isScannable();
 }

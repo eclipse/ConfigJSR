@@ -53,11 +53,6 @@ public class CustomDbConfigSource implements ConfigSource {
         return "customDbConfig";
     }
 
-    @Override
-    public boolean isScannable() {
-        return true;
-    }
-
     private Map<String, String> readPropertiesFromDb() {
         return configValues;
     }

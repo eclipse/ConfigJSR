@@ -52,8 +52,4 @@ public class SampleYamlConfigSource implements ConfigSource {
         return null;
     }
 
-    @Override
-    public boolean isScannable() {
-        return false;
-    }
 }

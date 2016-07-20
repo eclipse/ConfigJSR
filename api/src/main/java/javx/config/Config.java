@@ -49,8 +49,6 @@ public interface Config {
      * Returns a Map of all properties from all scannable config sources. The values of the properties reflect the
      * values that would be obtained by a call to {@link #getValue(java.lang.String)}, that is, the value of the
      * property from the ConfigSource with the highest ordinal.
-     *
-     * @see ConfigSource#isScannable()
      */
     Map<String, String> getAllProperties();
 
