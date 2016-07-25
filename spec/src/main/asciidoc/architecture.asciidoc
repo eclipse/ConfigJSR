@@ -1,23 +1,23 @@
 [[architecture]]
 == Architecture
 
-This specification defines a easy to use and flexible system for application configuration.
+This specification defines an easy to use and flexible system for application configuration.
 It also defines a way to extend the configuration mechanism itself via a SPI (Service Provider Interface).
 
 === Rational
 
-Released binaries often contain classes which need to behave slightly different depending on the deployment.
-This might be different REST endpoints to talk with depending on the customer at which a WAR gets deployed.
-Or it might even be different features which need to be switched on and off depending on the installation.
+Released binaries often contain classes which need to behave slightly differently depending on the deployment.
+This might be different REST endpoints to talk with depending on the customer for whom a WAR is deployed
+or might even be different features which need to be switched on and off depending on the installation.
 All this must be possible without the need to re-package the whole application binary.
 
 Java-config provides a way to achieve this goal by allowing the application to bundle default configuration within the application.
-But it also allows to overwrite them from outside, e.g. via an environment variable, a Java system property or even a database entry.
+It also allows to override the defaults from outside, e.g. via an environment variable, a Java system property or even a database entry.
 
 === Accessing a certain Configuration
 
 The `ConfigProvider` is the central class to access a configuration.
-It must allow access to different configurations based on the application it gets used in.
+It must allow access to different configurations based on the application in which it is used.
 We distinguish 3 different ways to resolve a `Config` instance:
 
 * A factory method `ConfigProvider#getConfig()` to create a `Config` object based on automatically picked up `ConfigSource` s from the current Thread Context ClassLoader classpath.
@@ -28,15 +28,15 @@ We distinguish 3 different ways to resolve a `Config` instance:
   E.g. if you need the Config for a class in a shared EAR lib folder.
   Subsequent calls to this method for a certain ClassLoader will return the same `Config` instance.
 
-* A factory method `ConfigProvider#newConfig()` to to create an empty `Config` object which can be filled manually.
+* A factory method `ConfigProvider#newConfig()` to create an empty `Config` object which can be filled manually.
   No automatic `ConfigSource` and `ConfigFilter` lookup will be performed.
   This configuration instance will not be shared by the `ConfigProvider`.
-  This method is intended be used if a IoT container or any other external Factory can be used to give access to a manualy created shared `Config`.
+  This method is intended be used if a IoT container or any other external Factory can be used to give access to a manually created shared `Config`.
 
 All methods in the `ConfigProvider` and `Config` implementations are thread safe and reentrant.
 
-If a `Config` is bound to a ClassLoader ist must be made sure that it gets properly removed if the ClassLoader gets destroyed.
-It must not create any mem leaks in that case.
+If a `Config` is bound to a ClassLoader it must be made sure that it gets properly removed if the ClassLoader gets destroyed.
+It must not create any memory leaks in that case.
 
 === Configuration Lookup Mechanism Example
 
@@ -67,7 +67,7 @@ public class ConfigUsageSample {
 }
 ----
 
-If you like to access a different server then you can e.g. change the configuration via a `-D` system property:
+If you need to access a different server then you can e.g. change the configuration via a `-D` system property:
 
 [source, text]
 ----

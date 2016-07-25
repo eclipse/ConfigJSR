@@ -1,14 +1,13 @@
 [[configfilters]]
 == ConfigFilters
 
-A `ConfigFilter` allows to act as a valve which is able to modify the configured values before they get handed out to the caller.
+A `ConfigFilter` acts as a valve which is able to modify the configured values before they are returned to the caller.
 
-The spec does not require the implementations to ship with any `ConfigFilters` enabled by default.
+An implementation of the specification is not required to ship with any `ConfigFilters` enabled by default.
 
-A custom `ConfigFilter` must implement the interface `javx.config.spi.ConfigFilter`.
-You have to register your implementation in a file `/META-INF/services/javx.config.spi.ConfigFilter` by writing the fully qualified class name of the custom implementation into it.
+A custom `ConfigFilter` must implement the interface `javx.config.spi.ConfigFilter` and is typically registered in a classpath resource `/META-INF/services/javx.config.spi.ConfigFilter` by including the fully-qualified class name of the custom implementation (well-known Java SE `java.util.ServiceLoader` mechanism).
 
-Alternative to that a user can register a `ConfigFilter` manually via `void Config#addConfigFilter(ConfigFilter configFilterToAdd)`.
+Alternatively a user can register a `ConfigFilter` manually via `void Config#addConfigFilter(ConfigFilter configFilterToAdd)`.
 
 === Filtering a value for Usage
 
@@ -35,7 +34,7 @@ public class PasswordDecryptionConfigFilter implements ConfigFilter {
 
 === Filtering a value for Logging
 
-To prevent passwords and other secret information to be printed out or logged away, a `ConfigFilter` can be used to mask out those values.
+To prevent passwords and other secret information from being printed out or logged, a `ConfigFilter` can be used to mask those values.
 
 [source, java]
 ----
