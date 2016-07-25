@@ -105,29 +105,6 @@ public class ExampleYamlConfigSourceProvider
 Please note that a single `ConfigSource` should be either registered directly or via a `ConfigSourceProvider`, but never both ways.
 
 
-=== PropertyFileConfig
-
-You can also make Java-config pick up property files with a custom name as `ConfigSource` s.
-The following example will pick up all property files with the name `some/custom.properties` from the classpath.
-
-[source, java]
-----
-public class CustomPropertyFileConfig implements PropertyFileConfig {
-    @Override
-    public String getPropertyFileName() {
-        return "some/custom.properties";
-    }
-
-    @Override
-    public boolean isOptional() {
-        return false;
-    }
-}
-----
-
-Register your implementation in a resource file `/META-INF/services/javx.config.spi.PropertyFileConfig` by including the fully-qualified class name of your `PropertyFileConfig` in the file.
-
-
 === ConfigSource and Mutable Data
 
 A `Config` instance provides no caching but iterates over all `ConfigSources` for each `getValue(String)` operation.
