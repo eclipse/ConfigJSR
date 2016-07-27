@@ -90,4 +90,19 @@ public class ConfigProviderTest {
         Config config = ConfigProvider.getConfig();
         Assert.assertNull(config.getValue("tck.config.test.keydoesnotexist"));
     }
+
+
+    @Test
+    public void testConfigProviderRelease() {
+        Config config1 = ConfigProvider.getConfig();
+        Config config2 = ConfigProvider.getConfig();
+
+        Assert.assertEquals(config2, config1);
+
+        ConfigProvider.releaseConfig(config2);
+
+        Config config3 = ConfigProvider.getConfig();
+
+        Assert.assertNotEquals(config1, config3);
+    }
 }

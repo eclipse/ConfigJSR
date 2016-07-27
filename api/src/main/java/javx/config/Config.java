@@ -16,10 +16,8 @@
  */
 package javx.config;
 
-import java.util.List;
 import java.util.Map;
 
-import javx.config.spi.ConfigFilter;
 import javx.config.spi.ConfigSource;
 import javx.config.spi.ConfigSourceProvider;
 
@@ -71,20 +69,4 @@ public interface Config {
      */
     ConfigSource[] getConfigSources();
 
-
-    /**
-     * This method can be used for programmatically adding {@link ConfigSource}s
-     * to this very Config.
-     * It is not needed for normal 'usage' by end users, but only for Extension Developers!
-     *
-     * @param configSourcesToAdd the ConfigSources to add
-     */
-    void addConfigSources(List<ConfigSource> configSourcesToAdd);
-
-    /**
-     * Add a {@link ConfigFilter} to this very Config
-     *
-     * It is not needed for normal 'usage' by end users, but only for Extension Developers!
-     */
-    void addConfigFilter(ConfigFilter configFilterToAdd);
 }

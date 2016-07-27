@@ -43,6 +43,7 @@ import javx.config.spi.ConfigSource;
  * from a database table./p>
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
+ * @author <a href="mailto:rmannibucau@apache.org">Romain Manni-Bucau</a>
  */
 public class ConfigProvider {
 
@@ -76,7 +77,7 @@ public class ConfigProvider {
      *
      * The ConfigProvider will not manage the Config instance internally
      */
-    public static Config newConfig() {
+    public static ConfigBuilder newConfig() {
         return instance.newConfig();
     }
 
@@ -90,13 +91,26 @@ public class ConfigProvider {
 
 
     /**
+     * Builder for manually creating an instance of a {@code Config}.
+     *
+     * @see ConfigProvider#newConfig()
+     */
+    public interface ConfigBuilder {
+        ConfigBuilder ignoreDefaultSources();
+        ConfigBuilder forClassLoader(ClassLoader loader);
+        ConfigBuilder withSources(ConfigSource... sources);
+        ConfigBuilder withFilters(ConfigFilter... filters);
+        Config build();
+    }
+
+    /**
      * This interface gets implemented internally by the Config library.
      * The implementation registers itself via {@link java.util.ServiceLoader} mechanism.
      */
     public interface SPI {
         Config getConfig();
         Config getConfig(ClassLoader forClassLoader);
-        Config newConfig();
+        ConfigBuilder newConfig();
         void releaseConfig(Config config);
     }
 
