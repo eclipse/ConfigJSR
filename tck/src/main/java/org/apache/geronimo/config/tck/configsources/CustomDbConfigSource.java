@@ -22,7 +22,7 @@ import java.util.Map;
 import javx.config.spi.ConfigSource;
 
 /**
- * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
+ * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
 public class CustomDbConfigSource implements ConfigSource {
 

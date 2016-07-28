@@ -24,3 +24,5 @@ include::architecture.asciidoc[]
 include::configsources.asciidoc[]
 
 include::configfilters.asciidoc[]
+
+include::converters.asciidoc[]

@@ -26,7 +26,7 @@ import javx.config.spi.ConfigSource;
 import javx.config.spi.ConfigSourceProvider;
 
 /**
- * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
+ * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
 public class CustomConfigSourceProvider implements ConfigSourceProvider {
     @Override

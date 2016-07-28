@@ -44,6 +44,24 @@ public interface Config {
     String getValue(String key);
 
     /**
+     * Resolves the value configured for the given key and convert it to the required asType.
+     *
+     * @param key
+     * @param asType Also support parameterized Types?
+     * @param <T>
+     * @return
+     * @throws UnsupportedOperationException if there is no {@link javx.config.spi.Converter} registered for asType
+     */
+    <T> T getValue(String key, Class<T> asType);
+
+    /**
+     * Apply the
+     * @return the String converted
+     * @throws UnsupportedOperationException if there is no {@link javx.config.spi.Converter} registered for asType
+     */
+    <T> T convert(String value, Class<T> asType);
+
+    /**
      * Returns a Map of all properties from all scannable config sources. The values of the properties reflect the
      * values that would be obtained by a call to {@link #getValue(java.lang.String)}, that is, the value of the
      * property from the ConfigSource with the highest ordinal.

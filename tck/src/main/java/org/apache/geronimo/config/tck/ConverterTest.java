@@ -14,42 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.config.tck.configsources;
+package org.apache.geronimo.config.tck;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import javx.config.spi.ConfigSource;
+import javx.config.Config;
+import javx.config.ConfigProvider;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
-public class SampleYamlConfigSource implements ConfigSource {
-    private Map<String, String> config = new HashMap<>();
+public class ConverterTest {
 
-    public SampleYamlConfigSource(URL url) {
-        config.put("tck.config.test.sampleyaml.key1", "yamlvalue1");
+    @Test
+    public void testIntegerConverter() {
+        Config config = ConfigProvider.getConfig();
+        Integer value = config.getValue("tck.config.test.javaconfig.converter.integervalue", Integer.class);
+        Assert.assertEquals(value, Integer.valueOf(1234));
+
     }
 
-    @Override
-    public int getOrdinal() {
-        return 110;
+    @Test
+    public void testFloatConverter() {
+        Config config = ConfigProvider.getConfig();
+        Float value = config.getValue("tck.config.test.javaconfig.converter.floatvalue", Float.class);
+        Assert.assertEquals(value, Float.valueOf(12.34f));
+
     }
 
-    @Override
-    public Map<String, String> getProperties() {
-        return config;
-    }
-
-    @Override
-    public String getPropertyValue(String key) {
-        return config.get(key);
-    }
-
-    @Override
-    public String getConfigName() {
-        return null;
-    }
 
 }

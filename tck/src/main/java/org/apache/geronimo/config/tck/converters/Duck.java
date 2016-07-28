@@ -14,42 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.geronimo.config.tck.configsources;
-
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
-import javx.config.spi.ConfigSource;
+package org.apache.geronimo.config.tck.converters;
 
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
-public class SampleYamlConfigSource implements ConfigSource {
-    private Map<String, String> config = new HashMap<>();
+public class Duck {
+    private final String name;
 
-    public SampleYamlConfigSource(URL url) {
-        config.put("tck.config.test.sampleyaml.key1", "yamlvalue1");
+
+    public Duck(String name) {
+        this.name = name;
     }
 
-    @Override
-    public int getOrdinal() {
-        return 110;
+    public String getName() {
+        return name;
     }
-
-    @Override
-    public Map<String, String> getProperties() {
-        return config;
-    }
-
-    @Override
-    public String getPropertyValue(String key) {
-        return config.get(key);
-    }
-
-    @Override
-    public String getConfigName() {
-        return null;
-    }
-
 }
