@@ -29,6 +29,9 @@ import javx.config.spi.ConfigSourceProvider;
  * <p>You can provide your own lookup paths by implementing and registering additional
  * {@link ConfigSource}s and {@link ConfigSourceProvider} implementations.</p>
  *
+ *
+ * @see ConfigProvider to resolve the current configuration.
+ *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
 public interface Config {

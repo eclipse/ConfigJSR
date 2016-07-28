@@ -42,6 +42,15 @@ import javx.config.spi.ConfigSource;
  * flexibly extend the configuration mechanism. An example would be to pick up configuration values
  * from a database table./p>
  *
+ * <p>Example usage:
+ *
+ * <pre>
+ *     String restUrl = ConfigProvider.getConfig().getValue("myproject.some.remote.service.url");
+ *     Integer port = ConfigProvider.getConfig().getValue("myproject.some.remote.service.port", Integer.class);
+ * </pre>
+ *
+ * </p>
+ *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:rmannibucau@apache.org">Romain Manni-Bucau</a>
  */
