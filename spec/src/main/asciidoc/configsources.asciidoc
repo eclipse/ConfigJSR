@@ -77,11 +77,6 @@ public class CustomDbConfigSource implements ConfigSource {
         return "customDbConfig";
     }
 
-    @Override
-    public boolean isScannable() {
-        return true;
-    }
-
     // + methods to read from the DB
 }
 

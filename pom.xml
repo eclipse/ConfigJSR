@@ -60,7 +60,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludes>.travis.yml</excludes>
+                    <excludes>
+                        <exclude>.travis.yml</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>

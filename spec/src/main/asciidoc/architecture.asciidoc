@@ -19,7 +19,7 @@
 == Architecture
 
 This specification defines an easy to use and flexible system for application configuration.
-It also defines a way to extend the configuration mechanism itself via a SPI (Service Provider Interface).
+It also defines a way to extend the configuration mechanism itself via a SPI (Service Provider Interface) in a portable way.
 
 === Rational
 
@@ -30,13 +30,13 @@ All this must be possible without the need to re-package the whole application b
 
 Java-config provides a way to achieve this goal by aggregating configuration from many different sources and presents a single merged view to the user.
 This allows the application to bundle default configuration within the application.
-It also allows to override the defaults from outside, e.g. via an environment variable a Java system property.
-Java-config also allows to extend these configuration sources in a portable way, e.g. reading configuration values from a shared database in an application cluster.
+It also allows to override the defaults from outside, e.g. via an environment variable a Java system property or via Docker.
+Java-config also allows to implement and register own configuration sources in a portable way, e.g. for reading configuration values from a shared database in an application cluster.
 
 === Accessing a certain Configuration
 
 The `ConfigProvider` is the central class to access a configuration.
-It must allow access to different configurations based on the application in which it is used.
+It allows access to different configurations (represented by a `Config` instance) based on the application in which it is used.
 We distinguish 3 different ways to resolve a `Config` instance:
 
 * A factory method `ConfigProvider#getConfig()` to create a `Config` object based on automatically picked up `ConfigSource` s from the current Thread Context ClassLoader classpath.
@@ -47,8 +47,7 @@ We distinguish 3 different ways to resolve a `Config` instance:
   E.g. if you need the Config for a class in a shared EAR lib folder.
   Subsequent calls to this method for a certain ClassLoader will return the same `Config` instance.
 
-* A factory method `ConfigProvider#newConfig()` to create an empty `Config` object which can be filled manually.
-  No automatic `ConfigSource` and `ConfigFilter` lookup will be performed.
+* A factory method `ConfigProvider#newConfig()` to create an empty `Config` object which can be filled manually via a builder.
   This configuration instance will not be shared by the `ConfigProvider`.
   This method is intended be used if a IoT container or any other external Factory can be used to give access to a manually created shared `Config`.
 
@@ -57,16 +56,22 @@ All methods in the `ConfigProvider` and `Config` implementations are thread safe
 If a `Config` is bound to a ClassLoader it must be made sure that it gets properly removed if the ClassLoader gets destroyed.
 It must not create any memory leaks in that case.
 
+A `Config` can be release by calling `ConfigProvider#release(Config)`.
+ConfigSources which implement the `java.io.Closeable` interface will be properly destroyed.
+Any subsequent call to `ConfigProvider#getConfig()` or `ConfigProvider#getConfig(ClassLoader forClassLoader)` will result in a new `Config` instance.
+
+
 === Configuration Lookup Mechanism Example
 
-Java-config is a String/String based mechanism.
-Type-safety is provided by using the proper `Converter` before handing the value out to the caller.
+The core Java-config mechanism is purely String/String based.
+Type-safety is only provided on top of that by using the proper `Converter` before handing the value out to the caller.
 
 The configuration key might use dot-separated namespaces similar to Java package namespacing:
 
 [source, text]
 ----
 com.acme.myproject.someserver.url = http://some.server/some/endpoint
+com.acme.myproject.someserver.port = 9085
 com.acme.myproject.someserver.active = true
 com.acme.other.stuff.name = Karl
 ----
@@ -81,8 +86,10 @@ public class ConfigUsageSample {
         // get access to the Config instance
         Config config = ConfigProvider.getConfig();
         String serverUrl = config.getValue("com.acme.myproject.someserver.url");
+        Integer serverPort = config.getValue("com.acme.myproject.someserver.port",
+                                             Integer.class);
 
-        callToServer(serverUrl);
+        callToServer(serverUrl, serverPort);
     }
 }
 ----
