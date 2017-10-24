@@ -33,6 +33,11 @@ Configuration API for Java JSR Draft - Work In Progress!
 
 https://jcp.org/en/jsr/detail?id=382
 
+### Twitter
+
+https://twitter.com/ConfigJSR
+
+
 ### Source Repository
 
 The source code is available under the Apache License, v2.0 and hosted at https://github.com/eclipse/ConfigJSR
