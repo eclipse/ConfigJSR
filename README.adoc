@@ -60,14 +60,7 @@ This now serves as a starting point for this very JSR.
 
 == Implementations
 
-Microprofile Config does not contain an implementation itself but only provides the specified API and, a TCK and documentation.
-
-The following Implementations are available 
-
-* Apache Geronimo Config (https://svn.apache.org/repos/asf/geronimo/components/config/trunk)
-* WebSphere Liberty 2017 March-June Beta so far (https://developer.ibm.com/wasdev/)
-* Payara Server 173 and Payara Micro 173 (https://docs.payara.fish/documentation/microprofile/config.html)
-* WildFly / WildFly Swarm (https://github.com/wildfly-extras/wildfly-microprofile-config/)
+JavaConfig does not contain an implementation itself but only provides the specified API and, a TCK and documentation.
 
 == Design
 
@@ -81,10 +74,11 @@ By default there are 3 default ConfigSources:
 
 * `System.getProperties()` (ordinal=400)
 * `System.getenv()` (ordinal=300)
-* all `META-INF/microprofile-config.properties` files on the ClassPath.
+* all `META-INF/javaconfig.properties` files on the ClassPath.
 (default ordinal=100, separately configurable via a config_ordinal property inside each file)
 
-Therefore, the default values can be specified in the above files packaged with the application and the value can be overwritten later for each deployment. A higher ordinal number takes precedence over a lower number.
+Therefore, the default values can be specified in the above files packaged with the application and the value can be overwritten later for each deployment. 
+A higher ordinal number takes precedence over a lower number.
 
 == Custom ConfigSources
 
@@ -93,7 +87,7 @@ An example would be a ConfigSource which gets the configured values from a share
 
 == Building
 
-The whole MicroProfile config project can be built via Apache Maven
+The whole JavaConfig project can be built via Apache Maven
 
 `$> mvn clean install`
 
