@@ -17,16 +17,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <!-- This is just for now and will not work if the API has a separate release cycle than the rest. -->
-        <groupId>org.eclipse.microprofile.config</groupId>
-        <artifactId>microprofile-config-parent</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <groupId>javax.config</groupId>
+        <artifactId>javaconfig-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.eclipse.microprofile.config</groupId>
-    <artifactId>microprofile-config-spec</artifactId>
+    <artifactId>javaconfig-spec</artifactId>
     <packaging>pom</packaging>
-    <name>MicroProfile Config Specification</name>
 
     <properties>
         <asciidoctor-maven.version>1.5.5</asciidoctor-maven.version>
@@ -76,7 +73,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <sourceDocumentName>microprofile-config-spec.asciidoc</sourceDocumentName>
+                    <sourceDocumentName>javaconfig-spec.asciidoc</sourceDocumentName>
                     <sourceHighlighter>coderay</sourceHighlighter>
                     <attributes>
                         <license>Apache License v2.0</license>

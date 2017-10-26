@@ -58,7 +58,7 @@ A Microprofile-Config implementation must provide <<ConfigSource,ConfigSources>>
 
 <<configsource,ConfigSources>> are discovered using the `java.util.ServiceLoader` mechanism.
 
-To add a custom `ConfigSource`, implement the interface `org.eclipse.microprofile.config.spi.ConfigSource`.
+To add a custom `ConfigSource`, implement the interface `javax.config.spi.ConfigSource`.
 
 [source, java]
 ----
@@ -93,7 +93,7 @@ public class CustomDbConfigSource implements ConfigSource {
 
 ----
 
-Then register your implementation in a resource file `/META-INF/services/org.eclipse.microprofile.config.spi.ConfigSource` by including the fully-qualified class name of the custom implementation in the file.
+Then register your implementation in a resource file `/META-INF/services/javax.config.spi.ConfigSource` by including the fully-qualified class name of the custom implementation in the file.
 
 
 === Custom ConfigSources via ConfigSourceProvider
@@ -102,15 +102,15 @@ If you need dynamic <<configsource,ConfigSources>> you can also register a `Conf
 This is useful if you need to dynamically pick up multiple <<configsource,ConfigSources>> of the same kind;
 for example, to pick up all `myproject.properties` resources from all the JARs in your classpath.
 
-A custom `ConfigSourceProvider` must implement the interface `org.eclipse.microprofile.config.spi.ConfigSourceProvider`.
-Register your implementation in a resource file `/META-INF/services/org.eclipse.microprofile.config.spi.ConfigSourceProvider` by including the fully-qualified class name of the custom implementation/s in the file.
+A custom `ConfigSourceProvider` must implement the interface `javax.config.spi.ConfigSourceProvider`.
+Register your implementation in a resource file `/META-INF/services/javax.config.spi.ConfigSourceProvider` by including the fully-qualified class name of the custom implementation/s in the file.
 
 An example which registers all YAML files with the name `exampleconfig.yaml`:
 
 [source, java]
 ----
 public class ExampleYamlConfigSourceProvider
-        implements org.eclipse.microprofile.config.spi.ConfigSourceProvider {
+        implements javax.config.spi.ConfigSourceProvider {
     @Override
     public List<ConfigSource> getConfigSources(ClassLoader forClassLoader) {
         List<ConfigSource> configSources = new ArrayList<>();

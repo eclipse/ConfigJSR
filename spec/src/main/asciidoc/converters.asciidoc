@@ -50,9 +50,9 @@ All built-in `Converter` have the `@Priority` of `1`.
 
 === Adding custom Converters
 
-A custom `Converter` must implement the generic interface `org.eclipse.microprofile.config.spi.Converter`.
+A custom `Converter` must implement the generic interface `javax.config.spi.Converter`.
 The Type parameter of the interface is the target type the String is converted to.
-You have to register your implementation in a file `/META-INF/services/org.eclipse.microprofile.config.spi.Converter` with the fully qualified class name of the custom implementation.
+You have to register your implementation in a file `/META-INF/services/javax.config.spi.Converter` with the fully qualified class name of the custom implementation.
 
 A custom `Converter` can define a priority with the `@javax.annotation.Priority` annotation.
 If a Priority annotation isn't applied, a default priority of 100 is assumed.

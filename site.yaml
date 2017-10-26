@@ -19,8 +19,8 @@
 %YAML 1.2
 ---
 documentation:
-  - title: Configuration for Microprofile
-    file: spec/src/main/asciidoc/microprofile-config-spec.asciidoc
+  - title: Configuration API for Java
+    file: spec/src/main/asciidoc/javaconfig-spec.asciidoc
 
   - title: Architecture
     file: spec/src/main/asciidoc/architecture.asciidoc

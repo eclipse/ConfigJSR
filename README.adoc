@@ -45,7 +45,7 @@ If the same property is defined in multiple ConfigSources, we apply a policy to 
 Under some circumstances, some data sources may change dynamically.
 The changed values should be fed into the client without the need for restarting the application.
 This requirement is particularly important for microservices running in a cloud environment.
-The MicroProfile Config approach allows to pick up configured values immediately after they got changed.
+The JavaConfig approach allows to pick up configured values immediately after they got changed.
 
 == Influences and History
 
@@ -73,7 +73,7 @@ The following Implementations are available
 
 The current configuration of an application can be accessed via `ConfigProvider#getConfig()`.
 
-A `Config` consists of the information collected from the registered `org.eclipse.microprofile.config.spi.ConfigSource` s.
+A `Config` consists of the information collected from the registered `javax.config.spi.ConfigSource` s.
 These `ConfigSource` s get sorted according to their _ordinal_.
 That way it is possible to overwrite configuration with lower importance from outside.
 

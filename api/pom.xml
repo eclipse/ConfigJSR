@@ -17,28 +17,26 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <!-- This is just for now and will not work if the API has a separate release cycle than the rest. -->
-        <groupId>org.eclipse.microprofile.config</groupId>
-        <artifactId>microprofile-config-parent</artifactId>
-        <version>1.2-SNAPSHOT</version>
+        <groupId>javax.config</groupId>
+        <artifactId>javaconfig-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.eclipse.microprofile.config</groupId>
-    <artifactId>microprofile-config-api</artifactId>
-    <name>MicroProfile Config API</name>
-
+    <artifactId>javaconfig-api</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
             <artifactId>org.osgi.annotation.versioning</artifactId>
             <version>1.0.0</version>
-
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -86,8 +84,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
-                    <Bundle-SymbolicName>org.eclipse.microprofile.config</Bundle-SymbolicName>
-                    <Bundle-Name>MicroProfile config bundle</Bundle-Name>
+                    <Bundle-SymbolicName>javax.config</Bundle-SymbolicName>
+                    <Bundle-Name>JavaConfig bundle</Bundle-Name>
                     <archive>
                         <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
@@ -95,26 +93,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>eclipse-jarsigner</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.eclipse.cbi.maven.plugins</groupId>
-                        <artifactId>eclipse-jarsigner-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
 </project>
