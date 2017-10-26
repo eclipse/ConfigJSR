@@ -44,7 +44,7 @@ public class MissingConverterOnInstanceInjectionTest extends Arquillian {
         JavaArchive testJar = ShrinkWrap
                 .create(JavaArchive.class, "missingConverterOnInstanceInjectionTest.jar")
                 .addClass(CustomConverterBean.class)
-                .addAsManifestResource(new StringAsset("my.customtype.value=xxxxx"), "microprofile-config.properties")
+                .addAsManifestResource(new StringAsset("my.customtype.value=xxxxx"), "javaconfig.properties")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .as(JavaArchive.class);
 

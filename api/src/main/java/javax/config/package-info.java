@@ -43,11 +43,11 @@
  * <ul>
  * <li>{@code System.getenv()} (ordinal=400)</li>
  * <li>{@code System.getProperties()} (ordinal=300)</li>
- * <li>all {@code META-INF/microprofile-config.properties} files on the ClassPath.
+ * <li>all {@code META-INF/javaconfig.properties} files on the ClassPath.
  *  (ordinal=100, separately configurable via a config_ordinal property inside each file)</li>
  * </ul>
  *
- * <p>That means that one can put the default configuration in a {@code META-INF/microprofile-config.properties} anywhere on the classpath.
+ * <p>That means that one can put the default configuration in a {@code META-INF/javaconfig.properties} anywhere on the classpath.
  * and the Operations team can later simply e.g set a system property to change this default configuration.
  *
  * <p>It is of course also possible to register own {@link javax.config.spi.ConfigSource ConfigSources}.

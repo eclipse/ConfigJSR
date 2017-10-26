@@ -72,7 +72,7 @@ public class ConverterTest extends Arquillian {
                 .addAsServiceProvider(Converter.class, DuckConverter.class)
                 .as(JavaArchive.class);
 
-        AbstractTest.addFile(testJar, "META-INF/microprofile-config.properties");
+        AbstractTest.addFile(testJar, "META-INF/javaconfig.properties");
         AbstractTest.addFile(testJar, "sampleconfig.yaml");
 
         WebArchive war = ShrinkWrap

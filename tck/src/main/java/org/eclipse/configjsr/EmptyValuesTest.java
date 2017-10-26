@@ -45,7 +45,7 @@ public class EmptyValuesTest extends Arquillian {
         JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "emptyValues.jar")
                 .addClasses(EmptyValuesTest.class, EmptyValuesBean.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource(EMPTY_STRING_ASSET, "microprofile-config.properties");
+                .addAsManifestResource(EMPTY_STRING_ASSET, "javaconfig.properties");
 
         return ShrinkWrap.create(WebArchive.class)
                 .addAsLibrary(jar)

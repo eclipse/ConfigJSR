@@ -51,7 +51,7 @@ A Microprofile-Config implementation must provide <<ConfigSource,ConfigSources>>
 
 * System properties (default ordinal=400).
 * Environment variables (default ordinal=300).
-* A `ConfigSource` for each property file `META-INF/microprofile-config.properties` found on the classpath. (default ordinal = 100).
+* A `ConfigSource` for each property file `META-INF/javaconfig.properties` found on the classpath. (default ordinal = 100).
 
 [[custom_configsources]]
 === Custom ConfigSources

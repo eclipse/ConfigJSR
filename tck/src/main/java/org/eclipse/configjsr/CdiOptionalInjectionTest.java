@@ -46,7 +46,7 @@ public class CdiOptionalInjectionTest extends Arquillian {
                 .create(JavaArchive.class, "cdiOptionalInjectionTest.jar")
                 .addClasses(CdiOptionalInjectionTest.class, OptionalValuesBean.class)
                 .addAsManifestResource(new StringAsset("my.optional.int.property=1234\nmy.optional.string.property=hello"),
-                        "microprofile-config.properties")
+                        "javaconfig.properties")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .as(JavaArchive.class);
 

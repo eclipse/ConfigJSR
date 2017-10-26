@@ -43,7 +43,7 @@ import java.util.Set;
  * <ol>
  * <li>System properties (ordinal=400)</li>
  * <li>Environment properties (ordinal=300)</li>
- * <li>/META-INF/microprofile-config.properties (ordinal=100)</li>
+ * <li>/META-INF/javaconfig.properties (ordinal=100)</li>
  * </ol>
  *
  * <p>Custom ConfigSource will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
@@ -93,7 +93,7 @@ public interface ConfigSource {
      * <ol>
      *  <li>System properties (default ordinal=400)</li>
      *  <li>Environment properties (default ordinal=300)</li>
-     *  <li>/META-INF/microprofile-config.properties (default ordinal=100)</li>
+     *  <li>/META-INF/javaconfig.properties (default ordinal=100)</li>
      * </ol>
      *
      *

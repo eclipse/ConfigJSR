@@ -45,7 +45,7 @@ import javax.inject.Qualifier;
  * property value changes in the {@link javax.config.Config}.
  *
  * <p>Injecting a native value is recommended for a mandatory property and its value does not change at runtime or used by a bean with RequestScoped.
- * <p>A further recommendation is to use the built in {@code META-INF/microprofile-config.properties} file mechanism
+ * <p>A further recommendation is to use the built in {@code META-INF/javaconfig.properties} file mechanism
  * to provide default values inside an Application.
  * If no configured value exists for this property, a {@code DeplymentException} will be thrown during startup.
  * <pre>
