@@ -1,0 +1,13 @@
+.site-content
+.idea
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings
+target
+.DS_Store
+.checkstyle
+*.sig
+*.patch

@@ -1,0 +1,75 @@
+//
+// Licensed to the Apache Software Foundation (ASF) under one or more
+// contributor license agreements.  See the NOTICE file distributed with
+// this work for additional information regarding copyright ownership.
+// The ASF licenses this file to You under the Apache License, Version 2.0
+// (the "License"); you may not use this file except in compliance with
+// the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
+
+[[configfilters]]
+== ConfigFilters
+
+A `ConfigFilter` acts as a valve which is able to modify the configured values before they are returned to the caller.
+
+An implementation of the specification is not required to ship with any `ConfigFilters` enabled by default.
+
+A custom `ConfigFilter` must implement the interface `javx.config.spi.ConfigFilter` and is typically registered in a classpath resource `/META-INF/services/javx.config.spi.ConfigFilter` by including the fully-qualified class name of the custom implementation (well-known Java SE `java.util.ServiceLoader` mechanism).
+
+Alternatively a user can register a `ConfigFilter` manually via `void Config#addConfigFilter(ConfigFilter configFilterToAdd)`.
+
+=== Filtering a value for Usage
+
+A `ConfigFilter` can e.g. be used to decrypt a stored password on the fly:
+
+[source, java]
+----
+public class PasswordDecryptionConfigFilter implements ConfigFilter {
+    @Override
+    public String filterValue(String key, String value) {
+        if (value != null && key.endsWith(".password")) {
+            return decrypt(value);
+        }
+        return value;
+    }
+
+    @Override
+    public String filterValueForLog(String key, String value) {
+        // do nothing
+        return value;
+    }
+}
+----
+
+=== Filtering a value for Logging
+
+To prevent passwords and other secret information from being printed out or logged, a `ConfigFilter` can be used to mask those values.
+
+[source, java]
+----
+public class PasswordConfigFilter implements ConfigFilter {
+    @Override
+    public String filterValue(String key, String value) {
+        // do nothing
+        return value;
+    }
+
+    @Override
+    public String filterValueForLog(String key, String value) {
+        if (value != null &&
+            (key.contains("password") || key.contains("secret"))) {
+            return "*******"; // simply star-out the password
+        }
+        return value;
+    }
+}
+
+----
