@@ -1,21 +1,25 @@
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more
-// contributor license agreements.  See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership.
-// The ASF licenses this file to You under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with
-// the License.  You may obtain a copy of the License at
+// Copyright (c) 2016-2017 Contributors to the Eclipse Foundation
 //
-//   http://www.apache.org/licenses/LICENSE-2.0
+// See the NOTICE file(s) distributed with this work for additional
+// information regarding copyright ownership.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// You may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// Contributors:
+// Mark Struberg
+// Emily Jiang
 
-[[configsources]]
+[[configsource]]
 == ConfigSources
 
 A `ConfigSource` is exactly what its name says: a source for configured values.
@@ -24,14 +28,12 @@ The `Config` uses all configured implementations of `ConfigSource` to look up th
 === ConfigSource Ordering
 
 Each `ConfigSource` has a specified `ordinal`, which is used to determine the importance of the values taken from the associated `ConfigSource`.
-A higher `ordinal` means that the values taken from this `ConfigSource` will override values from lower-priority `ConfigSource` s.
+A higher `ordinal` means that the values taken from this `ConfigSource` will override values from lower-priority <<ConfigSource,ConfigSources>>.
 This allows a configuration to be customized from outside a binary, assuming that external `ConfigSource` s have higher `ordinal` values than the ones whose values originate within the release binaries.
 
 It can also be used to implement a drop-in configuration approach.
 Simply create a jar containing a `ConfigSource` with a higher ordinal and override configuration values in it.
-If the jar is present on the classpath then it will override configuration values from `ConfigSource` s with lower `ordinal` values.
-
-The ordinal for property file based `ConfigSource` s can be configured using the key `config_ordinal` inside the property file.
+If the jar is present on the classpath then it will override configuration values from <<ConfigSource,ConfigSources>> with lower `ordinal` values.
 
 [source, text]
 ----
@@ -39,19 +41,24 @@ config_ordinal = 120
 com.acme.myproject.someserver.url = http://more_important.server/some/endpoint
 ----
 
+
+Note that `config_ordinal` can be set within any `ConfigSource` implementation.  The default implementation of `getOrdinal()` will attempt to read this value, if found and a valid integer, the value will be used, otherwise the default of `100` will be returned.
+
+[[default_configsources]]
 === Default ConfigSources
 
-A Java-config implementation must provide `ConfigSource` s for the following data out of the box:
+A Microprofile-Config implementation must provide <<ConfigSource,ConfigSources>> for the following data out of the box:
 
-* System properties (ordinal=400)
-* Environment properties (ordinal=300)
-* A `ConfigSource` for each property file `META-INF/java-config.properties` found on the classpath. (default ordinal = 100)
+* System properties (default ordinal=400).
+* Environment variables (default ordinal=300).
+* A `ConfigSource` for each property file `META-INF/microprofile-config.properties` found on the classpath. (default ordinal = 100).
 
+[[custom_configsources]]
 === Custom ConfigSources
 
-`ConfigSource` s are discovered using the `java.util.ServiceLoader` mechanism.
+<<configsource,ConfigSources>> are discovered using the `java.util.ServiceLoader` mechanism.
 
-To add a custom `ConfigSource`, implement the interface `javx.config.spi.ConfigSource`.
+To add a custom `ConfigSource`, implement the interface `org.eclipse.microprofile.config.spi.ConfigSource`.
 
 [source, java]
 ----
@@ -63,49 +70,53 @@ public class CustomDbConfigSource implements ConfigSource {
     }
 
     @Override
+    public Set<String> getPropertyNames() {
+        return readPropertyNames();
+    }
+
+    @Override
     public Map<String, String> getProperties() {
         return readPropertiesFromDb();
     }
 
     @Override
-    public String getPropertyValue(String key) {
+    public String getValue(String key) {
         return readPropertyFromDb(key);
     }
 
     @Override
-    public String getConfigName() {
+    public String getName() {
         return "customDbConfig";
     }
 
-    // + methods to read from the DB
 }
 
 ----
 
-Then register your implementation in a resource file `/META-INF/services/javx.config.spi.ConfigSource` by including the fully-qualified class name of the custom implementation in the file.
+Then register your implementation in a resource file `/META-INF/services/org.eclipse.microprofile.config.spi.ConfigSource` by including the fully-qualified class name of the custom implementation in the file.
 
 
 === Custom ConfigSources via ConfigSourceProvider
 
-If you need dynamic `ConfigSource` s you can also register a `ConfigSourceProvider` in a similar manner.
-This is useful if you are required to dynamically pick up multiple `ConfigSource` s of the same kind;
+If you need dynamic <<configsource,ConfigSources>> you can also register a `ConfigSourceProvider` in a similar manner.
+This is useful if you need to dynamically pick up multiple <<configsource,ConfigSources>> of the same kind;
 for example, to pick up all `myproject.properties` resources from all the JARs in your classpath.
 
-A custom `ConfigSourceProvider` must implement the interface `javx.config.spi.ConfigSourceProvider`.
-Register your implementation in a resource file `/META-INF/services/javx.config.spi.ConfigSourceProvider` by including the fully-qualified class name of the custom implementation/s in the file.
+A custom `ConfigSourceProvider` must implement the interface `org.eclipse.microprofile.config.spi.ConfigSourceProvider`.
+Register your implementation in a resource file `/META-INF/services/org.eclipse.microprofile.config.spi.ConfigSourceProvider` by including the fully-qualified class name of the custom implementation/s in the file.
 
 An example which registers all YAML files with the name `exampleconfig.yaml`:
 
 [source, java]
 ----
 public class ExampleYamlConfigSourceProvider
-        implements javx.config.spi.ConfigSourceProvider {
+        implements org.eclipse.microprofile.config.spi.ConfigSourceProvider {
     @Override
     public List<ConfigSource> getConfigSources(ClassLoader forClassLoader) {
         List<ConfigSource> configSources = new ArrayList<>();
 
-        Enumeration<URL> yamlFiles = null;
-        yamlFiles = forClassLoader.getResources("sampleconfig.yaml");
+        Enumeration<URL> yamlFiles
+            = forClassLoader.getResources("sampleconfig.yaml");
         while (yamlFiles.hasMoreElements()) {
             configSources.add(new SampleYamlConfigSource(yamlFiles.nextElement()));
         }
@@ -122,10 +133,3 @@ Please note that a single `ConfigSource` should be either registered directly or
 A `Config` instance provides no caching but iterates over all `ConfigSources` for each `getValue(String)` operation.
 A `ConfigSource` is allowed to cache the underlying values itself.
 
-
-=== Manually adding ConfigSources
-
-A user can manually register `ConfigSource` s by using the method `void addConfigSources(List<ConfigSource> configSourcesToAdd)`.
-This will add the given list to the already registered `ConfigSources` of the current `Config` instance.
-
-The order in which the `ConfigSources` are evaluated when using `Config#getValue(String key)` is independent of the order in which they were added to the `Config`; this depends only on the `ordinal` values of the available `ConfigSources`.

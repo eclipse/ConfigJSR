@@ -1,13 +1,17 @@
-.site-content
+*.class
+.settings/
+.checkstyle
+target/
+tck/bin/
+.project
+build/
+.classpath
+.factorypath
+test-output
+/*.log
 .idea
 *.iml
+*.iwl
 *.ipr
-*.iws
-.classpath
-.project
-.settings
-target
-.DS_Store
-.checkstyle
-*.sig
-*.patch
+# Ignore a release.conf for perform_release/* script usage
+release.conf

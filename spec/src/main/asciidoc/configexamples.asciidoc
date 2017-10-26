@@ -1,0 +1,88 @@
+//
+// Copyright (c) 2016-2017 Contributors to the Eclipse Foundation
+//
+// See the NOTICE file(s) distributed with this work for additional
+// information regarding copyright ownership.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// You may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// Contributors:
+// Mark Struberg
+// Emily Jiang
+
+[[configexamples]]
+== Configuration Usage Examples
+
+
+A configuration object can be obtained programmatically via the `ConfigProvider` or automatically via `@Inject Config`. An application can then access its configured values via a `Config` instance.
+
+=== Simple Programmatic Example
+
+[source, java]
+----
+public class ConfigUsageSample {
+
+    public void useTheConfig() {
+        // get access to the Config instance
+        Config config = ConfigProvider.getConfig();
+
+        String serverUrl = config.getValue("acme.myprj.some.url", String.class);
+
+        callToServer(serverUrl);
+    }
+}
+----
+
+If you need to access a different server then you can e.g. change the configuration via a `-D` system property:
+
+[source, text]
+----
+$> java -jar some.jar -Dacme.myprj.some.url=http://other.server/other/endpoint
+----
+
+Note that this is only one example how to possibly configure your application.
+Another example is to register <<custom_configsources, Custom ConfigSources>> to e.g. pick up values from a database table, etc.
+
+=== Simple Dependency Injection Example
+
+Microprofile-Config also provides ways to inject configured values into your beans using the `@Inject` and the `@ConfigProperty` qualifier.
+
+[source, java]
+----
+@ApplicationScoped
+public class InjectedConfigUsageSample {
+
+    @Inject
+    private Config config;
+
+    //The property myprj.some.url must exist in one of the configsources, otherwise a
+    //DeploymentException will be thrown.
+    @Inject
+    @ConfigProperty(name="myprj.some.url")
+    private String someUrl;
+    //The following code injects an Optional value of myprj.some.port property. 
+    //Contrary to natively injecting the configured value this will not lead to a 
+    //DeploymentException if the configured value is missing. 
+    @Inject
+    @ConfigProperty(name="myprj.some.port")
+    private Optional<Integer> somePort;
+    //Injects a Provider for the value of myprj.some.dynamic.timeout property to 
+    //resolve the property dynamically. Each invocation to Provider#get() will 
+    //resolve the latest value from underlying Config.
+    //The existence of configured values will get checked during startup. 
+    //Instances of Provider<T> are guaranteed to be Serializable. 
+    @Inject
+    @ConfigProperty(name="myprj.some.dynamic.timeout", defaultValue="100")
+    private javax.inject.Provider<Long> timeout;
+}
+----
+

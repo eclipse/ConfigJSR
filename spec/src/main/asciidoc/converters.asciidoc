@@ -1,43 +1,58 @@
 //
-// Licensed to the Apache Software Foundation (ASF) under one or more
-// contributor license agreements.  See the NOTICE file distributed with
-// this work for additional information regarding copyright ownership.
-// The ASF licenses this file to You under the Apache License, Version 2.0
-// (the "License"); you may not use this file except in compliance with
-// the License.  You may obtain a copy of the License at
+// Copyright (c) 2016-2017 Contributors to the Eclipse Foundation
 //
-//   http://www.apache.org/licenses/LICENSE-2.0
+// See the NOTICE file(s) distributed with this work for additional
+// information regarding copyright ownership.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// You may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// Contributors:
+// Mark Struberg
+// Emily Jiang
+// John D. Ament
 
-[[converters]]
-== Converters
+[[converter]]
+== Converter
 
 For providing typeseafe configuration we need to convert from the configured Strings into target types.
 This happens by providing `Converter` s in the `Config`.
 
 === Built-in Converters
 
-The following `Converter` s are provided by Java-config by default:
+The following `Converter` s are provided by Microprofile-Config by default:
 
-* `Boolean` , values for `true` (case insensitive) "true", "1", "YES", "Y" "JA" "J", "OUI".
+* `boolean` and `Boolean` , values for `true` (case insensitive) "true", "1", "YES", "Y" "ON".
   Any other value will be interpreted as `false`
-* `Integer`
-* `Long`
-* `Float` , a dot '.' is used to separate the fractional digits
-* `Double` , a dot '.' is used to separate the fractional digits
+* `int` and `Integer`
+* `long` and `Long`
+* `float` and `Float` , a dot '.' is used to separate the fractional digits
+* `double` and `Double` , a dot '.' is used to separate the fractional digits
+* `Duration`
+* `LocalTime`
+* `LocalDate`
+* `LocalDateTime`
+* `OffsetDateTime`
+* `OffsetTime`
+* `Instant`
+* `URL`
+
+All built-in `Converter` have the `@Priority` of `1`.
 
 
 === Adding custom Converters
 
-A custom `Converter` must implement the generic interface `javx.config.spi.Converter`.
-The TypedParameter of the interface is the target type the String is converted to 
-You have to register your implementation in a file `/META-INF/services/javx.config.spi.Converter` by writing the fully qualified class name of the custom implementation into it.
+A custom `Converter` must implement the generic interface `org.eclipse.microprofile.config.spi.Converter`.
+The Type parameter of the interface is the target type the String is converted to.
+You have to register your implementation in a file `/META-INF/services/org.eclipse.microprofile.config.spi.Converter` with the fully qualified class name of the custom implementation.
 
 A custom `Converter` can define a priority with the `@javax.annotation.Priority` annotation.
 If a Priority annotation isn't applied, a default priority of 100 is assumed.
