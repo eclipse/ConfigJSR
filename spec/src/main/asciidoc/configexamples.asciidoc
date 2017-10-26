@@ -69,12 +69,14 @@ public class InjectedConfigUsageSample {
     @Inject
     @ConfigProperty(name="myprj.some.url")
     private String someUrl;
+
     //The following code injects an Optional value of myprj.some.port property.
     //Contrary to natively injecting the configured value this will not lead to a
     //DeploymentException if the configured value is missing.
     @Inject
     @ConfigProperty(name="myprj.some.port")
     private Optional<Integer> somePort;
+
     //Injects a Provider for the value of myprj.some.dynamic.timeout property to
     //resolve the property dynamically. Each invocation to Provider#get() will
     //resolve the latest value from underlying Config.

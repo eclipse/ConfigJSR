@@ -18,7 +18,7 @@
 = Configuration API for Java, v1.0
 :authors: Mark Struberg, Emily Jiang, John D. Ament
 :email: struberg@apache.org, emijiang@uk.ibm.com, john.d.ament@gmail.com
-:revnumber: 1.0
+:revnumber: 1.0-Draft
 :revdate: 2017-10-26
 :revremark: Draft
 :version-label!:
@@ -35,9 +35,6 @@ endif::[]
 
 
 include::license-alv2.asciidoc[]
-
-== Configuration for Java
-
 
 include::architecture.asciidoc[]
 

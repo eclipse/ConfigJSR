@@ -22,7 +22,7 @@
 == Accessing or Creating a certain Configuration
 
 
-For using JavaConfig in a programmatic way the `ConfigProvider` class is the central point to access a configuration.
+For using JavaConfig in a programmatic way, the `ConfigProvider` class is the central point to access a configuration.
 It allows access to different configurations (represented by a `Config` instance) based on the application in which it is used.
 The `ConfigProvider` internally delegates through to the `ConfigProviderResolver` which contains more low-level functionality.
 
@@ -54,7 +54,7 @@ The `Config` object created via builder pattern can be managed as follows:
 
 * A factory method `ConfigProviderResolver#releaseConfig(Config config)` to release the `Config` instance. This will unbind the current `Config` from the application.
 The <<configsource, ConfigSources>> that implement the `java.io.Closeable` interface will be properly destroyed.
-The <<converter, Converters>> that implement the `java.io.Closeable` interface will be properly destroyed.
+Also all <<converter, Converters>> which implement the `java.io.Closeable` interface will be properly destroyed.
 Any subsequent call to `ConfigProvider#getConfig()` or `ConfigProvider#getConfig(ClassLoader forClassLoader)` will result in a new `Config` instance.
 
 All methods in the `ConfigProvider`, `ConfigProviderResolver` and `Config` implementations are thread safe and reentrant.
