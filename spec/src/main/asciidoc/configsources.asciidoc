@@ -47,7 +47,7 @@ Note that `config_ordinal` can be set within any `ConfigSource` implementation. 
 [[default_configsources]]
 === Default ConfigSources
 
-A Microprofile-Config implementation must provide <<ConfigSource,ConfigSources>> for the following data out of the box:
+A JavaConfig implementation must provide <<ConfigSource,ConfigSources>> for the following data out of the box:
 
 * System properties (default ordinal=400).
 * Environment variables (default ordinal=300).

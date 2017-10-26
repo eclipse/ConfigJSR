@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2016-2017 Eclipse Microprofile Contributors:
+// Copyright (c) 2016-2017 Eclipse ConfigJSR Contributors:
 // Mark Struberg
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +15,12 @@
 // limitations under the License.
 //
 
-= Configuration for Microprofile
+= Configuration API for Java, v1.0
 :authors: Mark Struberg, Emily Jiang, John D. Ament
 :email: struberg@apache.org, emijiang@uk.ibm.com, john.d.ament@gmail.com
-:revnumber: 1.1
-:revdate: 2017-08-31
-:revremark: Final
+:revnumber: 1.0
+:revdate: 2017-10-26
+:revremark: Draft
 :version-label!:
 :sectanchors:
 :doctype: book
@@ -36,7 +36,7 @@ endif::[]
 
 include::license-alv2.asciidoc[]
 
-== Microprofile Config
+== Configuration for Java
 
 
 include::architecture.asciidoc[]
@@ -48,5 +48,3 @@ include::configprovider.asciidoc[]
 include::configsources.asciidoc[]
 
 include::converters.asciidoc[]
-
-include::release_notes.asciidoc[]

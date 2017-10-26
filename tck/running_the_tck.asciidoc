@@ -16,7 +16,7 @@
 
 = Running the JavaConfig TCK
 
-Any Microprofile 1.2 and higher release must pass this test suite.
+Any final Configuration for Java API, v1.0 implementation release must pass this test suite.
 The TCK uses `testng`
 
 == Dependencies
@@ -26,19 +26,19 @@ To enable the tests in your project you need to add the following dependency to 
 [source, xml]
 ----
 <properties>
-   <microprofile.config.version>1.1</microprofile.config.version>
+   <javaconfig.version>1.0</javaconfig.version>
 </properties>
 
 <dependency>
     <groupId>javax.config</groupId>
-    <artifactId>microprofile-config-api</artifactId>
-    <version>${microprofile.config.version}</version>
+    <artifactId>javaconfig-api</artifactId>
+    <version>${javaconfig.version}</version>
 </dependency>
 
 <dependency>
     <groupId>javax.config</groupId>
-    <artifactId>microprofile-config-tck</artifactId>
-    <version>${microprofile.config.version}</version>
+    <artifactId>javaconfig-tck</artifactId>
+    <version>${javaconfig.version}</version>
     <scope>test</scope>
 </dependency>
 <dependency>
@@ -56,9 +56,9 @@ You also need to specify which tests you want to run, e.g. create a file `tck-su
 ----
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="microprofile-config-TCK" verbose="2" configfailurepolicy="continue" >
+<suite name="javaconfig-TCK" verbose="2" configfailurepolicy="continue" >
 
-    <test name="microprofile-config 1.1 TCK">
+    <test name="JavaConfig 1.0 TCK">
         <packages>
             <package name="javax.config.tck.*">
             </package>
@@ -100,7 +100,7 @@ If you don't want to use a tck-suite.xml file, you can also just use in line sur
     <artifactId>maven-surefire-plugin</artifactId>
     <configuration>
         <dependenciesToScan>
-            <dependency>javax.config:microprofile-config-tck</dependency>
+            <dependency>javax.config:javaconfig-tck</dependency>
         </dependenciesToScan>
     </configuration>
 </plugin>
@@ -115,7 +115,7 @@ If your implementation needs additional Artifacts in the test Deployments then y
 - https://github.com/apache/geronimo-config/blob/trunk/impl/src/test/resources/META-INF/services/org.jboss.arquillian.core.spi.LoadableExtension[Arquillian Loadable Extension service provider]
 
 == Example Implementation Using the TCK
-An example of how an implementation might go about integrating the Microprofile-Config TCK into a build
+An example of how an implementation might go about integrating the JavaConfig TCK into a build
 can be found in the
 https://svn.apache.org/repos/asf/geronimo/components/config/trunk/[Apache Geronimo Project].
 
