@@ -18,8 +18,10 @@
 //
 image:https://badges.gitter.im/eclipse/microprofile-config.svg[link="https://gitter.im/eclipse/microprofile-config"]
 
-# ConfigJSR JSR-382
+# JSR-382 - Configuration API for Java, v1.0
 Specification Leads: Emily Jiang, Mark Struberg
+
+This is the official Source Repository of this very JSR.
 
 ## JCP page
 
