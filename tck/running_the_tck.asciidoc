@@ -60,7 +60,7 @@ You also need to specify which tests you want to run, e.g. create a file `tck-su
 
     <test name="JavaConfig 1.0 TCK">
         <packages>
-            <package name="javax.config.tck.*">
+            <package name="org.eclipse.configjsr.*">
             </package>
         </packages>
     </test>
