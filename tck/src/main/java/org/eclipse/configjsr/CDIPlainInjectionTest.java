@@ -52,7 +52,7 @@ import org.testng.annotations.Test;
 public class CDIPlainInjectionTest extends Arquillian {
 
     private static final String DEFAULT_PROPERTY_BEAN_KEY =
-            "javax.config.tck.CDIPlainInjectionTest.DefaultPropertyBean.configProperty";
+            "org.eclipse.configjsr.CDIPlainInjectionTest.DefaultPropertyBean.configProperty";
 
     @Deployment
     public static Archive deployment() {
