@@ -16,7 +16,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-[![Join the chat at https://gitter.im/eclipse/ConfigJSR](https://badges.gitter.im/eclipse/ConfigJSR.svg)](https://gitter.im/eclipse/ConfigJSR?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+image:https://badges.gitter.im/eclipse/ConfigJSR.svg[link="https://gitter.im/eclipse/ConfigJSR"]
 
 # JSR-382 - Configuration API for Java, v1.0
 Specification Leads: Emily Jiang, Mark Struberg
