@@ -64,11 +64,15 @@ package javax.config.spi;
  *
  * <h3>Implicit Converters</h3>
  *
- * <p>If no explicit Converter and no built-in Converter could be found for a certain type, the {@code Config} provides an <em>Implicit Converter</em>, if</p>
+ * <p>If no explicit Converter and no built-in Converter could be found for a certain type,
+ * the {@code Config} provides an <em>Implicit Converter</em>, if</p>
  * <ul>
  *     <li>The target type {@code T} has a Constructor with a String parameter, or</li>
+ *     <li>The target type {@code T} has a Constructor with a CharSequence parameter, or</li>
  *     <li>the target type {@code T} has a {@code static T valueOf(String)} method, or</li>
+ *     <li>the target type {@code T} has a {@code static T valueOf(CharSequence)} method, or</li>
  *     <li>the target type {@code T} has a {@code static T parse(String)} method, or</li>
+ *     <li>the target type {@code T} has a {@code static T parse(CharSequence)} method, or</li>
  *     <li>the target type {@code T} is an {@code Enum}, in which case the {@link Enum#valueOf(Class, String)} is being used.</li>
  * </ul>
  *
