@@ -29,6 +29,7 @@ import org.eclipse.configjsr.converters.implicit.ConvTestTypeWStringCt;
 import org.eclipse.configjsr.converters.implicit.ConvTestTypeWStringParse;
 import org.eclipse.configjsr.converters.implicit.ConvTestTypeWStringValueOf;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -42,7 +43,7 @@ import static org.eclipse.configjsr.base.AbstractTest.addFile;
  *
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  */
-public class ImplicitConverterTest {
+public class ImplicitConverterTest extends Arquillian {
 
     @Deployment
     public static WebArchive deploy() {
@@ -55,7 +56,7 @@ public class ImplicitConverterTest {
         addFile(testJar, "META-INF/javaconfig.properties");
 
         WebArchive war = ShrinkWrap
-            .create(WebArchive.class, "customConfigSourceTest.war")
+            .create(WebArchive.class, "implicitConverterTest.war")
             .addAsLibrary(testJar);
         return war;
     }
