@@ -46,7 +46,7 @@ public class AutoDiscoveredConfigSourceTest extends Arquillian {
     @Deployment
     public static WebArchive deploy() {
         JavaArchive testJar = ShrinkWrap
-                .create(JavaArchive.class, "customConfigSourceTest.jar")
+                .create(JavaArchive.class, "autoDiscoveredConfigSourceTest.jar")
                 .addClasses(AutoDiscoveredConfigSourceTest.class, CustomDbConfigSource.class, Pizza.class, PizzaConverter.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(ConfigSource.class, CustomDbConfigSource.class)
@@ -54,7 +54,7 @@ public class AutoDiscoveredConfigSourceTest extends Arquillian {
                 .as(JavaArchive.class);
 
         WebArchive war = ShrinkWrap
-                .create(WebArchive.class, "customConfigSourceTest.war")
+                .create(WebArchive.class, "autoDiscoveredConfigSourceTest.war")
                 .addAsLibrary(testJar);
         return war;
     }
@@ -73,16 +73,10 @@ public class AutoDiscoveredConfigSourceTest extends Arquillian {
         Assert.assertEquals(dVaule.getFlavor(), "cheese");
     }
 
-    @Test
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void testAutoDiscoveredConverterNotAddedAutomatically() {
         Config config = ConfigProviderResolver.instance().getBuilder().addDefaultSources().addDiscoveredSources().build();
-        try {
-            Pizza dVaule = config.getValue("tck.config.test.customDbConfig.key3", Pizza.class);
-            Assert.fail("The auto discovered converter should not be added automatically.");
-        }
-        catch (Exception e) {
-            Assert.assertTrue( e instanceof IllegalArgumentException);
-        }
-
+        Pizza dVaule = config.getValue("tck.config.test.customDbConfig.key3", Pizza.class);
+        Assert.fail("The auto discovered converter should not be added automatically.");
     }
 }

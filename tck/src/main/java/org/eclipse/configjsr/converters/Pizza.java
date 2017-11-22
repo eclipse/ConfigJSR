@@ -27,13 +27,9 @@ public class Pizza {
     private String size;
 
 
-    public Pizza(String value) {
-        String[] parts = value.split(":");
-        if (parts.length ==2) {
-            size = parts[0];
-            flavor = parts[1];
-        }
-
+    public Pizza(String flavour, String size) {
+        this.flavor = flavour;
+        this.size = size;
     }
 
     public String getSize() {
