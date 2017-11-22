@@ -32,6 +32,7 @@ package javax.config.spi;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * <p>Implement this interfaces to provide a ConfigSource.
@@ -64,6 +65,8 @@ import java.util.Set;
  */
 public interface ConfigSource {
     String CONFIG_ORDINAL = "config_ordinal";
+    int DEFAULT_ORDINAL = 100;
+
     /**
      * Return the properties in this config source
      * @return the map containing the properties in this config source
@@ -114,7 +117,7 @@ public interface ConfigSource {
 
             }
         }
-        return 100;
+        return DEFAULT_ORDINAL;
     }
 
     /**
@@ -131,4 +134,14 @@ public interface ConfigSource {
      */
     String getName();
 
+    /**
+     * This callback should get invoked if an attribute change got detected.
+     *
+     * @param reportAttributeChange will be set by the {@link ConfigSourceProvider} after this
+     *                              {@code ConfigSource} got created and before any configured values
+     *                              get served.
+     */
+    default void setOnAttributeChange(Consumer<Set<String>> reportAttributeChange) {
+        // do nothing by default. Just for compat with older ConfigSources.
+    }
 }

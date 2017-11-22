@@ -32,6 +32,8 @@
 package javax.config;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.config.spi.ConfigSource;
 
@@ -127,4 +129,12 @@ public interface Config {
      * @return all currently registered {@link ConfigSource configsources} sorted with descending ordinal and ConfigSource name
      */
     Iterable<ConfigSource> getConfigSources();
+
+    /**
+     * A user can register a lambda which gets notified when any configured value
+     * got changed. The parameter are the config key names which did change.
+     *
+     * @param configChangedListener
+     */
+    void registerConfigChangedListener(Consumer<Set<String>> configChangedListener);
 }
