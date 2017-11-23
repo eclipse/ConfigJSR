@@ -54,7 +54,7 @@ import javax.config.spi.ConfigSource;
  * <pre>
  * public void doSomething(
  *   Config cfg = ConfigProvider.getConfig();
- *   String archiveUrl = cfg.getString("my.project.archive.endpoint", String.class);
+ *   String archiveUrl = cfg.getValue("my.project.archive.endpoint");
  *   Integer archivePort = cfg.getValue("my.project.archive.port", Integer.class);
  * </pre>
  *
@@ -67,7 +67,8 @@ import javax.config.spi.ConfigSource;
  * }
  * </pre>
  *
- * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} for accessing a configured value.
+ * <p>See {@link #getValue(String)}, {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)}
+ * for accessing a configured value.
  *
  * <p>Configured values can also be accessed via injection.
  * See {@link javax.config.inject.ConfigProperty} for more information.
@@ -77,9 +78,23 @@ import javax.config.spi.ConfigSource;
  * @author <a href="mailto:rsmeral@apache.org">Ron Smeral</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  * @author <a href="mailto:gunnar@hibernate.org">Gunnar Morling</a>
+ * @author <a href="mailto:mail@sebastian-daschner.com">Sebastian Daschner</a>
  *
  */
 public interface Config {
+
+    /**
+     * Return the resolved String property value for the specified property name
+     * from the underlying {@link ConfigSource ConfigSources}.
+     *
+     * If this method gets used very often then consider to locally store the configured value.
+     *
+     * @param propertyName
+     *             The configuration propertyName.
+     * @return the resolved property value as String
+     * @throws java.util.NoSuchElementException if the property isn't present in the configuration.
+     */
+    String getValue(String propertyName);
 
     /**
      * Return the resolved property value with the specified type for the
@@ -124,7 +139,10 @@ public interface Config {
     Iterable<String> getPropertyNames();
 
     /**
-     * @return all currently registered {@link ConfigSource configsources} sorted with descending ordinal and ConfigSource name
+     * Return all currently registered {@link ConfigSource ConfigSources} sorted by
+     * descending ordinal first, and name second.
+     *
+     * @return all currently registered {@link ConfigSource ConfigSources}
      */
     Iterable<ConfigSource> getConfigSources();
 }
