@@ -84,7 +84,7 @@ import javax.config.spi.ConfigSource;
 public interface Config {
 
     /**
-     * Return the resolved String property value for the specified property name
+     * Return the resolved property value as String for the specified property name
      * from the underlying {@link ConfigSource ConfigSources}.
      *
      * If this method gets used very often then consider to locally store the configured value.
@@ -113,6 +113,18 @@ public interface Config {
      * @throws java.util.NoSuchElementException if the property isn't present in the configuration.
      */
     <T> T getValue(String propertyName, Class<T> propertyType);
+
+    /**
+     * Return the resolved property value as String for the specified property name
+     * from the underlying {@link ConfigSource ConfigSources}.
+     *
+     * If this method is used very often then consider to locally store the configured value.
+     *
+     * @param propertyName
+     *             The configuration propertyName.
+     * @return the resolved property value as an Optional of String
+     */
+    Optional<String> getOptionalValue(String propertyName);
 
     /**
      * Return the resolved property value with the specified type for the
