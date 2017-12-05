@@ -15,10 +15,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
 // Contributors:
 // Mark Struberg
 // Emily Jiang
 // John D. Ament
+// Sebastian Daschner
 
 [[converter]]
 == Converter
@@ -30,20 +32,22 @@ This happens by providing `Converter` s in the `Config`.
 
 The following `Converter` s are provided by JavaConfig by default:
 
-* `boolean` and `Boolean` , values for `true` (case insensitive) "true", "1", "YES", "Y" "ON".
-  Any other value will be interpreted as `false`
-* `int` and `Integer`
-* `long` and `Long`
-* `float` and `Float` , a dot '.' is used to separate the fractional digits
-* `double` and `Double` , a dot '.' is used to separate the fractional digits
-* `Duration`
-* `LocalTime`
-* `LocalDate`
-* `LocalDateTime`
-* `OffsetDateTime`
-* `OffsetTime`
-* `Instant`
-* `URL`
+* `Enum` types, which are converted using `Enum#valueOf(Class, String)`.
+* `boolean` and `java.lang.Boolean`, values for `true` are (case insensitive): "true", "1", "yes", "y" "on".
+  Any other value will be interpreted as `false`.
+* `int` and `java.lang.Integer`
+* `long` and `java.lang.Long`
+* `float` and `java.lang.Float`, a dot '.' is used to separate the fractional digits
+* `double` and `java.lang.Double`, a dot '.' is used to separate the fractional digits
+* `java.time.Duration`, as defined in `java.time.Duration#parse(CharSequence)`
+* `java.time.LocalTime`, as defined in `java.time.LocalTime#parse(CharSequence)`
+* `java.time.LocalDate`, as defined in `java.time.LocalDate#parse(CharSequence)`
+* `java.time.LocalDateTime`, as defined in `java.time.LocalDateTime#parse(CharSequence)`
+* `java.time.OffsetDateTime`, as defined in `java.time.OffsetDateTime#parse(CharSequence)`
+* `java.time.OffsetTime`, as defined in `java.time.OffsetTime#parse(CharSequence)`
+* `java.time.Instant`, as defined in `java.time.Instant#parse(CharSequence)`
+* `java.net.URL`, as defined in `java.net.URL#URL(String)`
+* `java.net.URI`, as defined in `java.net.URI#create(String)`
 
 All built-in `Converter` have the `@Priority` of `1`.
 
@@ -61,14 +65,14 @@ The `Config` will use the `Converter` with the highest `Priority` for each targe
 A custom `Converter` for a target type of any of the built-in Converters will overwrite the default Converter.
 
 
-=== Automatic Converters
+=== Implicit Converters
 
-If no built-in nor custom `Converter` for a requested Type `T`, an implicit Converter is automatically provided if the following conditions are met:
+If no built-in nor custom `Converter` for a requested type `T` is provided, the `Config` will try to invoke Implicit Converters that are be defined on the type `T`.
+The following method definitions are supported and searched with the given priority:
 
-* The target type `T` has a Constructor with a String parameter, or
-* the target type `T` has a Constructor with a CharSequence parameter, or
+* The target type `T` has a Constructor with a single `String` parameter, or
+* the target type `T` has a Constructor with a single `CharSequence` parameter, or
 * the target type `T` has a `static T valueOf(String)` method, or
 * the target type `T` has a `static T valueOf(CharSequence)` method, or
 * the target type `T` has a `static T parse(String)` method, or
 * the target type `T` has a `static T parse(CharSequence)` method, or
-* the target type `T` is an `Enum`, in which case the `Enum#valueOf(Class, String)` is being used.

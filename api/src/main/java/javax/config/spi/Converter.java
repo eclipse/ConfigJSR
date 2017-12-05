@@ -35,7 +35,7 @@ package javax.config.spi;
  * <p>Converters for the following types are provided by default:
  * <ul>
  *     <li>{@code boolean} and {@code Boolean}, values for {@code true}: (case insensitive)
- *     &quot;true&quot;, &quot;yes&quot;, &quot;Y&quot;, &quot;on&quot;, &quot;1&quot;</li>
+ *     &quot;true&quot;, &quot;yes&quot;, &quot;y&quot;, &quot;on&quot;, &quot;1&quot;</li>
  *     <li>{@code int} and {@code Integer}</li>
  *     <li>{@code long} and {@code Long}</li>
  *     <li>{@code float} and {@code Float}, a dot '.' is used to separate the fractional digits</li>
@@ -44,11 +44,11 @@ package javax.config.spi;
  *     <li>{@code java.time.LocalDateTime} as defined in {@link java.time.LocalDateTime#parse(CharSequence)}</li>
  *     <li>{@code java.time.LocalDate} as defined in {@link java.time.LocalDate#parse(CharSequence)}</li>
  *     <li>{@code java.time.LocalTime} as defined in {@link java.time.LocalTime#parse(CharSequence)}</li>
- *     <li>{@code OffsetDateTime} as defined in {@link java.time.OffsetDateTime#parse(CharSequence)}</li>
- *     <li>{@code OffsetTime} as defined in {@link java.time.OffsetTime#parse(CharSequence)}</li>
- *     <li>{@code Instant}</li>
- *     <li>{@code URL} as defined by {@link java.net.URL#URL(java.lang.String)}</li>
- *
+ *     <li>{@code java.time.OffsetDateTime} as defined in {@link java.time.OffsetDateTime#parse(CharSequence)}</li>
+ *     <li>{@code java.time.OffsetTime} as defined in {@link java.time.OffsetTime#parse(CharSequence)}</li>
+ *     <li>{@code java.time.Instant} as defined in {@link java.time.Instant#parse(CharSequence)}</li>
+ *     <li>{@code java.net.URL} as defined by {@link java.net.URL#URL(String)}</li>
+ *     <li>{@code java.net.URI} as defined by {@link java.net.URI#create(String)}</li>
  * </ul>
  *
  * <p>Custom Converters will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
@@ -80,12 +80,15 @@ package javax.config.spi;
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  * @author <a href="mailto:john.d.ament@gmail.com">John D. Ament</a>
+ * @author <a href="mailto:mail@sebastian-daschner.com">Sebastian Daschner</a>
  */
 public interface Converter<T> {
+
     /**
-     * Configure the string value to a specified type
+     * Configure the string value to a specified type.
+     *
      * @param value the string representation of a property value.
-     * @return the converted value or null
+     * @return the converted value or {@code null}.
      *
      * @throws IllegalArgumentException if the value cannot be converted to the specified type.
      */
