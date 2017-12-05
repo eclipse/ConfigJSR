@@ -20,7 +20,7 @@
 package org.eclipse.configjsr.converters.implicit;
 
 /**
- * Part of the implicit Converter teset.
+ * Part of the implicit Converter test.
  *
  * Sample class which has a String param constructor
  *

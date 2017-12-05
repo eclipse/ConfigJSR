@@ -19,28 +19,12 @@
  */
 package org.eclipse.configjsr;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
-
-import javax.inject.Inject;
-
-import javax.config.Config;
-import javax.config.inject.ConfigProperty;
-import javax.config.spi.ConfigSource;
-import javax.config.spi.ConfigSourceProvider;
-import javax.config.spi.Converter;
 import org.eclipse.configjsr.base.AbstractTest;
 import org.eclipse.configjsr.configsources.CustomConfigSourceProvider;
 import org.eclipse.configjsr.configsources.CustomDbConfigSource;
 import org.eclipse.configjsr.converters.Duck;
 import org.eclipse.configjsr.converters.DuckConverter;
+import org.eclipse.configjsr.converters.SomeEnumToConvert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -50,41 +34,53 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javax.config.Config;
+import javax.config.inject.ConfigProperty;
+import javax.config.spi.ConfigSource;
+import javax.config.spi.ConfigSourceProvider;
+import javax.config.spi.Converter;
+import javax.inject.Inject;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.time.*;
+
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  * @author <a href="mailto:john.d.ament@gmail.com">John D. Ament</a>
+ * @author <a href="mailto:mail@sebastian-daschner.com">Sebastian Daschner</a>
  */
-public class ConverterTest extends Arquillian {
+public class BuiltInConverterTest extends Arquillian {
 
-    private @Inject Config config;
+    private @Inject
+    Config config;
 
     @Deployment
     public static WebArchive deploy() {
         JavaArchive testJar = ShrinkWrap
-                .create(JavaArchive.class, "converterTest.jar")
-                .addClass(ConverterTest.class)
-                .addPackage(CustomDbConfigSource.class.getPackage())
-                .addClasses(DuckConverter.class, Duck.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsServiceProvider(ConfigSource.class, CustomDbConfigSource.class)
-                .addAsServiceProvider(ConfigSourceProvider.class, CustomConfigSourceProvider.class)
-                .addAsServiceProvider(Converter.class, DuckConverter.class)
-                .as(JavaArchive.class);
+            .create(JavaArchive.class, "converterTest.jar")
+            .addClass(BuiltInConverterTest.class)
+            .addPackage(CustomDbConfigSource.class.getPackage())
+            .addClasses(DuckConverter.class, Duck.class)
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsServiceProvider(ConfigSource.class, CustomDbConfigSource.class)
+            .addAsServiceProvider(ConfigSourceProvider.class, CustomConfigSourceProvider.class)
+            .addAsServiceProvider(Converter.class, DuckConverter.class)
+            .as(JavaArchive.class);
 
         AbstractTest.addFile(testJar, "META-INF/javaconfig.properties");
         AbstractTest.addFile(testJar, "sampleconfig.yaml");
 
         WebArchive war = ShrinkWrap
-                .create(WebArchive.class, "converterTest.war")
-                .addAsLibrary(testJar);
+            .create(WebArchive.class, "converterTest.war")
+            .addAsLibrary(testJar);
         return war;
     }
 
     @Inject
     @ConfigProperty(name = "tck.config.test.javaconfig.converter.duckname")
     private Duck namedDuck;
-
 
     @Test
     public void testInteger() {
@@ -100,7 +96,7 @@ public class ConverterTest extends Arquillian {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testInteger_Broken() {
-        Integer value = config.getValue("tck.config.test.javaconfig.converter.integervalue.broken", Integer.class);
+        config.getValue("tck.config.test.javaconfig.converter.integervalue.broken", Integer.class);
     }
 
     @Test
@@ -146,12 +142,12 @@ public class ConverterTest extends Arquillian {
     @Test
     public void testdouble() {
         double value = config.getValue("tck.config.test.javaconfig.converter.doublevalue", double.class);
-        Assert.assertEquals(value,12.34d);
+        Assert.assertEquals(value, 12.34d);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDouble_Broken() {
-        Double value = config.getValue("tck.config.test.javaconfig.converter.doublevalue.broken", Double.class);
+        config.getValue("tck.config.test.javaconfig.converter.doublevalue.broken", Double.class);
     }
 
     @Test
@@ -162,7 +158,7 @@ public class ConverterTest extends Arquillian {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDuration_Broken() {
-        Duration value = config.getValue("tck.config.test.javaconfig.converter.durationvalue.broken", Duration.class);
+        config.getValue("tck.config.test.javaconfig.converter.durationvalue.broken", Duration.class);
     }
 
     @Test
@@ -173,7 +169,7 @@ public class ConverterTest extends Arquillian {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testLocalTime_Broken() {
-        LocalTime value = config.getValue("tck.config.test.javaconfig.converter.localtimevalue.broken", LocalTime.class);
+        config.getValue("tck.config.test.javaconfig.converter.localtimevalue.broken", LocalTime.class);
     }
 
     @Test
@@ -184,7 +180,7 @@ public class ConverterTest extends Arquillian {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testLocalDate_Broken() {
-        LocalDate value = config.getValue("tck.config.test.javaconfig.converter.localdatevalue.broken", LocalDate.class);
+        config.getValue("tck.config.test.javaconfig.converter.localdatevalue.broken", LocalDate.class);
     }
 
     @Test
@@ -195,7 +191,7 @@ public class ConverterTest extends Arquillian {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testLocalDateTime_Broken() {
-        LocalDateTime value = config.getValue("tck.config.test.javaconfig.converter.localdatetimevalue.broken", LocalDateTime.class);
+        config.getValue("tck.config.test.javaconfig.converter.localdatetimevalue.broken", LocalDateTime.class);
     }
 
     @Test
@@ -206,7 +202,7 @@ public class ConverterTest extends Arquillian {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testOffsetDateTime_Broken() {
-        OffsetDateTime value = config.getValue("tck.config.test.javaconfig.converter.offsetdatetimevalue.broken", OffsetDateTime.class);
+        config.getValue("tck.config.test.javaconfig.converter.offsetdatetimevalue.broken", OffsetDateTime.class);
     }
 
     @Test
@@ -218,7 +214,7 @@ public class ConverterTest extends Arquillian {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testOffsetTime_Broken() {
-        OffsetTime value = config.getValue("tck.config.test.javaconfig.converter.offsettimevalue.broken", OffsetTime.class);
+        config.getValue("tck.config.test.javaconfig.converter.offsettimevalue.broken", OffsetTime.class);
     }
 
     @Test
@@ -229,7 +225,18 @@ public class ConverterTest extends Arquillian {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testInstant_Broken() {
-        Instant value = config.getValue("tck.config.test.javaconfig.converter.instantvalue.broken", Instant.class);
+        config.getValue("tck.config.test.javaconfig.converter.instantvalue.broken", Instant.class);
+    }
+
+    @Test
+    public void testEnum() {
+        SomeEnumToConvert value = config.getValue("tck.config.test.javaconfig.converter.enumvalue", SomeEnumToConvert.class);
+        Assert.assertEquals(value, SomeEnumToConvert.FOO);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testEnum_Broken() {
+        config.getValue("tck.config.test.javaconfig.converter.enumvalue.broken", SomeEnumToConvert.class);
     }
 
     @Test
@@ -266,13 +273,24 @@ public class ConverterTest extends Arquillian {
     }
 
     @Test
-    public void testURLConverter() throws MalformedURLException {
+    public void testURL() throws MalformedURLException {
         URL url = config.getValue("tck.config.test.javaconfig.converter.urlvalue", URL.class);
         Assert.assertEquals(url, new URL("http://microprofile.io"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testURLConverterBroken() throws Exception {
-        URL ignored = config.getValue("tck.config.test.javaconfig.converter.urlvalue.broken", URL.class);
+    public void testURL_Broken() {
+        config.getValue("tck.config.test.javaconfig.converter.urlvalue.broken", URL.class);
+    }
+
+    @Test
+    public void testURI() {
+        URI uri = config.getValue("tck.config.test.javaconfig.converter.urivalue", URI.class);
+        Assert.assertEquals(uri, URI.create("http://microprofile.io"));
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testURI_Broken() {
+        config.getValue("tck.config.test.javaconfig.converter.urivalue.broken", URI.class);
     }
 }
