@@ -29,6 +29,7 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 
+import javax.config.spi.ConfigProviderResolver;
 import javax.inject.Inject;
 
 import javax.config.Config;
@@ -39,6 +40,7 @@ import javax.config.spi.Converter;
 import org.eclipse.configjsr.base.AbstractTest;
 import org.eclipse.configjsr.configsources.CustomConfigSourceProvider;
 import org.eclipse.configjsr.configsources.CustomDbConfigSource;
+import org.eclipse.configjsr.converters.Donald;
 import org.eclipse.configjsr.converters.Duck;
 import org.eclipse.configjsr.converters.DuckConverter;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -65,7 +67,7 @@ public class ConverterTest extends Arquillian {
                 .create(JavaArchive.class, "converterTest.jar")
                 .addClass(ConverterTest.class)
                 .addPackage(CustomDbConfigSource.class.getPackage())
-                .addClasses(DuckConverter.class, Duck.class)
+                .addClasses(DuckConverter.class, Duck.class, Donald.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(ConfigSource.class, CustomDbConfigSource.class)
                 .addAsServiceProvider(ConfigSourceProvider.class, CustomConfigSourceProvider.class)
@@ -85,6 +87,19 @@ public class ConverterTest extends Arquillian {
     @ConfigProperty(name = "tck.config.test.javaconfig.converter.duckname")
     private Duck namedDuck;
 
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testDonaldNotConvertedByDefault() {
+        config.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+    }
+
+    @Test
+    public void testDonaldConversionWithLambdaConverter() {
+        Config newConfig = ConfigProviderResolver.instance().getBuilder().addDefaultSources().
+            withConverter(Donald.class, (s) -> Donald.iLikeDonald(s)).build();
+        Donald donald = newConfig.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        Assert.assertNotNull(donald);
+        Assert.assertEquals(donald.getName(), "Duck");
+    }
 
     @Test
     public void testInteger() {
