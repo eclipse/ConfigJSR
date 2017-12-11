@@ -19,8 +19,6 @@
  */
 package org.eclipse.configjsr.converters;
 
-import java.util.Objects;
-
 /**
  * Class, which is converted using a Lambda based converter.
  * @author <a href="mailto:anatole@apache.org">Anatole Tresch</a>

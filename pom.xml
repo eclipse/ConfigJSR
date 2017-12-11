@@ -20,7 +20,7 @@
     <artifactId>javaconfig-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>JSR-382 Configuraiton API for Java v1.0 - Parent POM</description>
+    <description>JSR-382 Configuration API for Java v1.0 - Parent POM</description>
 
     <url>https://jcp.org/en/jsr/detail?id=382</url>
 
