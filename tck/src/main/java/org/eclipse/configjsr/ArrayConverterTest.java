@@ -343,17 +343,18 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
 
-        Assert.assertEquals( value[0].floatValue(), 12.34d);
-        Assert.assertEquals( value[1].floatValue(), 99.9999d);
+        Assert.assertEquals( value[0].doubleValue(), 12.34d);
+        Assert.assertEquals( value[1].doubleValue(), 99.9999d);
 
     }
+
     @Test
     public void testDoubleArrayInjection() {
 
         Assert.assertEquals(myDoubles.length, 2);
 
-        Assert.assertEquals(myDoubles[0].floatValue(), 12.34d);
-        Assert.assertEquals(myDoubles[1].floatValue(), 99.9999d);
+        Assert.assertEquals(myDoubles[0].doubleValue(), 12.34d);
+        Assert.assertEquals(myDoubles[1].doubleValue(), 99.9999d);
     }
 
     //test double[] support
@@ -600,8 +601,9 @@ public class ArrayConverterTest extends Arquillian {
     public void testOffsetDateTimeSetInjection() {
          Assert.assertEquals(myOffsetDateTimeSet.size(), 2);
 
-         Assert.assertTrue(myOffsetDateTimeSet.contains(LocalDateTime.parse("2017-12-24T10:25:30")));
-         Assert.assertTrue(myOffsetDateTimeSet.contains(LocalDateTime.parse("2017-12-24T10:25:33")));
+        System.out.println("myOffsetDateTimeSet = " + myOffsetDateTimeSet);
+         Assert.assertTrue(myOffsetDateTimeSet.contains(OffsetDateTime.parse("2007-12-03T10:15:30+01:00")));
+         Assert.assertTrue(myOffsetDateTimeSet.contains(OffsetDateTime.parse("2007-12-03T10:15:30+02:00")));
     }
     //////////////////////////////////////////////////////////////////////
 
@@ -694,14 +696,14 @@ public class ArrayConverterTest extends Arquillian {
     ///////////////////////////////////Test URL[] //////////////////////////
 
     @Test
-    public void testUrlLookupProgrammatically() {
+    public void testUrlLookupProgrammatically() throws MalformedURLException {
         URL[] value = config.getValue("tck.config.test.javaconfig.converter.urlvalues",
             URL[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 3);
-        Assert.assertEquals( value[0], "http://microprofile.io");
-        Assert.assertEquals( value[1], "http://openliberty.io");
-        Assert.assertEquals( value[2], "http://microprofile.io");
+        Assert.assertEquals( value[0],  new URL("http://microprofile.io"));
+        Assert.assertEquals( value[1],  new URL("http://openliberty.io"));
+        Assert.assertEquals( value[2],  new URL("http://microprofile.io"));
     }
 
     private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.urlvalues") URL[] myUrls;
