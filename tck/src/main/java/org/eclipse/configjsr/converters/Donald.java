@@ -26,9 +26,12 @@ package org.eclipse.configjsr.converters;
 public class Donald {
 
     private String name;
+    private boolean bool;
 
-    private Donald(String name) {
+    private Donald(String name, boolean bool) {
+
         this.name = name;
+        this.bool = bool;
     }
 
 
@@ -38,7 +41,7 @@ public class Donald {
      * @return a new instance, never null.
      */
     public static Donald iLikeDonald(String name){
-        return new Donald(name);
+        return new Donald(name, true);
     }
 
     public String getName(){
