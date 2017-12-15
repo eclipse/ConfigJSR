@@ -95,11 +95,35 @@ public class ConverterTest extends Arquillian {
 
     @Test
     public void testDonaldConversionWithLambdaConverter() {
-        Config newConfig = ConfigProviderResolver.instance().getBuilder().addDefaultSources().
-            withConverter(Donald.class, (s) -> Donald.iLikeDonald(s)).build();
+        Config newConfig = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
+            .withConverter(Donald.class, 100, (s) -> Donald.iLikeDonald(s))
+            .build();
         Donald donald = newConfig.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
         Assert.assertNotNull(donald);
         Assert.assertEquals(donald.getName(), "Duck");
+    }
+
+    @Test
+    public void testDonaldConversionWithMultipleLambdaConverters() {
+        // defines 2 config with the lambda converters defined in different orders.
+        // Order must not matter, the lambda with the upper case must always be used as it has the highest priority
+        Config config1 = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
+            .withConverter(Donald.class, 101, (s) -> Donald.iLikeDonald(s.toUpperCase()))
+            .withConverter(Donald.class, 100, (s) -> Donald.iLikeDonald(s))
+            .build();
+        Config config2 = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
+            .withConverter(Donald.class, 100, (s) -> Donald.iLikeDonald(s))
+            .withConverter(Donald.class, 101, (s) -> Donald.iLikeDonald(s.toUpperCase()))
+            .build();
+
+        Donald donald = config1.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        Assert.assertNotNull(donald);
+        Assert.assertEquals(donald.getName(), "DUCK",
+            "The converter with the highest priority (using upper case) must be used.");
+        donald = config2.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        Assert.assertNotNull(donald);
+        Assert.assertEquals(donald.getName(), "DUCK",
+            "The converter with the highest priority (using upper case) must be used.");
     }
 
     @Test
