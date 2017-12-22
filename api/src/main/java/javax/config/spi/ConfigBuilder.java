@@ -85,14 +85,27 @@ public interface ConfigBuilder {
     /**
      * Add the specified {@link Converter}.
      * This method uses reflection to determine what type the converter is for.
-     * Custom converters should not be created as a lambda expression,
+     * When using lambda expressions for custom converters you should use
+     * {@link #withConverter(Class, int, Converter)} and pass the target type explicitly
      * as lambda expressions do not offer enough type information to the reflection API.
-     * Explicit implementation of a Converter interface is required for a custom converter.
      *
      * @param converters the converters
      * @return the ConfigBuilder with the added converters
      */
     ConfigBuilder withConverters(Converter<?>... converters);
+
+    /**
+     * Add the specified {@link Converter} for the given type.
+     * This method does not rely on reflection to determine what type the converter is for
+     * therefore also lambda expressions can be used.
+     *
+     * @param type the Class of type to convert
+     * @param priority the priority of the converter (custom converters have a default priority of 100).
+     * @param converter the converter (can not be {@code null})
+     * @param <T> the type to convert
+     * @return the ConfigBuilder with the added converters
+     */
+    <T> ConfigBuilder withConverter(Class<T> type, int priority, Converter<T> converter);
 
     /**
      * Build the {@link Config} object.

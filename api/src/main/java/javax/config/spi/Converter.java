@@ -43,7 +43,8 @@ package javax.config.spi;
  *     <li>{@code URL} as defined by {@link java.net.URL#URL(java.lang.String)}</li>
  *
  * </ul>
- *
+
+<p>
  * <p>Custom Converters will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
  * providing a file<br>
  * <code>META-INF/services/javax.config.spi.Converter</code><br>
@@ -72,6 +73,35 @@ package javax.config.spi;
  * <p>The lookup will be done in the order of the above list.
  * <p>Note that every {@code java.time} type has a {@code parse(CharSequence)} method and is thus
  * covered by an implicit converter!
+ *
+ * * <h3>Array Converters</h3>
+ *  The implementation must support the Array converter for each built-in converters, implicit converters and custom converters.
+ *  The delimiter for the config value is ','. The escape character is '\'.
+ *  <code>e.g. myPets=dog,cat,dog\,cat </code>
+ * <p>
+ *  For the property injection, List and Set are supported as well.
+ *
+ *  <p>
+ *  Usage:
+ *  <p>
+ *  <code>
+ *  String[] myPets = ConfigProvider.getValue("myPet", String[]);
+ *  </code>
+ *
+ *  <p>
+ *  <code>
+ *  {@code @Inject @ConfigProperty(name="myPets") String[] myPets};
+ *  </code>
+ *  <p>
+ *  <code>
+ *  {@code @Inject @ConfigProperty(name="myPets") List<String> myPets};
+ *  </code>
+ *  <p>
+ *  <code>
+ *  {@code @Inject @ConfigProperty(name="myPets") Set<String> myPets};
+ *  </code>
+ *  <p>
+ *  myPets will be "dog", "cat", "dog,cat"
  *
  * @author <a href="mailto:rsmeral@apache.org">Ron Smeral</a>
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
