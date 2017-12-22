@@ -63,11 +63,12 @@ If no built-in nor custom `Converter` for a requested Type `T`, an implicit Conv
 * the target type `T` has a `static T valueOf(CharSequence)` method, or
 * the target type `T` has a `static T parse(String)` method, or
 * the target type `T` has a `static T parse(CharSequence)` method, or
-* the target type `T` is an `Enum`, in which case the `Enum#valueOf(Class, String)` is being used.
 
 The lookup will be done in the order of the above list.
 
-Note that every `java.time` type has a `parse(CharSequence)` method and is thus covered by an implicit converter!
+Note that every `java.time` type has a `parse(CharSequence)` method
+And every enum has a generated 'valueOf(String)' method.
+They are thus all covered by an implicit converter!
 
 If an Implicit Converter cannot convert a value, a `java.lang.IllegalArgumentException` is to be thrown.
 

@@ -67,15 +67,15 @@ package javax.config.spi;
  *     <li>the target type {@code T} has a {@code static T valueOf(CharSequence)} method, or</li>
  *     <li>the target type {@code T} has a {@code static T parse(String)} method, or</li>
  *     <li>the target type {@code T} has a {@code static T parse(CharSequence)} method, or</li>
- *     <li>the target type {@code T} is an {@code Enum}, in which case the {@link Enum#valueOf(Class, String)} is being used.</li>
  * </ul>
  *
  * <p>The lookup will be done in the order of the above list.
- * <p>Note that every {@code java.time} type has a {@code parse(CharSequence)} method and is thus
- * covered by an implicit converter!
+ * <p>Note that every {@code java.time} type has a {@code parse(CharSequence)} method.
+ * And every enum has a generated {@code valueOf(String)} method.
+ * They are thus all covered by an implicit converter!
  * <p>If an Implicit Converter cannot convert a value, a {@code java.lang.IllegalArgumentException} is to be thrown.
  *
- * * <h3>Array Converters</h3>
+ * <h3>Array Converters</h3>
  *  The implementation must support the Array converter for each built-in converters, implicit converters and custom converters.
  *  The delimiter for the config value is ','. The escape character is '\'.
  *  <code>e.g. myPets=dog,cat,dog\,cat </code>
