@@ -36,13 +36,6 @@ The following `Converter` s are provided by JavaConfig by default:
 * `long` and `Long`
 * `float` and `Float` , a dot '.' is used to separate the fractional digits
 * `double` and `Double` , a dot '.' is used to separate the fractional digits
-* `Duration`
-* `LocalTime`
-* `LocalDate`
-* `LocalDateTime`
-* `OffsetDateTime`
-* `OffsetTime`
-* `Instant`
 * `URL`
 
 All built-in `Converter` have the `@Priority` of `1`.
@@ -61,7 +54,7 @@ The `Config` will use the `Converter` with the highest `Priority` for each targe
 A custom `Converter` for a target type of any of the built-in Converters will overwrite the default Converter.
 
 
-=== Automatic Converters
+=== Implicit Converters
 
 If no built-in nor custom `Converter` for a requested Type `T`, an implicit Converter is automatically provided if the following conditions are met:
 
@@ -72,3 +65,7 @@ If no built-in nor custom `Converter` for a requested Type `T`, an implicit Conv
 * the target type `T` has a `static T parse(String)` method, or
 * the target type `T` has a `static T parse(CharSequence)` method, or
 * the target type `T` is an `Enum`, in which case the `Enum#valueOf(Class, String)` is being used.
+
+The lookup will be done in the order of the above list.
+
+Note that every `java.time` type has a `parse(CharSequence)` method and is thus covered by an implicit converter!

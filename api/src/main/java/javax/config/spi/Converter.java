@@ -40,13 +40,6 @@ package javax.config.spi;
  *     <li>{@code long} and {@code Long}</li>
  *     <li>{@code float} and {@code Float}, a dot '.' is used to separate the fractional digits</li>
  *     <li>{@code double} and {@code Double}, a dot '.' is used to separate the fractional digits</li>
- *     <li>{@code java.time.Duration} as defined in {@link java.time.Duration#parse(CharSequence)}</li>
- *     <li>{@code java.time.LocalDateTime} as defined in {@link java.time.LocalDateTime#parse(CharSequence)}</li>
- *     <li>{@code java.time.LocalDate} as defined in {@link java.time.LocalDate#parse(CharSequence)}</li>
- *     <li>{@code java.time.LocalTime} as defined in {@link java.time.LocalTime#parse(CharSequence)}</li>
- *     <li>{@code OffsetDateTime} as defined in {@link java.time.OffsetDateTime#parse(CharSequence)}</li>
- *     <li>{@code OffsetTime} as defined in {@link java.time.OffsetTime#parse(CharSequence)}</li>
- *     <li>{@code Instant}</li>
  *     <li>{@code URL} as defined by {@link java.net.URL#URL(java.lang.String)}</li>
  *
  * </ul>
@@ -75,6 +68,10 @@ package javax.config.spi;
  *     <li>the target type {@code T} has a {@code static T parse(CharSequence)} method, or</li>
  *     <li>the target type {@code T} is an {@code Enum}, in which case the {@link Enum#valueOf(Class, String)} is being used.</li>
  * </ul>
+ *
+ * <p>The lookup will be done in the order of the above list.
+ * <p>Note that every {@code java.time} type has a {@code parse(CharSequence)} method and is thus
+ * covered by an implicit converter!
  *
  * @author <a href="mailto:rsmeral@apache.org">Ron Smeral</a>
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
