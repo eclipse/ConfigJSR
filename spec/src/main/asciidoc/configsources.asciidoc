@@ -132,6 +132,9 @@ public class ExampleYamlConfigSourceProvider
 
 Please note that a single `ConfigSource` should be either registered directly or via a `ConfigSourceProvider`, but never both ways.
 
+=== Cleaning up a ConfigSource
+
+If a `ConfigSource` implements the `java.lang.AutoCloseable` interface  then the `close()` method will be called when the underlying `Config` is being released.
 
 === ConfigSource and Mutable Data
 

@@ -102,5 +102,9 @@ For the property injection, Array, List and Set are supported.
 
 myPets will be "dog", "cat", "dog,cat" as an array, List or Set.
 
+=== Cleaning up a Converter
+
+If a `Converter` implements the `java.lang.AutoCloseable` interface  then the `close()` method will be called when the underlying `Config` is being released.
+
 
 <<<

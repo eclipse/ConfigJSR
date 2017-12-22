@@ -56,6 +56,10 @@ import java.util.Set;
  * <p>Adding a dynamic amount of custom config sources can be done programmatically via
  * {@link javax.config.spi.ConfigSourceProvider}.
  *
+ *  <p>If a ConfigSource implements the {@link AutoCloseable} interface
+ *  then the {@link AutoCloseable#close()} method will be called when
+ *  the underlying {@link javax.config.Config} is being released.
+ *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>

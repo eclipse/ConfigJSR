@@ -54,6 +54,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
@@ -351,4 +352,23 @@ public class ConverterTest extends Arquillian {
     public void testURLConverterBroken() throws Exception {
         URL ignored = config.getValue("tck.config.test.javaconfig.converter.urlvalue.broken", URL.class);
     }
+
+    @Test
+    public void testConverterAutoClose() {
+        DuckConverter duckConverter = new DuckConverter();
+
+        Assert.assertEquals(duckConverter.getCloseCounter(), 0);
+
+        Config config = ConfigProviderResolver.instance().getBuilder()
+            .withConverters(duckConverter)
+            .build();
+
+        // just to trigger the config
+        config.getOptionalValue("somekey", String.class);
+
+        ConfigProviderResolver.instance().releaseConfig(config);
+
+        Assert.assertEquals(duckConverter.getCloseCounter(), 1);
+    }
+
 }

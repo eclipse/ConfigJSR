@@ -27,9 +27,12 @@ import javax.config.spi.ConfigSource;
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
-public class CustomDbConfigSource implements ConfigSource {
+public class CustomDbConfigSource implements ConfigSource, AutoCloseable {
+
+    private int closeCounter = 0;
 
     private Map<String, String> configValues = new HashMap<>();
+
 
     public CustomDbConfigSource() {
         configValues.put("tck.config.test.customDbConfig.key1", "valueFromDb1");
@@ -66,4 +69,12 @@ public class CustomDbConfigSource implements ConfigSource {
     }
 
 
+    @Override
+    public void close() throws Exception {
+        closeCounter++;
+    }
+
+    public int getCloseCounter() {
+        return closeCounter;
+    }
 }
