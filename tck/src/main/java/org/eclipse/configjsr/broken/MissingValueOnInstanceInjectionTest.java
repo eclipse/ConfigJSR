@@ -31,7 +31,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.testng.annotations.Test;
 
 /**
- * Verify that injectng a native value which is not configured will lead to a deployment error.
+ * Verify that injecting a native value which is not configured will lead to a deployment error.
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */

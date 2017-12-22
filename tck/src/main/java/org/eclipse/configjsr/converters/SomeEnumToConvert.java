@@ -16,25 +16,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.eclipse.configjsr.converters.implicit;
+package org.eclipse.configjsr.converters;
 
 /**
- * Part of the implicit Converter test.
- *
- * Sample class which has a valueOf(String) method
- *
- * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
+ * Sample enum to test built-in converter rules.
+ * @author <a href="mailto:mail@sebastian-daschner.com">Sebastian Daschner</a>
  */
-public class ConvTestTypeWStringParse {
-    private String val;
-
-    public static ConvTestTypeWStringParse parse(String val) {
-        ConvTestTypeWStringParse o = new ConvTestTypeWStringParse();
-        o.val = val;
-        return o;
-    }
-
-    public String getVal() {
-        return val;
-    }
+public enum SomeEnumToConvert {
+    FOO,
+    BAR,
+    BAZ
 }

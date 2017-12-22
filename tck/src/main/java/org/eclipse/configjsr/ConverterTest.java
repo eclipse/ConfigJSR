@@ -43,6 +43,7 @@ import org.eclipse.configjsr.configsources.CustomDbConfigSource;
 import org.eclipse.configjsr.converters.Donald;
 import org.eclipse.configjsr.converters.Duck;
 import org.eclipse.configjsr.converters.DuckConverter;
+import org.eclipse.configjsr.converters.SomeEnumToConvert;
 import org.eclipse.configjsr.converters.UpperCaseDuckConverter;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
@@ -68,7 +69,7 @@ public class ConverterTest extends Arquillian {
                 .create(JavaArchive.class, "converterTest.jar")
                 .addClass(ConverterTest.class)
                 .addPackage(CustomDbConfigSource.class.getPackage())
-                .addClasses(DuckConverter.class, Duck.class, Donald.class)
+                .addClasses(DuckConverter.class, Duck.class, Donald.class, SomeEnumToConvert.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(ConfigSource.class, CustomDbConfigSource.class)
                 .addAsServiceProvider(ConfigSourceProvider.class, CustomConfigSourceProvider.class)
@@ -125,6 +126,18 @@ public class ConverterTest extends Arquillian {
         Assert.assertEquals(donald.getName(), "DUCK",
             "The converter with the highest priority (using upper case) must be used.");
     }
+
+    @Test
+    public void testEnum() {
+        SomeEnumToConvert value = config.getValue("tck.config.test.javaconfig.converter.enumvalue", SomeEnumToConvert.class);
+        Assert.assertEquals(value, SomeEnumToConvert.FOO);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testEnum_Broken() {
+        config.getValue("tck.config.test.javaconfig.converter.enumvalue.broken", SomeEnumToConvert.class);
+    }
+
 
     @Test
     public void testInteger() {

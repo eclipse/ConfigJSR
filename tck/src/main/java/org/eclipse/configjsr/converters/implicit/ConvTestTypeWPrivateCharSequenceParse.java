@@ -19,11 +19,22 @@
 package org.eclipse.configjsr.converters.implicit;
 
 /**
- * Sample enum to test implicit Converter Rules
- * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
+ * Part of the implicit Converter test.
+ * <p>
+ * Sample class which has a private valueOf(String) method
+ *
+ * @author <a href="mail@sebastian-daschner.com">Sebastian Daschner</a>
  */
-public enum SomeEnumToConvert {
-    FOO,
-    BAR,
-    BAZ
+public class ConvTestTypeWPrivateCharSequenceParse {
+    private String val;
+
+    private static ConvTestTypeWPrivateCharSequenceParse parse(CharSequence val) {
+        ConvTestTypeWPrivateCharSequenceParse o = new ConvTestTypeWPrivateCharSequenceParse();
+        o.val = val.toString();
+        return o;
+    }
+
+    public String getVal() {
+        return val;
+    }
 }

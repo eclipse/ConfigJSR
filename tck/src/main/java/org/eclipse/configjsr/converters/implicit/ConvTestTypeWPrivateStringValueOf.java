@@ -21,15 +21,15 @@ package org.eclipse.configjsr.converters.implicit;
 /**
  * Part of the implicit Converter test.
  *
- * Sample class which has a valueOf(String) method
+ * Sample class which has a private valueOf(String) method
  *
- * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
+ * @author <a href="mail@sebastian-daschner.com">Sebastian Daschner</a>
  */
-public class ConvTestTypeWStringParse {
+public class ConvTestTypeWPrivateStringValueOf {
     private String val;
 
-    public static ConvTestTypeWStringParse parse(String val) {
-        ConvTestTypeWStringParse o = new ConvTestTypeWStringParse();
+    private static ConvTestTypeWPrivateStringValueOf valueOf(String val) {
+        ConvTestTypeWPrivateStringValueOf o = new ConvTestTypeWPrivateStringValueOf();
         o.val = val;
         return o;
     }

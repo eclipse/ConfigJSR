@@ -15,23 +15,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
  */
 package org.eclipse.configjsr.converters.implicit;
 
 /**
  * Part of the implicit Converter test.
+ * <p>
+ * Sample class which has a private String param constructor
  *
- * Sample class which has a valueOf(String) method
- *
- * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
+ * @author <a href="mail@sebastian-daschner.com">Sebastian Daschner</a>
  */
-public class ConvTestTypeWStringParse {
-    private String val;
+public class ConvTestTypeWPrivateCharSequenceCt {
+    private final String val;
 
-    public static ConvTestTypeWStringParse parse(String val) {
-        ConvTestTypeWStringParse o = new ConvTestTypeWStringParse();
-        o.val = val;
-        return o;
+    private ConvTestTypeWPrivateCharSequenceCt(CharSequence val) {
+        this.val = val.toString();
     }
 
     public String getVal() {

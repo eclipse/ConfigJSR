@@ -32,7 +32,7 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.testng.annotations.Test;
 
 /**
- * Verify that injectng a native value also has a valid converter which can handle the configured string.
+ * Verify that injecting a native value also has a valid converter which can handle the configured string.
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
