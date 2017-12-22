@@ -85,7 +85,7 @@ package javax.config.spi;
  *  Usage:
  *  <p>
  *  <code>
- *  String[] myPets = ConfigProvider.getValue("myPet", String[]);
+ *  String[] myPets = ConfigProvider.getValue("myPet", String[].class);
  *  </code>
  *
  *  <p>
