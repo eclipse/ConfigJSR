@@ -69,6 +69,8 @@ The lookup will be done in the order of the above list.
 
 Note that every `java.time` type has a `parse(CharSequence)` method and is thus covered by an implicit converter!
 
+If an Implicit Converter cannot convert a value, a `java.lang.IllegalArgumentException` is to be thrown.
+
 === Array Converters
 
 For the built-in converters and custom converters, the corresponding Array converters are provided by default.

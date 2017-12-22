@@ -129,13 +129,13 @@ public class ConverterTest extends Arquillian {
 
     @Test
     public void testEnum() {
-        SomeEnumToConvert value = config.getValue("tck.config.test.javaconfig.converter.enumvalue", SomeEnumToConvert.class);
+        SomeEnumToConvert value = config.getValue("tck.config.test.javaconfig.converter.implicit.enumvalue", SomeEnumToConvert.class);
         Assert.assertEquals(value, SomeEnumToConvert.FOO);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testEnum_Broken() {
-        config.getValue("tck.config.test.javaconfig.converter.enumvalue.broken", SomeEnumToConvert.class);
+        config.getValue("tck.config.test.javaconfig.converter.implicit.enumvalue.broken", SomeEnumToConvert.class);
     }
 
 

@@ -73,6 +73,7 @@ package javax.config.spi;
  * <p>The lookup will be done in the order of the above list.
  * <p>Note that every {@code java.time} type has a {@code parse(CharSequence)} method and is thus
  * covered by an implicit converter!
+ * <p>If an Implicit Converter cannot convert a value, a {@code java.lang.IllegalArgumentException} is to be thrown.
  *
  * * <h3>Array Converters</h3>
  *  The implementation must support the Array converter for each built-in converters, implicit converters and custom converters.
