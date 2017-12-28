@@ -27,7 +27,9 @@
 package javax.config.spi;
 
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Accessor to a configured value.
@@ -44,11 +46,30 @@ public interface ConfigValue<T> {
      * Sets the type of the configuration entry to the given class and returns this builder.
      * The default type of a ConfigValue is {@code String}.
      *
+     * <p>Usage:
+     * <pre>
+     * Integer timeout = config.access("some.timeout")
+     *                         .as(Integer.class)
+     *                         .getValue();
+     * </pre>
+     *
+     *
      * @param clazz The target type
      * @param <N> The target type
      * @return This builder as a typed ConfigValue
      */
     <N> ConfigValue<N> as(Class<N> clazz);
+
+    /**
+     * Declare the ConfigValue to return a List of the given Type.
+     * When getting value it will be split on each comma (',') character.
+     * If a comma is contained in the values it must get escaped with a preceding backslash (&quot;\,&quot;).
+     * Any backslash needs to get escaped via double-backslash (&quot;\\&quot;).
+     * Note that in property files this leads to &quot;\\\\&quot; as properties escape themselves.
+     *
+     * @return a ConfigValue for a list of configured comma separated values
+     */
+    ConfigValue<List<T>> asList();
 
     /**
      * Sets the type of the configuration entry to the given class, sets the converter to the one given and
@@ -110,11 +131,12 @@ public interface ConfigValue<T> {
     ConfigValue<T> withLookupChain(String... postfixNames);
 
     /**
-     * Whether to log picking up any value changes as INFO.
+     * A user can register a Consumer which gets notified whenever
+     * a config change got detected.
      *
      * @return This builder
      */
-    ConfigValue<T> logChanges(boolean logChanges);
+    ConfigValue<T> onChange(Consumer<T> changedValueConsumer);
 
     /**
      * Returns the converted resolved filtered value.
