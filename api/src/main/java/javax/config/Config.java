@@ -36,7 +36,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.config.spi.ConfigSource;
-import javax.config.spi.ConfigValue;
 
 /**
  * <p>
@@ -133,13 +132,13 @@ public interface Config {
     ConfigValue<String> access(String key);
 
     /**
-     * Return a collection of property names.
+     * Return all property names used in any of the underlying {@link ConfigSource ConfigSources}.
      * @return the names of all configured keys of the underlying configuration.
      */
     Iterable<String> getPropertyNames();
 
     /**
-     * @return all currently registered {@link ConfigSource configsources} sorted with descending ordinal and ConfigSource name
+     * @return all currently registered {@link ConfigSource ConfigSources} sorted by descending ordinal and ConfigSource name
      */
     Iterable<ConfigSource> getConfigSources();
 

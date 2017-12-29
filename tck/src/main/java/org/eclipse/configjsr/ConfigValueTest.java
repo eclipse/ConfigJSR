@@ -29,7 +29,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.config.Config;
-import javax.config.spi.ConfigValue;
+import javax.config.ConfigValue;
 import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
 

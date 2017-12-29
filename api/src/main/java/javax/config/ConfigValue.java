@@ -24,12 +24,14 @@
  *      Extracted the Config part out of DeltaSpike and proposed as Microprofile-Config 8ff76eb3bcfaf4fd
  *
  *******************************************************************************/
-package javax.config.spi;
+package javax.config;
 
 
+import javax.config.spi.Converter;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 /**
  * Accessor to a configured value.
@@ -70,6 +72,14 @@ public interface ConfigValue<T> {
      * @return a ConfigValue for a list of configured comma separated values
      */
     ConfigValue<List<T>> asList();
+
+    /**
+     * Declare the ConfigValue to return a Set of the given Type.
+     * The notation and escaping rules are the same like explained in {@link #asList()}
+     *
+     * @return a ConfigValue for a list of configured comma separated values
+     */
+    ConfigValue<Set<T>> asSet();
 
     /**
      * Sets the type of the configuration entry to the given class, sets the converter to the one given and
@@ -131,18 +141,29 @@ public interface ConfigValue<T> {
     ConfigValue<T> withLookupChain(String... postfixNames);
 
     /**
-     * A user can register a Consumer which gets notified whenever
+     * A user can register a Callback which gets notified whenever
      * a config change got detected.
      *
      * @return This builder
      */
-    ConfigValue<T> onChange(Consumer<T> changedValueConsumer);
+    ConfigValue<T> onChange(ConfigChanged changedValueCallback);
 
     /**
      * Returns the converted resolved filtered value.
      * @return the resolved value
+     *
+     * @throws IllegalArgumentException if the property cannot be converted to the specified type.
+     * @throws java.util.NoSuchElementException if the property isn't present in the configuration.
      */
     T getValue();
+
+    /**
+     * Returns the converted resolved filtered value.
+     * @return the resolved value as Optional
+     *
+     * @throws IllegalArgumentException if the property cannot be converted to the specified type.
+     */
+    Optional<T> getOptionalValue();
 
     /**
      * Returns the key given in {@link javax.config.Config#access(String)}.
@@ -168,4 +189,12 @@ public interface ConfigValue<T> {
      * @return the default value or {@code null}
      */
     T getDefaultValue();
+
+    /**
+     * Callback which can be used with {@link #onChange(ConfigChanged)}
+     */
+    interface ConfigChanged {
+        <T> void onValueChange(String key, T oldValue, T newValue);
+    }
+
 }
