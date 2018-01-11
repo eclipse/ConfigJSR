@@ -33,6 +33,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+
 /**
  * Accessor to a configured value.
  * It follows a builder-like pattern to define how to treat the .
@@ -135,7 +136,24 @@ public interface ConfigValue<T> {
 
     /**
      * Appends the resolved value of the given property to the key of this builder.
-     * TODO further explain.
+     *
+     * <p>Usage:
+     * <pre>
+     * String tenant = getCurrentTenant();
+     * Integer timeout = config.access("some.server.url")
+     *                         .withLookupChain("tenant, ${javaconfig.projectStage} )
+     *                         .getValue();
+     * </pre>
+     *
+     * Given the current tenant name is 'myComp' and the projectStage is 'Production' this would lead to the following lookup order:
+     *
+     * <ul>
+     *     <li>"some.server.url.myComp.Production</li>
+     *     <li>"some.server.url.myComp</li>
+     *     <li>"some.server.url.Production</li>
+     *     <li>"some.server.url</li>
+     * </ul>
+     *
      * @return This builder
      */
     ConfigValue<T> withLookupChain(String... postfixNames);
