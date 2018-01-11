@@ -19,6 +19,7 @@
  */
 package org.eclipse.configjsr;
 
+import javax.config.spi.ConfigProviderResolver;
 import javax.inject.Inject;
 
 import javax.config.Config;
@@ -36,6 +37,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static org.eclipse.configjsr.base.AbstractTest.addFile;
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
@@ -65,6 +67,24 @@ public class CustomConfigSourceTest extends Arquillian {
 
     @Test
     public void testConfigSourceProvider() {
-        Assert.assertEquals(config.getValue("tck.config.test.customDbConfig.key1", String.class), "valueFromDb1");
+        assertEquals(config.getValue("tck.config.test.customDbConfig.key1", String.class), "valueFromDb1");
+    }
+
+    @Test
+    public void testConfigSourceAutoClose() {
+        CustomDbConfigSource customDbConfigSource = new CustomDbConfigSource();
+
+        Assert.assertEquals(customDbConfigSource.getCloseCounter(), 0);
+
+        Config config = ConfigProviderResolver.instance().getBuilder()
+            .withSources(customDbConfigSource)
+            .build();
+
+        // just to trigger the config
+        config.getOptionalValue("somekey", String.class);
+
+        ConfigProviderResolver.instance().releaseConfig(config);
+
+        Assert.assertEquals(customDbConfigSource.getCloseCounter(), 1);
     }
 }

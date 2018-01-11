@@ -104,6 +104,12 @@ package javax.config.spi;
  *  <p>
  *  myPets will be "dog", "cat", "dog,cat"
  *
+ *  <h3>Cleanup</h3>
+ *
+ *  <p>If a Converter implements the {@link AutoCloseable} interface
+ *  then the {@link AutoCloseable#close()} method will be called when
+ *  the underlying {@link javax.config.Config} is being released.
+ *
  * @author <a href="mailto:rsmeral@apache.org">Ron Smeral</a>
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
