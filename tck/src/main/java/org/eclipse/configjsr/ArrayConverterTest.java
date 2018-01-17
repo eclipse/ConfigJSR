@@ -52,7 +52,7 @@ import org.testng.annotations.Test;
 /**
  * Test the implicit converter handling.
  *
- * @author <a href="mailto:emijiang6@googlemail.com">Mark Struberg</a>
+ * @author <a href="mailto:emijiang6@googlemail.com">Emily Jiang</a>
  */
 public class ArrayConverterTest extends Arquillian {
 

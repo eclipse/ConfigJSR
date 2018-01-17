@@ -28,13 +28,13 @@ import static org.hamcrest.Matchers.is;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.config.inject.ConfigProperty;
+import javax.config.spi.ConfigSource;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import javax.config.inject.ConfigProperty;
-import javax.config.spi.ConfigSource;
 import org.eclipse.configjsr.matchers.AdditionalMatchers;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
@@ -42,6 +42,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.After;
 import org.testng.annotations.Test;
 
 /**
@@ -63,10 +64,13 @@ public class CDIPlainInjectionTest extends Arquillian {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
+    @After
+    public void tearDown() {
+        clear_all_property_values();
+    }
+
     @Test
     public void can_inject_simple_values_when_defined() {
-        ensure_all_property_values_are_defined();
-
         SimpleValuesBean bean = getBeanOfType(SimpleValuesBean.class);
 
         assertThat(bean.stringProperty, is(equalTo("text")));
