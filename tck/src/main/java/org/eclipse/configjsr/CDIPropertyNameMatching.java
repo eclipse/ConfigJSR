@@ -36,6 +36,8 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
@@ -66,6 +68,25 @@ public class CDIPropertyNameMatching extends Arquillian {
                         "\nmy.random.string.property=random"),
                             "microprofile-config.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+    }
+    
+    @BeforeClass
+    public void checkSetup() {
+       //check whether the environment variables were populated by the executor correctly
+    
+        if (!"45".equals(System.getenv("my_int_property"))) {
+         Assert.fail("Before running this test, the environment variable \"my_int_property\" must be set with the value of 45");
+        }
+        if (!"45".equals(System.getenv("MY_BOOLEAN_Property"))) {
+            Assert.fail("Before running this test, the environment variable \"MY_BOOLEAN_Property\" must be set with the value of true");
+        }
+        if (!"45".equals(System.getenv("my_string_property"))) {
+            Assert.fail("Before running this test, the environment variable \"my_string_property\" must be set with the value of haha");
+        }
+        if (!"45".equals(System.getenv("MY_STRING_PROPERTY"))) {
+            Assert.fail("Before running this test, the environment variable \"MY_STRING_PROPERTY\" must be set with the value of woohoo");
+        }
+
     }
 
     @Test
