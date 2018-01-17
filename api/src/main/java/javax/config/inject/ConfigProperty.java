@@ -104,7 +104,12 @@ public @interface ConfigProperty {
      * where {@code injection_point_name} is the field name or parameter name,
      * {@code class_name} is the fully qualified name of the class being injected to.
      * If one of the {@code class_name} or {@code injection_point_name} cannot be determined, the value has to be provided.
-     *
+     * 
+     * If the property name contains `.` (e.g. com.ACME.size), the `.` will be automatically converted to `_` (e.g. com_ACME_size) 
+     * for matching among environment variables. 
+     * In the first attempt of searching the property among environment variables, the variable name needs to be 
+     * the same with case sensitive (e.g. com_ACME_size). 
+     * If not found, try to match the case-insensitive environment variable (e.g. COM_ACME_SIZE or COM_ACME_Size).
      * @return Name (key) of the config property to inject
      */
     @Nonbinding

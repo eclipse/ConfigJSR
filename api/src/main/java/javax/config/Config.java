@@ -90,7 +90,11 @@ public interface Config {
      * @param <T>
      *             the property type
      * @param propertyName
-     *             The configuration propertyName.
+     *             The configuration propertyName. If the property name contains `.` (e.g. com.ACME.size), the dot will be 
+     *             automatically converted `_` (e.g. com_ACME_size) for matching among environment variables. 
+     *             In the first attempt of searching the property among environment variables, the variable name needs to be 
+     *             the same with case sensitive (e.g. com_ACME_size). If not found, try to match the case-insensitive environment
+     *             variable (e.g. COM_ACME_SIZE or COM_ACME_Size).
      * @param propertyType
      *             The type into which the resolve property value should get converted
      * @return the resolved property value as an object of the requested type.
