@@ -23,13 +23,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-import java.io.IOException;
-import java.util.Map;
-
 import javax.config.inject.ConfigProperty;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
@@ -47,6 +45,12 @@ import org.testng.annotations.Test;
  * among environment variables, the variable name needs to be the same with case sensitive (e.g. com_ACME_size). If not found, try to match 
  * the case-insensitive environment variable (e.g. COM_ACME_SIZE or COME_ACME_Size)
  * 
+ * Prerequisite: 
+ * The following environment variables must be set prior to running this test:
+ * "my_int_property" with the value of "45"
+ * "MY_BOOLEAN_Property" with the value of "true"
+ * "my_string_property" with the value of "haha"
+ * "MY_STRING_PROPERTY" with the value of "woohoo"
  * @author Emily Jiang
  */
 public class CDIPropertyNameMatching extends Arquillian {
@@ -66,8 +70,6 @@ public class CDIPropertyNameMatching extends Arquillian {
 
     @Test
     public void can_inject_simple_values_when_defined() {
-        ensure_all_property_values_are_defined();
-
         SimpleValuesBean bean = getBeanOfType(SimpleValuesBean.class);
 
         assertThat(bean.stringProperty, is(equalTo("haha")));
@@ -76,24 +78,6 @@ public class CDIPropertyNameMatching extends Arquillian {
         assertThat(bean.randomStringProperty, is(equalTo("random")));
     }
 
-
-    private void ensure_all_property_values_are_defined() {
-        ProcessBuilder pb = new ProcessBuilder();
-        Map<String, String> env= pb.environment();
-        env.put("my_int_property", "45");
-        env.put("MY_BOOLEAN_Property", "true");
-        env.put("my_string_property", "haha");
-        env.put("MY_STRING_PROPERTY", "woohoo");
-        try {
-             pb.start();
-             
-        } 
-        catch (IOException e) {
-           e.printStackTrace();
-        }
-
-        
-    }
 
 
     private <T> T getBeanOfType(Class<T> beanClass) {
@@ -105,15 +89,15 @@ public class CDIPropertyNameMatching extends Arquillian {
 
         @Inject
         @ConfigProperty(name="my.string.property")
-        private String stringProperty;
+        private Provider<String> stringProperty;
 
         @Inject
         @ConfigProperty(name="my.boolean.property")
-        private boolean booleanProperty;
+        private Provider<Boolean> booleanProperty;
 
         @Inject
         @ConfigProperty(name="my.int.property")
-        private int intProperty;
+        private Provider<Integer> intProperty;
         
         @Inject
         @ConfigProperty(name="my.random.string.property")
