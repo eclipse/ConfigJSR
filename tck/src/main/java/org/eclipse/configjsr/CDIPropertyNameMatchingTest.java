@@ -35,6 +35,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.testng.annotations.BeforeClass;
@@ -42,12 +43,12 @@ import org.testng.annotations.Test;
 
 /**
  * Test cases for the following statement.
- * The configuration propertyName. If the property name contains `.` (e.g. com.ACME.size), the dot will be 
+ * The configuration propertyName. If the property name contains `.` (e.g. com.ACME.size), the dot will be
  * automatically converted `_` (e.g. com_ACME_size) for matching among environment variables. In the first attempt of searching the property
- * among environment variables, the variable name needs to be the same with case sensitive (e.g. com_ACME_size). If not found, try to match 
+ * among environment variables, the variable name needs to be the same with case sensitive (e.g. com_ACME_size). If not found, try to match
  * the case-insensitive environment variable (e.g. COM_ACME_SIZE or COME_ACME_Size)
- * 
- * Prerequisite: 
+ *
+ * Prerequisite:
  * The following environment variables must be set prior to running this test:
  * "my_int_property" with the value of "45"
  * "MY_BOOLEAN_Property" with the value of "true"
@@ -55,25 +56,32 @@ import org.testng.annotations.Test;
  * "MY_STRING_PROPERTY" with the value of "woohoo"
  * @author Emily Jiang
  */
-public class CDIPropertyNameMatching extends Arquillian {
+public class CDIPropertyNameMatchingTest extends Arquillian {
 
 
     @Deployment
     public static Archive deployment() {
-        return ShrinkWrap.create(WebArchive.class)
-                .addClasses(CDIPropertyNameMatching.class, SimpleValuesBean.class)
-                .addAsManifestResource(new StringAsset(
-                        "my.int.property=3"+
+        JavaArchive testJar = ShrinkWrap
+            .create(JavaArchive.class, "CDIPropertyNameMatchingTest.jar")
+            .addClasses(CDIPropertyNameMatchingTest.class, SimpleValuesBean.class)
+            .addAsManifestResource(new StringAsset(
+                    "my.int.property=3"+
                         "\nmy.string.property=fake" +
                         "\nmy.random.string.property=random"),
-                            "microprofile-config.properties")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+                "javaconfig.properties")
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .as(JavaArchive.class);
+
+        WebArchive war = ShrinkWrap
+            .create(WebArchive.class, "CDIPropertyNameMatchingTest.war")
+            .addAsLibrary(testJar);
+        return war;
     }
-    
+
     @BeforeClass
     public void checkSetup() {
        //check whether the environment variables were populated by the executor correctly
-    
+
         if (!"45".equals(System.getenv("my_int_property"))) {
          Assert.fail("Before running this test, the environment variable \"my_int_property\" must be set with the value of 45");
         }
@@ -90,12 +98,12 @@ public class CDIPropertyNameMatching extends Arquillian {
     }
 
     @Test
-    public void can_inject_simple_values_when_defined() {
+    public void testPropertyFromEnvironmentVariables() {
         SimpleValuesBean bean = getBeanOfType(SimpleValuesBean.class);
 
-        assertThat(bean.stringProperty, is(equalTo("haha")));
-        assertThat(bean.booleanProperty, is(true));
-        assertThat(bean.intProperty, is(equalTo(45)));
+        assertThat(bean.stringProperty.get(), is(equalTo("haha")));
+        assertThat(bean.booleanProperty.get(), is(true));
+        assertThat(bean.intProperty.get(), is(equalTo(45)));
         assertThat(bean.randomStringProperty, is(equalTo("random")));
     }
 
@@ -119,7 +127,7 @@ public class CDIPropertyNameMatching extends Arquillian {
         @Inject
         @ConfigProperty(name="my.int.property")
         private Provider<Integer> intProperty;
-        
+
         @Inject
         @ConfigProperty(name="my.random.string.property")
         private String randomStringProperty;
