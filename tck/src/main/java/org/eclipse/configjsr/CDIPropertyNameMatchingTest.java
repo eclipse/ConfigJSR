@@ -27,7 +27,6 @@ import javax.config.inject.ConfigProperty;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
-import javax.inject.Provider;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
@@ -66,8 +65,7 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
             .addClasses(CDIPropertyNameMatchingTest.class, SimpleValuesBean.class)
             .addAsManifestResource(new StringAsset(
                     "my.int.property=3"+
-                        "\nmy.string.property=fake" +
-                        "\nmy.random.string.property=random"),
+                        "\nmy.string.property=fake"),
                 "javaconfig.properties")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .as(JavaArchive.class);
@@ -101,10 +99,9 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
     public void testPropertyFromEnvironmentVariables() {
         SimpleValuesBean bean = getBeanOfType(SimpleValuesBean.class);
 
-        assertThat(bean.stringProperty.get(), is(equalTo("haha")));
-        assertThat(bean.booleanProperty.get(), is(true));
-        assertThat(bean.intProperty.get(), is(equalTo(45)));
-        assertThat(bean.randomStringProperty, is(equalTo("random")));
+        assertThat(bean.stringProperty, is(equalTo("haha")));
+        assertThat(bean.booleanProperty, is(true));
+        assertThat(bean.intProperty, is(equalTo(45)));
     }
 
 
@@ -118,18 +115,14 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
 
         @Inject
         @ConfigProperty(name="my.string.property")
-        private Provider<String> stringProperty;
+        private String stringProperty;
 
         @Inject
         @ConfigProperty(name="my.boolean.property")
-        private Provider<Boolean> booleanProperty;
+        private boolean booleanProperty;
 
         @Inject
         @ConfigProperty(name="my.int.property")
-        private Provider<Integer> intProperty;
-
-        @Inject
-        @ConfigProperty(name="my.random.string.property")
-        private String randomStringProperty;
+        private int intProperty;
     }
   }
