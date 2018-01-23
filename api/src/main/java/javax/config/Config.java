@@ -31,7 +31,10 @@
 
 package javax.config;
 
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Consumer;
 
 import javax.config.spi.ConfigSource;
 
@@ -71,6 +74,19 @@ import javax.config.spi.ConfigSource;
  *
  * <p>Configured values can also be accessed via injection.
  * See {@link javax.config.inject.ConfigProperty} for more information.
+ *
+ * <p>Mutability:
+ * The rules should be as follows:
+ * <ul>
+ * <li>{@link ConfigSource} can implement {@link javax.config.spi.MutableConfigSource} to let Config know that values may
+ * change over time</li>
+ * <li>Each {@link javax.config.spi.MutableConfigSource} must trigger the event when it knows that at least one
+ * property was changed</li>
+ * <li>Config can cache any value, until it receives a change notification from a {@link javax.config.spi.MutableConfigSource},
+ * then it MUST provide the new values in a consistent way (e.g. it MUST NEVER return a configuration value from a config
+ * source before and after mutation)
+ * </li>
+ * </ul>
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
@@ -127,4 +143,28 @@ public interface Config {
      * @return all currently registered {@link ConfigSource configsources} sorted with descending ordinal and ConfigSource name
      */
     Iterable<ConfigSource> getConfigSources();
+
+    /**
+     * Add a listener for changes on this config.
+     * Listener gets a set of changed keys
+     *
+     * @param listener listener that gets all keys that were modified (use the same config instance to obtain values)
+     */
+    void addListener(Consumer<Set<String>> listener);
+
+    /**
+     * Add a listener for a change of a single key.
+     *
+     * @param name     property name to subscribe to
+     * @param listener listener that will receive the same property name when the value changes
+     */
+    void addNameListener(String name, Consumer<String> listener);
+
+    /**
+     * Add a listener for a change of a collection of keys.
+     *
+     * @param names    keys the consumer is interested in
+     * @param listener listener that receives a collection of changed keys
+     */
+    void addNameListener(Collection<String> names, Consumer<Collection<String>> listener);
 }

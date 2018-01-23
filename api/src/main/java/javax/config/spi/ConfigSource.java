@@ -60,6 +60,13 @@ import java.util.Set;
  *  then the {@link AutoCloseable#close()} method will be called when
  *  the underlying {@link javax.config.Config} is being released.
  *
+ * <p>Config sources may implement one of these interfaces:
+ * <ul>
+ *     <li>{@link ConfigSource} - immutable config source</li>
+ *     <li>{@link MutableConfigSource} - config source that may change its values and provides an event when it happens</li>
+ * </ul>
+ *
+ *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
