@@ -66,8 +66,7 @@ If no built-in nor custom `Converter` for a requested Type `T`, an implicit Conv
 
 The lookup will be done in the order of the above list.
 
-Note that every `java.time` type has a `parse(CharSequence)` method
-And every enum has a generated 'valueOf(String)' method.
+Note that every `java.time` type has a `parse(CharSequence)` method and every enum has a generated 'valueOf(String)' method.
 They are thus all covered by an implicit converter!
 
 If an Implicit Converter cannot convert a value, a `java.lang.IllegalArgumentException` is to be thrown.
