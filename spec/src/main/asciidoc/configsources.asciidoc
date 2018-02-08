@@ -55,7 +55,13 @@ com.acme.myproject.someserver.url = http://more_important.server/some/endpoint
 A JavaConfig implementation must provide <<ConfigSource,ConfigSources>> for the following data out of the box:
 
 * System properties (default ordinal=400).
+
 * Environment variables (default ordinal=300).
+
+The configuration propertyName. If the property name contains `.` (e.g. com.ACME.size), the dot will be 
+automatically converted `_` (e.g. com_ACME_size) for matching among environment variables. In the first attempt of searching the property
+among environment variables, the variable name needs to be the same with case sensitive (e.g. com_ACME_size). If not found, try to match the case-insensitive environment variable (e.g. COM_ACME_SIZE or COM_ACME_Size).
+
 * A `ConfigSource` for each property file `META-INF/javaconfig.properties` found on the classpath. (default ordinal = 100).
 
 [[custom_configsources]]
