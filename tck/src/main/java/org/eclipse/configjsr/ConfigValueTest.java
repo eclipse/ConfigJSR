@@ -82,6 +82,25 @@ public class ConfigValueTest extends Arquillian {
     }
 
     @Test
+    public void testLookupChain() {
+        /**
+         * 1  1 -> com.foo.myapp.mycorp.Production
+         * 1  0 -> com.foo.myapp.mycorp
+         * 0  1 -> com.foo.myapp.Production
+         * 0  0 -> com.foo.myapp
+         *
+         */
+        String cv = config.access("com.foo.myapp")
+            .withLookupChain("mycorp", "${javaconfig.projectStage}")
+            .getValue();
+
+        //X TODO continue/finish
+
+
+        config.getValue("mykey", Integer[].class);
+    }
+
+    @Test
     public void testIntegerConverter() {
         Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.integer").as(Integer.class).getValue(),
             Integer.valueOf(1234));
