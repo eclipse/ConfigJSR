@@ -56,14 +56,14 @@ public interface ConfigBuilder {
     /**
      * Add the config sources appearing to be loaded via service loader pattern
      *
-     * @return the ConfigBuilder with the autodiscovered config sources
+     * @return the ConfigBuilder with the auto-discovered config sources
      */
     ConfigBuilder addDiscoveredSources();
 
     /**
      * Add the converters to be loaded via service loader pattern
      *
-     * @return the ConfigBuilder with the autodiscovered converters
+     * @return the ConfigBuilder with the auto-discovered converters
      */
     ConfigBuilder addDiscoveredConverters();
     /**
