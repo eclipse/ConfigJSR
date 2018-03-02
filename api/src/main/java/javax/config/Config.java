@@ -60,6 +60,11 @@ import javax.config.spi.ConfigSource;
  *   Integer archivePort = cfg.getValue("my.project.archive.port", Integer.class);
  * </pre>
  *
+ * <p>For accessing a coniguration in a dynamic way you can also use {@link #access(String)}.
+ * This method returns a builder-style {@link ConfigValue} instance for the given key.
+ * You can further specify a Type of the underlying configuration, a cache time, lookup paths and
+ * many more.
+ *
  * <p>It is also possible to inject the Config if a DI container is available:
  *
  * <pre>
@@ -69,7 +74,7 @@ import javax.config.spi.ConfigSource;
  * }
  * </pre>
  *
- * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} for accessing a configured value.
+ * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} and {@link #access(String)} for accessing a configured value.
  *
  * <p>Configured values can also be accessed via injection.
  * See {@link javax.config.inject.ConfigProperty} for more information.
@@ -120,13 +125,20 @@ public interface Config {
     <T> Optional<T> getOptionalValue(String propertyName, Class<T> propertyType);
 
     /**
-     * Return a collection of property names.
+     * Create a {@link ConfigValue} to access the underlying configuration.
+     *
+     * @param key the property key
+     */
+    ConfigValue<String> access(String key);
+
+    /**
+     * Return all property names used in any of the underlying {@link ConfigSource ConfigSources}.
      * @return the names of all configured keys of the underlying configuration.
      */
     Iterable<String> getPropertyNames();
 
     /**
-     * @return all currently registered {@link ConfigSource configsources} sorted with descending ordinal and ConfigSource name
+     * @return all currently registered {@link ConfigSource ConfigSources} sorted by descending ordinal and ConfigSource name
      */
     Iterable<ConfigSource> getConfigSources();
 
