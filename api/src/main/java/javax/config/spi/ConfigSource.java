@@ -135,9 +135,9 @@ public interface ConfigSource {
     String getName();
 
     /**
-     * This callback should get invoked if an attribute change got detected.
+     * This callback should get invoked if an attribute change got detected inside the ConfigSource.
      *
-     * @param reportAttributeChange will be set by the {@link ConfigSourceProvider} after this
+     * @param reportAttributeChange will be set by the {@link javax.config.Config} after this
      *                              {@code ConfigSource} got created and before any configured values
      *                              get served.
      */
