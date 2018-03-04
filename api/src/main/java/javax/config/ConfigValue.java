@@ -36,7 +36,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Accessor to a configured value.
- * It follows a builder-like pattern to define how to treat the .
+ *
+ * It follows a builder-like pattern to define in which ways to access the configured value
+ * of a certain property name.
  *
  * Accessing the configured value is finally done via {@link #getValue()}
  *
