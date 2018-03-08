@@ -95,7 +95,7 @@ import javax.inject.Qualifier;
  */
 @Qualifier
 @Retention(RUNTIME)
-@Target({METHOD, FIELD, PARAMETER, TYPE})
+@Target({FIELD, PARAMETER})
 public @interface ConfigProperty {
     String UNCONFIGURED_VALUE="javax.config.configproperty.unconfigureddvalue";
     /**
