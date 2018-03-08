@@ -96,10 +96,10 @@ public final class ConfigProvider {
      * <p>
      * There is exactly a single Config instance per ClassLoader
      *
-     * @param cl the specified classloader
+     * @param classloader the specified classloader
      * @return the config for the specified classloader
      */
-    public static Config getConfig(ClassLoader cl) {
-        return INSTANCE.getConfig(cl);
+    public static Config getConfig(ClassLoader classloader) {
+        return INSTANCE.getConfig(classloader);
     }
 }

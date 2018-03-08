@@ -47,7 +47,7 @@ import javax.inject.Qualifier;
  * <p>Injecting a native value is recommended for a mandatory property and its value does not change at runtime or used by a bean with RequestScoped.
  * <p>A further recommendation is to use the built in {@code META-INF/javaconfig.properties} file mechanism
  * to provide default values inside an Application.
- * If no configured value exists for this property, a {@code DeplymentException} will be thrown during startup.
+ * If no configured value exists for this property, a {@code DeploymentException} will be thrown during startup.
  * <pre>
  * &#064;Inject
  * &#064;ConfigProperty(name="my.long.property")
@@ -79,7 +79,7 @@ import javax.inject.Qualifier;
  * The next sample injects a Provider for the value of {@code my.long.property} property to resolve the property dynamically.
  * Each invocation to {@code Provider#get()} will resolve the latest value from underlying {@link javax.config.Config} again.
  * The existence of configured values will get checked during startup.
- * Instances of {@code Provider<T>} are guaranteed to be Serializable.
+ * Instances of {@code javax.inject.Provider<T>} are guaranteed to be Serializable.
  * <pre>
  * &#064;Inject
  * &#064;ConfigProperty(name = "my.long.property" defaultValue="123")
@@ -100,7 +100,7 @@ public @interface ConfigProperty {
     String UNCONFIGURED_VALUE="javax.config.configproperty.unconfigureddvalue";
     /**
      * The key of the config property used to look up the configuration value.
-     * If it is not specified, it will be derived automatically as {@code <class_name>.<injetion_point_name>},
+     * If it is not specified, it will be derived automatically as {@code <class_name>.<injection_point_name>},
      * where {@code injection_point_name} is the field name or parameter name,
      * {@code class_name} is the fully qualified name of the class being injected to.
      * If one of the {@code class_name} or {@code injection_point_name} cannot be determined, the value has to be provided.
