@@ -18,6 +18,8 @@
 //
 image:https://badges.gitter.im/eclipse/ConfigJSR.svg[link="https://gitter.im/eclipse/ConfigJSR"]
 
+image:https://api.travis-ci.org/eclipse/ConfigJSR.svg?branch=master[link="https://travis-ci.org/eclipse/ConfigJSR"]
+
 # JSR-382 - Configuration API for Java, v1.0
 Specification Leads: Emily Jiang, Mark Struberg
 
@@ -78,7 +80,7 @@ There are a number of Config projects which directly influenced this proposal an
 
 * DeltaSpike Config (http://deltaspike.apache.org/documentation/configuration.html)
 * Extracted parts of DeltaSpike Config (https://github.com/struberg/javaConfig/)
-* Apache Tamaya (http://tamaya.incubator.apache.org/)
+* Apache Tamaya (https://tamaya.incubator.apache.org/)
 
 The approach of those got merged together into MicroProfile Config (https://github.com/eclipse/microprofile-config).
 This now serves as a starting point for this very JSR.
