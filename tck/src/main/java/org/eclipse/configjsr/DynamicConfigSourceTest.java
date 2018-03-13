@@ -19,72 +19,76 @@
  */
 package org.eclipse.configjsr;
 
-import javax.config.spi.ConfigProviderResolver;
-import javax.inject.Inject;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.config.Config;
 import javax.config.spi.ConfigSource;
-import javax.config.spi.ConfigSourceProvider;
-import org.eclipse.configjsr.configsources.CustomConfigSourceProvider;
-import org.eclipse.configjsr.configsources.CustomDbConfigSource;
+import javax.inject.Inject;
+
+import org.eclipse.configjsr.dynamic.DynamicChangeConfigSource;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static org.eclipse.configjsr.base.AbstractTest.addFile;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
-public class CustomConfigSourceTest extends Arquillian {
+public class DynamicConfigSourceTest extends Arquillian {
 
     private @Inject Config config;
 
     @Deployment
     public static WebArchive deploy() {
         JavaArchive testJar = ShrinkWrap
-                .create(JavaArchive.class, "customConfigSourceTest.jar")
-                .addClasses(CustomConfigSourceTest.class, CustomDbConfigSource.class, CustomConfigSourceProvider.class)
+                .create(JavaArchive.class, "dynamicValuesTest.jar")
+                .addClass(DynamicConfigSourceTest.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsServiceProvider(ConfigSource.class, CustomDbConfigSource.class)
-                .addAsServiceProvider(ConfigSourceProvider.class, CustomConfigSourceProvider.class)
+                .addAsServiceProvider(ConfigSource.class, DynamicChangeConfigSource.class)
                 .as(JavaArchive.class);
 
-        addFile(testJar, "META-INF/javaconfig.properties");
 
         WebArchive war = ShrinkWrap
-                .create(WebArchive.class, "customConfigSourceTest.war")
+                .create(WebArchive.class, "dynamicValuesTest.war")
                 .addAsLibrary(testJar);
         return war;
     }
 
 
     @Test
-    public void testConfigSourceProvider() {
-        assertEquals(config.getValue("tck.config.test.customDbConfig.key1", String.class), "valueFromDb1");
+    public void testBgCount() throws Exception {
+        Integer value = config.getValue(DynamicChangeConfigSource.TEST_ATTRIBUTE, Integer.class);
+        Thread.sleep(20L);
+        Integer value2 = config.getValue(DynamicChangeConfigSource.TEST_ATTRIBUTE, Integer.class);
+        assertTrue(value2 > value);
     }
 
     @Test
-    public void testConfigSourceAutoClose() {
-        CustomDbConfigSource customDbConfigSource = new CustomDbConfigSource();
+    public void testBgCallback() throws Exception {
+        Integer value = config.getValue(DynamicChangeConfigSource.TEST_ATTRIBUTE, Integer.class);
+        Map<String, Integer> vals = new ConcurrentHashMap<>();
 
-        Assert.assertEquals(customDbConfigSource.getCloseCounter(), 0);
 
-        Config config = ConfigProviderResolver.instance().getBuilder()
-            .withSources(customDbConfigSource)
-            .build();
+        config.registerConfigChangedListener(s -> s.forEach(k -> vals.put(k, config.getValue(k, Integer.class))));
+        vals.clear();
 
-        // just to trigger the config
-        config.getOptionalValue("somekey", String.class);
+        Thread.sleep(12L);
+        assertEquals(1, vals.size());
 
-        ConfigProviderResolver.instance().releaseConfig(config);
+        int i1 = vals.get(DynamicChangeConfigSource.TEST_ATTRIBUTE);
 
-        Assert.assertEquals(customDbConfigSource.getCloseCounter(), 1);
+        Thread.sleep(15L);
+        assertEquals(1, vals.size());
+
+        int i2 = vals.get(DynamicChangeConfigSource.TEST_ATTRIBUTE);
+        assertTrue(i2 > i1);
     }
+
 }

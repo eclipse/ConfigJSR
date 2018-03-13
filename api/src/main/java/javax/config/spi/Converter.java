@@ -40,17 +40,11 @@ package javax.config.spi;
  *     <li>{@code long} and {@code Long}</li>
  *     <li>{@code float} and {@code Float}, a dot '.' is used to separate the fractional digits</li>
  *     <li>{@code double} and {@code Double}, a dot '.' is used to separate the fractional digits</li>
- *     <li>{@code java.time.Duration} as defined in {@link java.time.Duration#parse(CharSequence)}</li>
- *     <li>{@code java.time.LocalDateTime} as defined in {@link java.time.LocalDateTime#parse(CharSequence)}</li>
- *     <li>{@code java.time.LocalDate} as defined in {@link java.time.LocalDate#parse(CharSequence)}</li>
- *     <li>{@code java.time.LocalTime} as defined in {@link java.time.LocalTime#parse(CharSequence)}</li>
- *     <li>{@code OffsetDateTime} as defined in {@link java.time.OffsetDateTime#parse(CharSequence)}</li>
- *     <li>{@code OffsetTime} as defined in {@link java.time.OffsetTime#parse(CharSequence)}</li>
- *     <li>{@code Instant}</li>
  *     <li>{@code URL} as defined by {@link java.net.URL#URL(java.lang.String)}</li>
  *
  * </ul>
- *
+
+<p>
  * <p>Custom Converters will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
  * providing a file<br>
  * <code>META-INF/services/javax.config.spi.Converter</code><br>
@@ -61,6 +55,60 @@ package javax.config.spi;
  * If multiple Converters are registered for the same type, the one with the highest priority will be used.
  * All Built In Converters have a {@code javax.annotation.Priority} of 1
  * A Converter should handle null values returning either null or a valid Object of the specified type.
+ *
+ * <h3>Implicit Converters</h3>
+ *
+ * <p>If no explicit Converter and no built-in Converter could be found for a certain type,
+ * the {@code Config} provides an <em>Implicit Converter</em>, if</p>
+ * <ul>
+ *     <li>The target type {@code T} has a Constructor with a String parameter, or</li>
+ *     <li>The target type {@code T} has a Constructor with a CharSequence parameter, or</li>
+ *     <li>the target type {@code T} has a {@code static T valueOf(String)} method, or</li>
+ *     <li>the target type {@code T} has a {@code static T valueOf(CharSequence)} method, or</li>
+ *     <li>the target type {@code T} has a {@code static T parse(String)} method, or</li>
+ *     <li>the target type {@code T} has a {@code static T parse(CharSequence)} method, or</li>
+ * </ul>
+ *
+ * <p>The lookup will be done in the order of the above list.
+ * <p>Note that every {@code java.time} type has a {@code parse(CharSequence)} method.
+ * And every enum has a generated {@code valueOf(String)} method.
+ * They are thus all covered by an implicit converter!
+ * <p>If an Implicit Converter cannot convert a value, a {@code java.lang.IllegalArgumentException} is to be thrown.
+ *
+ * <h3>Array Converters</h3>
+ *  The implementation must support the Array converter for each built-in converters, implicit converters and custom converters.
+ *  The delimiter for the config value is ','. The escape character is '\'.
+ *  <code>e.g. myPets=dog,cat,dog\,cat </code>
+ * <p>
+ *  For the property injection, List and Set are supported as well.
+ *
+ *  <p>
+ *  Usage:
+ *  <p>
+ *  <code>
+ *  String[] myPets = ConfigProvider.getValue("myPet", String[].class);
+ *  </code>
+ *
+ *  <p>
+ *  <code>
+ *  {@code @Inject @ConfigProperty(name="myPets") String[] myPets};
+ *  </code>
+ *  <p>
+ *  <code>
+ *  {@code @Inject @ConfigProperty(name="myPets") List<String> myPets};
+ *  </code>
+ *  <p>
+ *  <code>
+ *  {@code @Inject @ConfigProperty(name="myPets") Set<String> myPets};
+ *  </code>
+ *  <p>
+ *  myPets will be "dog", "cat", "dog,cat"
+ *
+ *  <h3>Cleanup</h3>
+ *
+ *  <p>If a Converter implements the {@link AutoCloseable} interface
+ *  then the {@link AutoCloseable#close()} method will be called when
+ *  the underlying {@link javax.config.Config} is being released.
  *
  * @author <a href="mailto:rsmeral@apache.org">Ron Smeral</a>
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>

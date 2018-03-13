@@ -19,33 +19,16 @@
  */
 package org.eclipse.configjsr.converters;
 
+import javax.annotation.Priority;
+import javax.config.spi.Converter;
+
 /**
- * Class, which is converted using a Lambda based converter.
- * @author <a href="mailto:anatole@apache.org">Anatole Tresch</a>
+ * Always create a duck with an upper case name
  */
-public class Donald {
-
-    private String name;
-    private boolean bool;
-
-    private Donald(String name, boolean bool) {
-
-        this.name = name;
-        this.bool = bool;
+@Priority(101)
+public class UpperCaseDuckConverter implements Converter<Duck>{
+    @Override
+    public Duck convert(String value) {
+        return new Duck(value.toUpperCase());
     }
-
-
-    /**
-     * Ensure constructor cannot be auto-detected/auto-constructed.
-     * @param name the name, not null
-     * @return a new instance, never null.
-     */
-    public static Donald iLikeDonald(String name){
-        return new Donald(name, true);
-    }
-
-    public String getName(){
-        return name;
-    }
-
 }

@@ -15,37 +15,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 package org.eclipse.configjsr.converters;
 
 /**
- * Class, which is converted using a Lambda based converter.
- * @author <a href="mailto:anatole@apache.org">Anatole Tresch</a>
+ * Sample enum to test built-in converter rules.
+ * @author <a href="mailto:mail@sebastian-daschner.com">Sebastian Daschner</a>
  */
-public class Donald {
-
-    private String name;
-    private boolean bool;
-
-    private Donald(String name, boolean bool) {
-
-        this.name = name;
-        this.bool = bool;
-    }
-
-
-    /**
-     * Ensure constructor cannot be auto-detected/auto-constructed.
-     * @param name the name, not null
-     * @return a new instance, never null.
-     */
-    public static Donald iLikeDonald(String name){
-        return new Donald(name, true);
-    }
-
-    public String getName(){
-        return name;
-    }
-
+public enum SomeEnumToConvert {
+    FOO,
+    BAR,
+    BAZ
 }

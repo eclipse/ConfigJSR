@@ -29,20 +29,22 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 
-import javax.config.spi.ConfigProviderResolver;
-import javax.inject.Inject;
-
 import javax.config.Config;
 import javax.config.inject.ConfigProperty;
+import javax.config.spi.ConfigProviderResolver;
 import javax.config.spi.ConfigSource;
 import javax.config.spi.ConfigSourceProvider;
 import javax.config.spi.Converter;
+import javax.inject.Inject;
+
 import org.eclipse.configjsr.base.AbstractTest;
 import org.eclipse.configjsr.configsources.CustomConfigSourceProvider;
 import org.eclipse.configjsr.configsources.CustomDbConfigSource;
 import org.eclipse.configjsr.converters.Donald;
 import org.eclipse.configjsr.converters.Duck;
 import org.eclipse.configjsr.converters.DuckConverter;
+import org.eclipse.configjsr.converters.SomeEnumToConvert;
+import org.eclipse.configjsr.converters.UpperCaseDuckConverter;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -51,6 +53,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
 
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
@@ -67,7 +70,7 @@ public class ConverterTest extends Arquillian {
                 .create(JavaArchive.class, "converterTest.jar")
                 .addClass(ConverterTest.class)
                 .addPackage(CustomDbConfigSource.class.getPackage())
-                .addClasses(DuckConverter.class, Duck.class, Donald.class)
+                .addClasses(DuckConverter.class, Duck.class, Donald.class, SomeEnumToConvert.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsServiceProvider(ConfigSource.class, CustomDbConfigSource.class)
                 .addAsServiceProvider(ConfigSourceProvider.class, CustomConfigSourceProvider.class)
@@ -94,12 +97,48 @@ public class ConverterTest extends Arquillian {
 
     @Test
     public void testDonaldConversionWithLambdaConverter() {
-        Config newConfig = ConfigProviderResolver.instance().getBuilder().addDefaultSources().
-            withConverter(Donald.class, (s) -> Donald.iLikeDonald(s)).build();
+        Config newConfig = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
+            .withConverter(Donald.class, 100, (s) -> Donald.iLikeDonald(s))
+            .build();
         Donald donald = newConfig.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
         Assert.assertNotNull(donald);
         Assert.assertEquals(donald.getName(), "Duck");
     }
+
+    @Test
+    public void testDonaldConversionWithMultipleLambdaConverters() {
+        // defines 2 config with the lambda converters defined in different orders.
+        // Order must not matter, the lambda with the upper case must always be used as it has the highest priority
+        Config config1 = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
+            .withConverter(Donald.class, 101, (s) -> Donald.iLikeDonald(s.toUpperCase()))
+            .withConverter(Donald.class, 100, (s) -> Donald.iLikeDonald(s))
+            .build();
+        Config config2 = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
+            .withConverter(Donald.class, 100, (s) -> Donald.iLikeDonald(s))
+            .withConverter(Donald.class, 101, (s) -> Donald.iLikeDonald(s.toUpperCase()))
+            .build();
+
+        Donald donald = config1.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        Assert.assertNotNull(donald);
+        Assert.assertEquals(donald.getName(), "DUCK",
+            "The converter with the highest priority (using upper case) must be used.");
+        donald = config2.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        Assert.assertNotNull(donald);
+        Assert.assertEquals(donald.getName(), "DUCK",
+            "The converter with the highest priority (using upper case) must be used.");
+    }
+
+    @Test
+    public void testEnum() {
+        SomeEnumToConvert value = config.getValue("tck.config.test.javaconfig.converter.implicit.enumvalue", SomeEnumToConvert.class);
+        Assert.assertEquals(value, SomeEnumToConvert.FOO);
+    }
+
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testEnum_Broken() {
+        config.getValue("tck.config.test.javaconfig.converter.implicit.enumvalue.broken", SomeEnumToConvert.class);
+    }
+
 
     @Test
     public void testInteger() {
@@ -281,6 +320,29 @@ public class ConverterTest extends Arquillian {
     }
 
     @Test
+    public void testDuckConversionWithMultipleConverters() {
+        // defines 2 config with the converters defined in different orders.
+        // Order must not matter, the UpperCaseDuckConverter must always be used as it has the highest priority
+        Config config1 = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
+            .withConverters(new UpperCaseDuckConverter(), new DuckConverter())
+            .build();
+        Config config2 = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
+            .withConverters(new DuckConverter(), new UpperCaseDuckConverter())
+            .build();
+
+        Duck duck = config1.getValue("tck.config.test.javaconfig.converter.duckname", Duck.class);
+        Assert.assertNotNull(duck);
+        Assert.assertEquals(duck.getName(), "HANNELORE",
+            "The converter with the highest priority (UpperCaseDuckConverter) must be used.");
+
+        duck = config2.getValue("tck.config.test.javaconfig.converter.duckname", Duck.class);
+        Assert.assertNotNull(duck);
+        // the UpperCaseDuckConverter has highest priority
+        Assert.assertEquals(duck.getName(), "HANNELORE",
+            "The converter with the highest priority (UpperCaseDuckConverter) must be used.");
+    }
+
+    @Test
     public void testURLConverter() throws MalformedURLException {
         URL url = config.getValue("tck.config.test.javaconfig.converter.urlvalue", URL.class);
         Assert.assertEquals(url, new URL("http://microprofile.io"));
@@ -290,4 +352,23 @@ public class ConverterTest extends Arquillian {
     public void testURLConverterBroken() throws Exception {
         URL ignored = config.getValue("tck.config.test.javaconfig.converter.urlvalue.broken", URL.class);
     }
+
+    @Test
+    public void testConverterAutoClose() {
+        DuckConverter duckConverter = new DuckConverter();
+
+        Assert.assertEquals(duckConverter.getCloseCounter(), 0);
+
+        Config config = ConfigProviderResolver.instance().getBuilder()
+            .withConverters(duckConverter)
+            .build();
+
+        // just to trigger the config
+        config.getOptionalValue("somekey", String.class);
+
+        ConfigProviderResolver.instance().releaseConfig(config);
+
+        Assert.assertEquals(duckConverter.getCloseCounter(), 1);
+    }
+
 }

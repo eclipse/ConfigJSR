@@ -24,10 +24,22 @@ import javax.config.spi.Converter;
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
-public class DuckConverter implements Converter<Duck> {
+public class DuckConverter implements Converter<Duck>, AutoCloseable {
+
+    private int closeCounter = 0;
+
+    public int getCloseCounter() {
+        return closeCounter;
+    }
 
     @Override
     public Duck convert(String value) {
         return new Duck(value);
     }
+
+    @Override
+    public void close() throws Exception {
+        closeCounter++;
+    }
+
 }
