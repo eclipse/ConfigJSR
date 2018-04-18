@@ -70,13 +70,13 @@ public class DynamicConfigSourceTest extends Arquillian {
         assertTrue(value2 > value);
     }
 
+    //X TODO work in progress!
     @Test
     public void testBgCallback() throws Exception {
         Integer value = config.getValue(DynamicChangeConfigSource.TEST_ATTRIBUTE, Integer.class);
         Map<String, Integer> vals = new ConcurrentHashMap<>();
 
 
-        config.registerConfigChangedListener(s -> s.forEach(k -> vals.put(k, config.getValue(k, Integer.class))));
         vals.clear();
 
         Thread.sleep(12L);
