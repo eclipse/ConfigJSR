@@ -26,6 +26,9 @@
  *      Extracted the Config part out of Apache DeltaSpike and proposed as Microprofile-Config
  *   2016-11-14 - Emily Jiang / IBM Corp
  *      Experiments with separate methods per type, JavaDoc, method renaming
+ *   2018-04-04 - Mark Struberg, Manfred Huber, Alex Falb, Gerhard Petracek
+ *      ConfigSnapshot added. Initially authored in Apache DeltaSpike fdd1e3dcd9a12ceed831dd
+ *      Additional reviews and feedback by Tomas Langer.
  *
  *******************************************************************************/
 
@@ -82,6 +85,8 @@ import javax.config.spi.ConfigSource;
  * @author <a href="mailto:rsmeral@apache.org">Ron Smeral</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  * @author <a href="mailto:gunnar@hibernate.org">Gunnar Morling</a>
+ * @author <a href="mailto:manfred.huber@downdrown.at">Manfred Huber</a>
+ * @author <a href="mailto:alexander.falb@rise-world.com">Alex Falb</a>
  *
  */
 public interface Config {
@@ -128,6 +133,50 @@ public interface Config {
      * @param key the property key
      */
     ConfigValue<String> access(String key);
+
+    /**
+     * <p>This method can be used to access multiple
+     * {@link ConfigValue} which must be consistent.
+     * The returned {@link ConfigSnapshot} is an immutable object which contains all the
+     * resolved values at the time of calling this method.
+     *
+     * <p>An example would be to access some {@code 'myapp.host'} and {@code 'myapp.port'}:
+     * The underlying values are {@code 'oldserver'} and {@code '8080'}.
+     *
+     * <pre>
+     *     // get the current host value
+     *     ConfigValue&lt;String&gt; hostCfg config.resolve("myapp.host")
+     *              .cacheFor(60, TimeUnit.MINUTES);
+     *
+     *     // and right inbetween the underlying values get changed to 'newserver' and port 8082
+     *
+     *     // get the current port for the host
+     *     ConfigValue&lt;Integer&gt; portCfg config.resolve("myapp.port")
+     *              .cacheFor(60, TimeUnit.MINUTES);
+     * </pre>
+     *
+     * In ths above code we would get the combination of {@code 'oldserver'} but with the new port {@code 8081}.
+     * And this will obviously blow up because that host+port combination doesn't exist.
+     *
+     * To consistently access n different config values we can start a {@link ConfigSnapshot} for those values.
+     *
+     * <pre>
+     *     ConfigSnapshot cfgSnap = config.createSnapshot(hostCfg, portCfg);
+     *
+     *     String host = hostCfg.getValue(cfgSnap);
+     *     Integer port = portCfg.getValue(cfgSnap);
+     * </pre>
+     *
+     * Note that there is no <em>close</em> on the snapshot.
+     * They should be used as local variables inside a method.
+     * Values will not be reloaded for an open {@link ConfigSnapshot}.
+     *
+     * @param configValues the list of {@link ConfigValue} to be accessed in an atomic way
+     *
+     * @return a new {@link ConfigSnapshot} which holds the resolved values of all the {@param configValues}.
+     */
+    ConfigSnapshot snapshotFor(ConfigValue<?>... configValues);
+
 
     /**
      * Return all property names used in any of the underlying {@link ConfigSource ConfigSources}.
