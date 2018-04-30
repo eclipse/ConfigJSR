@@ -38,6 +38,5 @@ package javax.config;
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
  * @author <a href="mailto:rmannibucau@apache.org">Romain Manni-Bucau</a>
  */
-public interface ConfigSnapshot
-{
+public interface ConfigSnapshot {
 }

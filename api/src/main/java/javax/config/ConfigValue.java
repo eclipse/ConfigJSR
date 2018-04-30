@@ -166,7 +166,7 @@ public interface ConfigValue<T> {
      * The check is performed on every call to {@link #getValue()}
      * and also inside {@link Config#snapshotFor(ConfigValue[])}.
      *
-     * If a change got detected the {@param valueChangedCallback} will
+     * If a change got detected the {@code valueChangedCallback} will
      * get invoked in a synchronous way before the {@link #getValue()}
      * or {@link Config#snapshotFor(ConfigValue[])} returns.
      *

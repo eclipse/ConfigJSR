@@ -173,7 +173,7 @@ public interface Config {
      *
      * @param configValues the list of {@link ConfigValue} to be accessed in an atomic way
      *
-     * @return a new {@link ConfigSnapshot} which holds the resolved values of all the {@param configValues}.
+     * @return a new {@link ConfigSnapshot} which holds the resolved values of all the {@code configValues}.
      */
     ConfigSnapshot snapshotFor(ConfigValue<?>... configValues);
 
