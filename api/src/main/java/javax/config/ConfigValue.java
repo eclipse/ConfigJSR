@@ -145,11 +145,12 @@ public interface ConfigValue<T> {
      * <pre>
      * String tenant = getCurrentTenant();
      * Integer timeout = config.access("some.server.url")
-     *                         .withLookupChain("tenant, ${javaconfig.projectStage} )
+     *                         .withLookupChain(tenant, "${javaconfig.projectStage}" )
      *                         .getValue();
      * </pre>
      *
-     * Given the current tenant name is 'myComp' and the projectStage is 'Production' this would lead to the following lookup order:
+     * Given the current tenant name is 'myComp' and the property
+     * {@code javaconfig.projectStage} is 'Production' this would lead to the following lookup order:
      *
      * <ul>
      *     <li>"some.server.url.myComp.Production</li>
@@ -157,6 +158,11 @@ public interface ConfigValue<T> {
      *     <li>"some.server.url.Production</li>
      *     <li>"some.server.url</li>
      * </ul>
+     *
+     * The algorithm to use in {@link #getValue()} is a binary count down.
+     * Every parameter is either available (1) or not (0).
+     * Having 3 parameters, we start with binary {@code 111} and count down to zero.
+     * The first combination which resolves to a result is being treated as result.
      *
      * @return This builder
      */
