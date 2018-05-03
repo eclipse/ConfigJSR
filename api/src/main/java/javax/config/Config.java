@@ -130,9 +130,10 @@ public interface Config {
     /**
      * Create a {@link ConfigValue} to access the underlying configuration.
      *
-     * @param key the property key
+     * @param propertyName the property key
+     * @return a {@code ConfigValue} to access the given propertyName
      */
-    ConfigValue<String> access(String key);
+    ConfigValue<String> access(String propertyName);
 
     /**
      * <p>This method can be used to access multiple

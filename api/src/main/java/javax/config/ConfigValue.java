@@ -58,6 +58,9 @@ public interface ConfigValue<T> {
      *                         .getValue();
      * </pre>
      *
+     * Attention: this method should always be the first to be used and might
+     * return a new {@code ConfigValue} for the given target clazz.
+     *
      *
      * @param clazz The target type
      * @param <N> The target type
@@ -90,10 +93,9 @@ public interface ConfigValue<T> {
      * default (see {@link #as(Class)} then the provided converter is used instead of the built-in one.
      *
      * @param converter The converter for the target type
-     * @param <N> The target type
      * @return This builder as a typed ConfigValue
      */
-    <N> ConfigValue<N> useConverter(Converter<N> converter);
+    ConfigValue<T> useConverter(Converter<T> converter);
 
     /**
      * Sets the default value to use in case the resolution returns null.
