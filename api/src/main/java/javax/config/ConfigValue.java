@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 
 /**
@@ -113,9 +114,14 @@ public interface ConfigValue<T> {
     ConfigValue<T> withStringDefault(String value);
 
     /**
-     * Specify that a resolved value will get cached for a certain amount of time.
+     * Specify that a resolved value will get cached for a certain maximum amount of time.
      * After the time expires the next {@link #getValue()} will again resolve the value
      * from the underlying {@link javax.config.Config}.
+     *
+     * Note that that the cache will get flushed if a {@code ConfigSource} notifies
+     * the underlying {@link Config} about a value change.
+     * This is done by invoking the callback provided to the {@code ConfigSource} via
+     * {@link javax.config.spi.ConfigSource#setOnAttributeChange(Consumer)}.
      *
      * @param value the amount of the TimeUnit to wait
      * @param timeUnit the TimeUnit for the value
@@ -174,7 +180,7 @@ public interface ConfigValue<T> {
      * The check is performed on every call to {@link #getValue()}
      * and also inside {@link Config#snapshotFor(ConfigValue[])}.
      *
-     * If a change got detected the {@code valueChangedCallback} will
+     * If a change got detected (object {@code equals()}) the {@code valueChangedCallback} will
      * get invoked in a synchronous way before the {@link #getValue()}
      * or {@link Config#snapshotFor(ConfigValue[])} returns.
      *
@@ -200,6 +206,7 @@ public interface ConfigValue<T> {
     /**
      * Returns the value from a previously taken {@link ConfigSnapshot}.
      *
+     * @param configSnapshot previously taken via {@link Config#snapshotFor(ConfigValue[])}
      * @return the resolved Value
      * @see Config#snapshotFor(ConfigValue[])
      * @throws IllegalArgumentException if the {@link ConfigSnapshot} hasn't been resolved
@@ -222,8 +229,8 @@ public interface ConfigValue<T> {
     String getKey();
 
     /**
-     * Returns the actual key which led to successful resolution and corresponds to the resolved value. This applies
-     * only when {@link #withLookupChain(String...)} is used.
+     * Returns the actual key which led to successful resolution and corresponds to the resolved value.
+     * This is mostly useful when {@link #withLookupChain(String...)} or {@link #evaluateVariables(boolean)} is used.
      * Otherwise the resolved key should always be equal to the original key.
      * This method is provided for cases, when arameterized resolution is
      * requested but the value for such appended key is not found and some of the fallback keys is used.
@@ -245,7 +252,7 @@ public interface ConfigValue<T> {
      */
     @FunctionalInterface
     interface ConfigChanged {
-        <T> void onValueChange(String key, T oldValue, T newValue);
+        <T> void onValueChange(String propertyName, T oldValue, T newValue);
     }
 
 }
