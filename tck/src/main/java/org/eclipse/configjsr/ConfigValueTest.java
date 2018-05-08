@@ -19,6 +19,7 @@
 package org.eclipse.configjsr;
 
 import org.eclipse.configjsr.base.AbstractTest;
+import org.eclipse.configjsr.configsources.ConfigurableConfigSource;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -30,6 +31,7 @@ import org.testng.annotations.Test;
 
 import javax.config.Config;
 import javax.config.ConfigValue;
+import javax.config.spi.ConfigSource;
 import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
 
@@ -47,6 +49,7 @@ public class ConfigValueTest extends Arquillian {
             .addPackage(AbstractTest.class.getPackage())
             .addClass(ConfigValueTest.class)
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsServiceProvider(ConfigSource.class, ConfigurableConfigSource.class)
             .as(JavaArchive.class);
 
         AbstractTest.addFile(testJar, "META-INF/javaconfig.properties");
@@ -83,6 +86,9 @@ public class ConfigValueTest extends Arquillian {
 
     @Test
     public void testLookupChain() {
+        // set the projectstage to 'Production'
+        ConfigurableConfigSource.configure(config, "javaconfig.projectStage", "Production");
+
         /**
          * 1  1 -> com.foo.myapp.mycorp.Production
          * 1  0 -> com.foo.myapp.mycorp
@@ -90,14 +96,22 @@ public class ConfigValueTest extends Arquillian {
          * 0  0 -> com.foo.myapp
          *
          */
-        String cv = config.access("com.foo.myapp")
-            .withLookupChain("mycorp", "${javaconfig.projectStage}")
-            .getValue();
+        ConfigValue<String> cv = config.access("com.foo.myapp")
+            .withLookupChain("mycorp", "${javaconfig.projectStage}");
 
-        //X TODO continue/finish
+        Assert.assertFalse(cv.getOptionalValue().isPresent());
 
+        ConfigurableConfigSource.configure(config, "com.foo.myapp", "TheDefault");
+        Assert.assertEquals(cv.getValue(), "TheDefault");
 
-        config.getValue("mykey", Integer[].class);
+        ConfigurableConfigSource.configure(config, "com.foo.myapp.Production", "BasicWithProjectStage");
+        Assert.assertEquals(cv.getValue(), "BasicWithProjectStage");
+
+        ConfigurableConfigSource.configure(config, "com.foo.myapp.mycorp", "WithTenant");
+        Assert.assertEquals(cv.getValue(), "WithTenant");
+
+        ConfigurableConfigSource.configure(config, "com.foo.myapp.mycorp.Production", "WithTenantAndProjectStage");
+        Assert.assertEquals(cv.getValue(), "WithTenantAndProjectStage");
     }
 
     @Test
@@ -162,35 +176,12 @@ public class ConfigValueTest extends Arquillian {
         Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.y_uppercase").as(Boolean.class).getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.ja").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.ja_uppercase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.ja_mixedcase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
+        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.no").as(Boolean.class).getValue(),
+            Boolean.FALSE);
 
         Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.no_mixedcase").as(Boolean.class).getValue(),
             Boolean.FALSE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.j").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.j_uppercase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.n_uppercase").as(Boolean.class).getValue(),
-            Boolean.FALSE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.oui").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.oui_uppercase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.oui_mixedcase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
     }
 
     @Test
