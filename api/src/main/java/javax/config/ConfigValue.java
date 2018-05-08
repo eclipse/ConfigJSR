@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 
 /**
@@ -175,25 +174,6 @@ public interface ConfigValue<T> {
     ConfigValue<T> withLookupChain(String... postfixNames);
 
     /**
-     * A user can register a Callback which gets notified whenever
-     * a config change got detected.
-     * The check is performed on every call to {@link #getValue()}
-     * and also inside {@link Config#snapshotFor(ConfigValue[])}.
-     *
-     * If a change got detected (object {@code equals()}) the {@code valueChangedCallback} will
-     * get invoked in a synchronous way before the {@link #getValue()}
-     * or {@link Config#snapshotFor(ConfigValue[])} returns.
-     *
-     * There can only be a single valueChangedCallback.
-     * Using this method multiple times will replace the previously set callback.
-     *
-     * @param valueChangedCallback a lambda or implementation which will get invoked
-     *                             whenever a value change is being detected.
-     * @return This builder
-     */
-    ConfigValue<T> onChange(ConfigChanged valueChangedCallback);
-
-    /**
      * Returns the converted resolved filtered value.
      * @return the resolved value
      *
@@ -246,13 +226,5 @@ public interface ConfigValue<T> {
      * @return the default value or {@code null}
      */
     T getDefaultValue();
-
-    /**
-     * Callback which can be used with {@link #onChange(ConfigChanged)}
-     */
-    @FunctionalInterface
-    interface ConfigChanged {
-        <T> void onValueChange(String propertyName, T oldValue, T newValue);
-    }
 
 }
