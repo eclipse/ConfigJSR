@@ -80,7 +80,7 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
          Assert.fail("Before running this test, the environment variable \"my_int_property\" must be set with the value of 45");
         }
         if (!"true".equals(System.getenv("MY_BOOLEAN_PROPERTY"))) {
-            Assert.fail("Before running this test, the environment variable \"MY_BOOLEAN_Property\" must be set with the value of true");
+            Assert.fail("Before running this test, the environment variable \"MY_BOOLEAN_PROPERTY\" must be set with the value of true");
         }
         if (!"haha".equals(System.getenv("my_string_property"))) {
             Assert.fail("Before running this test, the environment variable \"my_string_property\" must be set with the value of haha");
