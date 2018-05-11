@@ -205,4 +205,23 @@ public class ConfigValueTest extends Arquillian {
         Thread.sleep(60);
         Assert.assertEquals(val.getValue(), "secondvalue");
     }
+
+    @Test
+    public void testGetDefaultValue() {
+        String key = "tck.config.test.javaconfig.somerandom.key";
+
+        ConfigValue<String> val = config.access(key);
+        Assert.assertNull(val.getDefaultValue());
+
+        ConfigValue<String> val2 = config.access(key).withDefault("abc");
+        Assert.assertEquals(val2.getDefaultValue(), "abc");
+
+        ConfigValue<Integer> vali = config.access(key).as(Integer.class).withDefault(123);
+        Assert.assertEquals(vali.getDefaultValue(), Integer.valueOf(123));
+
+        ConfigValue<Integer> vali2 = config.access(key).as(Integer.class).withStringDefault("123");
+        Assert.assertEquals(vali2.getDefaultValue(), Integer.valueOf(123));
+
+
+    }
 }
