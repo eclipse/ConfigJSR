@@ -224,8 +224,8 @@ public interface ConfigValue<T> {
 
     /**
      * Returns the default value provided by {@link #withDefault(Object)} or {@link #withStringDefault(String)}.
-     * Returns null if no default was provided.
-     * @return the default value or {@code null}
+     *
+     * @return the default value or {@code null} if no default was provided.
      */
     T getDefaultValue();
 
