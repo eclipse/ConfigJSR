@@ -63,7 +63,7 @@ public interface ConfigBuilder {
     /**
      * Add the converters to be loaded via service loader pattern
      *
-     * @return the ConfigBuilder with the autodiscovered converters
+     * @return the ConfigBuilder with the auto-discovered converters
      */
     ConfigBuilder addDiscoveredConverters();
     /**

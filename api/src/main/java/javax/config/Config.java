@@ -60,7 +60,7 @@ import javax.config.spi.ConfigSource;
  *   Integer archivePort = cfg.getValue("my.project.archive.port", Integer.class);
  * </pre>
  *
- * <p>For accessing a coniguration in a dynamic way you can also use {@link #access(String)}.
+ * <p>For accessing a configuration in a dynamic way you can also use {@link #access(String)}.
  * This method returns a builder-style {@link ConfigValue} instance for the given key.
  * You can further specify a Type of the underlying configuration, a cache time, lookup paths and
  * many more.
@@ -146,7 +146,7 @@ public interface Config {
      * A user can register a lambda which gets notified when any configured value
      * got changed. The parameter are the config key names which did change.
      *
-     * @param configChangedListener
+     * @param configChangedListener the consumer to be notified when one or more keys changed
      */
     void registerConfigChangedListener(Consumer<Set<String>> configChangedListener);
 }
