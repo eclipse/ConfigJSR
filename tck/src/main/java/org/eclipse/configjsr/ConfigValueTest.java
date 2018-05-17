@@ -103,19 +103,19 @@ public class ConfigValueTest extends Arquillian {
 
         ConfigurableConfigSource.configure(config, "com.foo.myapp", "TheDefault");
         Assert.assertEquals(cv.getValue(), "TheDefault");
-        Assert.assertEquals(cv.getResolvedKey(), "com.foo.myapp");
+        Assert.assertEquals(cv.getResolvedPropertyName(), "com.foo.myapp");
 
         ConfigurableConfigSource.configure(config, "com.foo.myapp.Production", "BasicWithProjectStage");
         Assert.assertEquals(cv.getValue(), "BasicWithProjectStage");
-        Assert.assertEquals(cv.getResolvedKey(), "com.foo.myapp.Production");
+        Assert.assertEquals(cv.getResolvedPropertyName(), "com.foo.myapp.Production");
 
         ConfigurableConfigSource.configure(config, "com.foo.myapp.mycorp", "WithTenant");
         Assert.assertEquals(cv.getValue(), "WithTenant");
-        Assert.assertEquals(cv.getResolvedKey(), "com.foo.myapp.mycorp");
+        Assert.assertEquals(cv.getResolvedPropertyName(), "com.foo.myapp.mycorp");
 
         ConfigurableConfigSource.configure(config, "com.foo.myapp.mycorp.Production", "WithTenantAndProjectStage");
         Assert.assertEquals(cv.getValue(), "WithTenantAndProjectStage");
-        Assert.assertEquals(cv.getResolvedKey(), "com.foo.myapp.mycorp.Production");
+        Assert.assertEquals(cv.getResolvedPropertyName(), "com.foo.myapp.mycorp.Production");
     }
 
     @Test

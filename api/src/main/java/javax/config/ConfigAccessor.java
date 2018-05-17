@@ -201,10 +201,10 @@ public interface ConfigAccessor<T> {
     Optional<T> getOptionalValue();
 
     /**
-     * Returns the key given in {@link javax.config.Config#access(String)}.
-     * @return the original key
+     * Returns the property name key given in {@link javax.config.Config#access(String)}.
+     * @return the original property name
      */
-    String getKey();
+    String getPropertyName();
 
     /**
      * Returns the actual key which led to successful resolution and corresponds to the resolved value.
@@ -217,8 +217,9 @@ public interface ConfigAccessor<T> {
      * null).
      *
      * Note that this will only give you the resolved key from the last non-cached value resolving.
+     * @return the actual property name which led to successful resolution and corresponds to the resolved value.
      */
-    String getResolvedKey();
+    String getResolvedPropertyName();
 
     /**
      * Returns the default value provided by {@link #withDefault(Object)} or {@link #withStringDefault(String)}.
