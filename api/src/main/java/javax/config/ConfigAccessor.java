@@ -186,7 +186,7 @@ public interface ConfigAccessor<T> {
      *
      * @param configSnapshot previously taken via {@link Config#snapshotFor(ConfigAccessor[])}
      * @return the resolved Value
-     * @see Config#snapshotFor(ConfigAccessor[])
+     * @see Config#snapshotFor(ConfigAccessor...)
      * @throws IllegalArgumentException if the {@link ConfigSnapshot} hasn't been resolved
      *          for this {@link ConfigAccessor}
      */

@@ -29,11 +29,11 @@ package javax.config;
 /**
  * A value holder for ConfigAccessor values which all got resolved in a guaranteed atomic way.
  *
- * @see Config#snapshotFor(ConfigAccessor[])
+ * @see Config#snapshotFor(ConfigAccessor...)
  * @see ConfigAccessor#getValue(ConfigSnapshot)
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
- * @author Manfred Huber
+ * @author <a href="mailto:manfred.huber@downdrown.at">Manfred Huber</a>
  * @author <a href="mailto:alexander.falb@rise-world.com">Alex Falb</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
  * @author <a href="mailto:rmannibucau@apache.org">Romain Manni-Bucau</a>
