@@ -88,9 +88,7 @@ public interface ConfigValue<T> {
     ConfigValue<Set<T>> asSet();
 
     /**
-     * Sets the type of the configuration entry to the given class, sets the converter to the one given and
-     * returns this builder. If a converter is provided for one of the types supported by
-     * default (see {@link #as(Class)} then the provided converter is used instead of the built-in one.
+     * Defines a {@link Converter} to be used instead of the default Converter resolving logic.
      *
      * @param converter The converter for the target type
      * @return This builder as a typed ConfigValue
@@ -120,7 +118,7 @@ public interface ConfigValue<T> {
      * Note that that the cache will get flushed if a {@code ConfigSource} notifies
      * the underlying {@link Config} about a value change.
      * This is done by invoking the callback provided to the {@code ConfigSource} via
-     * {@link javax.config.spi.ConfigSource#setOnAttributeChange(Consumer)}.
+     * {@link javax.config.spi.ConfigSource#setOnAttributeChange(java.util.function.Consumer)}.
      *
      * @param value the amount of the TimeUnit to wait
      * @param timeUnit the TimeUnit for the value
