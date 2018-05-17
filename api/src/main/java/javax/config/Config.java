@@ -62,7 +62,7 @@ import javax.config.spi.ConfigSource;
  * </pre>
  *
  * <p>For accessing a coniguration in a dynamic way you can also use {@link #access(String)}.
- * This method returns a builder-style {@link ConfigValue} instance for the given key.
+ * This method returns a builder-style {@link ConfigAccessor} instance for the given key.
  * You can further specify a Type of the underlying configuration, a cache time, lookup paths and
  * many more.
  *
@@ -128,16 +128,16 @@ public interface Config {
     <T> Optional<T> getOptionalValue(String propertyName, Class<T> propertyType);
 
     /**
-     * Create a {@link ConfigValue} to access the underlying configuration.
+     * Create a {@link ConfigAccessor} to access the underlying configuration.
      *
      * @param propertyName the property key
-     * @return a {@code ConfigValue} to access the given propertyName
+     * @return a {@code ConfigAccessor} to access the given propertyName
      */
-    ConfigValue<String> access(String propertyName);
+    ConfigAccessor<String> access(String propertyName);
 
     /**
      * <p>This method can be used to access multiple
-     * {@link ConfigValue} which must be consistent.
+     * {@link ConfigAccessor} which must be consistent.
      * The returned {@link ConfigSnapshot} is an immutable object which contains all the
      * resolved values at the time of calling this method.
      *
@@ -172,11 +172,11 @@ public interface Config {
      * They should be used as local variables inside a method.
      * Values will not be reloaded for an open {@link ConfigSnapshot}.
      *
-     * @param configValues the list of {@link ConfigValue} to be accessed in an atomic way
+     * @param configValues the list of {@link ConfigAccessor} to be accessed in an atomic way
      *
      * @return a new {@link ConfigSnapshot} which holds the resolved values of all the {@code configValues}.
      */
-    ConfigSnapshot snapshotFor(ConfigValue<?>... configValues);
+    ConfigSnapshot snapshotFor(ConfigAccessor<?>... configValues);
 
 
     /**

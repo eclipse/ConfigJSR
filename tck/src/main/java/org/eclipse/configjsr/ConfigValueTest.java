@@ -30,7 +30,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.config.Config;
-import javax.config.ConfigValue;
+import javax.config.ConfigAccessor;
 import javax.config.spi.ConfigSource;
 import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
@@ -68,7 +68,7 @@ public class ConfigValueTest extends Arquillian {
 
     @Test
     public void testGetValueWithDefault() {
-        ConfigValue<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting")
+        ConfigAccessor<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting")
                 .as(Integer.class)
                 .withDefault(Integer.valueOf(1234));
 
@@ -77,7 +77,7 @@ public class ConfigValueTest extends Arquillian {
 
     @Test
     public void testGetValueWithStringDefault() {
-        ConfigValue<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting")
+        ConfigAccessor<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting")
                 .as(Integer.class)
                 .withStringDefault("1234");
 
@@ -96,7 +96,7 @@ public class ConfigValueTest extends Arquillian {
          * 0  0 -> com.foo.myapp
          *
          */
-        ConfigValue<String> cv = config.access("com.foo.myapp")
+        ConfigAccessor<String> cv = config.access("com.foo.myapp")
             .withLookupChain("mycorp", "${javaconfig.projectStage}");
 
         Assert.assertFalse(cv.getOptionalValue().isPresent());
@@ -192,7 +192,7 @@ public class ConfigValueTest extends Arquillian {
     public void testCacheFor() throws Exception {
         String key = "tck.config.test.javaconfig.cachefor.key";
         System.setProperty(key, "firstvalue");
-        ConfigValue<String> val = config.access(key).cacheFor(30, TimeUnit.MILLISECONDS);
+        ConfigAccessor<String> val = config.access(key).cacheFor(30, TimeUnit.MILLISECONDS);
         Assert.assertEquals(val.getValue(), "firstvalue");
 
         // immediately change the value
@@ -210,18 +210,18 @@ public class ConfigValueTest extends Arquillian {
     public void testDefaultValue() {
         String key = "tck.config.test.javaconfig.somerandom.default.key";
 
-        ConfigValue<String> val = config.access(key);
+        ConfigAccessor<String> val = config.access(key);
         Assert.assertNull(val.getDefaultValue());
 
-        ConfigValue<String> val2 = config.access(key).withDefault("abc");
+        ConfigAccessor<String> val2 = config.access(key).withDefault("abc");
         Assert.assertEquals(val2.getDefaultValue(), "abc");
         Assert.assertEquals(val2.getValue(), "abc");
 
-        ConfigValue<Integer> vali = config.access(key).as(Integer.class).withDefault(123);
+        ConfigAccessor<Integer> vali = config.access(key).as(Integer.class).withDefault(123);
         Assert.assertEquals(vali.getDefaultValue(), Integer.valueOf(123));
         Assert.assertEquals(vali.getValue(), Integer.valueOf(123));
 
-        ConfigValue<Integer> vali2 = config.access(key).as(Integer.class).withStringDefault("123");
+        ConfigAccessor<Integer> vali2 = config.access(key).as(Integer.class).withStringDefault("123");
         Assert.assertEquals(vali2.getDefaultValue(), Integer.valueOf(123));
         Assert.assertEquals(vali2.getValue(), Integer.valueOf(123));
 

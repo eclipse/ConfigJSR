@@ -22,7 +22,7 @@ package org.eclipse.configjsr;
 import java.util.concurrent.TimeUnit;
 
 import javax.config.Config;
-import javax.config.ConfigValue;
+import javax.config.ConfigAccessor;
 import javax.config.spi.ConfigSource;
 import javax.inject.Inject;
 
@@ -74,7 +74,7 @@ public class DynamicConfigSourceTest extends Arquillian {
 
     @Test
     public void testValueInvalidationOnConfigChange() throws Exception {
-        ConfigValue<Integer> valCfg = config.access(DynamicChangeConfigSource.TEST_ATTRIBUTE)
+        ConfigAccessor<Integer> valCfg = config.access(DynamicChangeConfigSource.TEST_ATTRIBUTE)
             .as(Integer.class)
             .cacheFor(15, TimeUnit.MINUTES);
 

@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
  */
-public interface ConfigValue<T> {
+public interface ConfigAccessor<T> {
 
     /**
      * Sets the type of the configuration entry to the given class and returns this builder.
@@ -66,7 +66,7 @@ public interface ConfigValue<T> {
      * @param <N> The target type
      * @return This builder as a typed ConfigValue
      */
-    <N> ConfigValue<N> as(Class<N> clazz);
+    <N> ConfigAccessor<N> as(Class<N> clazz);
 
     /**
      * Declare the ConfigValue to return a List of the given Type.
@@ -77,7 +77,7 @@ public interface ConfigValue<T> {
      *
      * @return a ConfigValue for a list of configured comma separated values
      */
-    ConfigValue<List<T>> asList();
+    ConfigAccessor<List<T>> asList();
 
     /**
      * Declare the ConfigValue to return a Set of the given Type.
@@ -85,7 +85,7 @@ public interface ConfigValue<T> {
      *
      * @return a ConfigValue for a list of configured comma separated values
      */
-    ConfigValue<Set<T>> asSet();
+    ConfigAccessor<Set<T>> asSet();
 
     /**
      * Defines a {@link Converter} to be used instead of the default Converter resolving logic.
@@ -93,14 +93,14 @@ public interface ConfigValue<T> {
      * @param converter The converter for the target type
      * @return This builder as a typed ConfigValue
      */
-    ConfigValue<T> useConverter(Converter<T> converter);
+    ConfigAccessor<T> useConverter(Converter<T> converter);
 
     /**
      * Sets the default value to use in case the resolution returns null.
      * @param value the default value
      * @return This builder
      */
-    ConfigValue<T> withDefault(T value);
+    ConfigAccessor<T> withDefault(T value);
 
     /**
      * Sets the default value to use in case the resolution returns null. Converts the given String to the type of
@@ -108,7 +108,7 @@ public interface ConfigValue<T> {
      * @param value string value to be converted and used as default
      * @return This builder
      */
-    ConfigValue<T> withStringDefault(String value);
+    ConfigAccessor<T> withStringDefault(String value);
 
     /**
      * Specify that a resolved value will get cached for a certain maximum amount of time.
@@ -124,7 +124,7 @@ public interface ConfigValue<T> {
      * @param timeUnit the TimeUnit for the value
      * @return This builder
      */
-    ConfigValue<T> cacheFor(long value, TimeUnit timeUnit);
+    ConfigAccessor<T> cacheFor(long value, TimeUnit timeUnit);
 
     /**
      * Whether to evaluate variables in configured values.
@@ -139,7 +139,7 @@ public interface ConfigValue<T> {
      * @param evaluateVariables whether to evaluate variables in values or not
      * @return This builder
      */
-    ConfigValue<T> evaluateVariables(boolean evaluateVariables);
+    ConfigAccessor<T> evaluateVariables(boolean evaluateVariables);
 
     /**
      * Appends the resolved value of the given property to the key of this builder.
@@ -169,7 +169,7 @@ public interface ConfigValue<T> {
      *
      * @return This builder
      */
-    ConfigValue<T> withLookupChain(String... postfixNames);
+    ConfigAccessor<T> withLookupChain(String... postfixNames);
 
     /**
      * Returns the converted resolved filtered value.
@@ -184,11 +184,11 @@ public interface ConfigValue<T> {
     /**
      * Returns the value from a previously taken {@link ConfigSnapshot}.
      *
-     * @param configSnapshot previously taken via {@link Config#snapshotFor(ConfigValue[])}
+     * @param configSnapshot previously taken via {@link Config#snapshotFor(ConfigAccessor[])}
      * @return the resolved Value
-     * @see Config#snapshotFor(ConfigValue[])
+     * @see Config#snapshotFor(ConfigAccessor[])
      * @throws IllegalArgumentException if the {@link ConfigSnapshot} hasn't been resolved
-     *          for this {@link ConfigValue}
+     *          for this {@link ConfigAccessor}
      */
     T getValue(ConfigSnapshot configSnapshot);
 

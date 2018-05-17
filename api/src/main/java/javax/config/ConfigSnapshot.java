@@ -27,10 +27,10 @@
 package javax.config;
 
 /**
- * A value holder for TypedResolver values which all got resolved in a guaranteed atomic way.
+ * A value holder for ConfigAccessor values which all got resolved in a guaranteed atomic way.
  *
- * @see Config#snapshotFor(ConfigValue[])
- * @see ConfigValue#getValue(ConfigSnapshot)
+ * @see Config#snapshotFor(ConfigAccessor[])
+ * @see ConfigAccessor#getValue(ConfigSnapshot)
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author Manfred Huber
