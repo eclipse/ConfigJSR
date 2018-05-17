@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Contributors to the Eclipse Foundation
+ * Copyright (c) 2016-2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -19,10 +19,10 @@
  */
 package org.eclipse.configjsr;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import javax.config.Config;
+import javax.config.ConfigAccessor;
 import javax.config.spi.ConfigSource;
 import javax.inject.Inject;
 
@@ -33,12 +33,15 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 /**
+ *
+ *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
 public class DynamicConfigSourceTest extends Arquillian {
@@ -65,30 +68,39 @@ public class DynamicConfigSourceTest extends Arquillian {
     @Test
     public void testBgCount() throws Exception {
         Integer value = config.getValue(DynamicChangeConfigSource.TEST_ATTRIBUTE, Integer.class);
-        Thread.sleep(20L);
+        Thread.sleep(25L);
         Integer value2 = config.getValue(DynamicChangeConfigSource.TEST_ATTRIBUTE, Integer.class);
         assertTrue(value2 > value);
     }
 
     @Test
-    public void testBgCallback() throws Exception {
-        Integer value = config.getValue(DynamicChangeConfigSource.TEST_ATTRIBUTE, Integer.class);
-        Map<String, Integer> vals = new ConcurrentHashMap<>();
+    @Ignore("disabled for now, Emily and Tomas will come up with a better TCK test")
+    public void testValueInvalidationOnConfigChange() throws Exception {
+        ConfigAccessor<Integer> valCfg = config.access(DynamicChangeConfigSource.TEST_ATTRIBUTE)
+            .as(Integer.class)
+            .cacheFor(15, TimeUnit.MINUTES);
 
+        // we try to read the same value for 30 consecutive times
+        // it might happen that we have bad luck and the configsource switches values
+        // just as we do this. In which case we need to start over again.
+        //
+        boolean restarted = false;
+        Integer initialValue = valCfg.getValue();
+        for (int i = 0; i< 30; i++) {
+            if (initialValue != valCfg.getValue()) {
+                if (restarted) {
+                    Assert.fail("Value got changed mulitple times. This must not happen!");
+                }
+                else {
+                    i = 0;
+                    initialValue = valCfg.getValue();
+                    restarted = true;
+                }
+            }
+        }
 
-        config.registerConfigChangedListener(s -> s.forEach(k -> vals.put(k, config.getValue(k, Integer.class))));
-        vals.clear();
-
-        Thread.sleep(12L);
-        assertEquals(1, vals.size());
-
-        int i1 = vals.get(DynamicChangeConfigSource.TEST_ATTRIBUTE);
-
-        Thread.sleep(15L);
-        assertEquals(1, vals.size());
-
-        int i2 = vals.get(DynamicChangeConfigSource.TEST_ATTRIBUTE);
-        assertTrue(i2 > i1);
+        Thread.sleep(25L);
+        assertTrue(valCfg.getValue() > initialValue);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Contributors to the Eclipse Foundation
+ * Copyright (c) 2016-2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -60,8 +60,8 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
             .create(JavaArchive.class, "CDIPropertyNameMatchingTest.jar")
             .addClasses(CDIPropertyNameMatchingTest.class, SimpleValuesBean.class)
             .addAsManifestResource(new StringAsset(
-                    "my.int.property=3"+
-                        "\nmy.string.property=fake"),
+                    "envconfig.my.int.property=3"+
+                        "\nenvconfig.my.string.property=fake"),
                 "javaconfig.properties")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .as(JavaArchive.class);
@@ -76,17 +76,17 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
     public void checkSetup() {
        //check whether the environment variables were populated by the executor correctly
 
-        if (!"45".equals(System.getenv("my_int_property"))) {
-         Assert.fail("Before running this test, the environment variable \"my_int_property\" must be set with the value of 45");
+        if (!"45".equals(System.getenv("envconfig_my_int_property"))) {
+         Assert.fail("Before running this test, the environment variable \"envconfig_my_int_property\" must be set with the value of 45");
         }
-        if (!"true".equals(System.getenv("MY_BOOLEAN_PROPERTY"))) {
-            Assert.fail("Before running this test, the environment variable \"MY_BOOLEAN_Property\" must be set with the value of true");
+        if (!"true".equals(System.getenv("ENVCONFIG_MY_BOOLEAN_PROPERTY"))) {
+            Assert.fail("Before running this test, the environment variable \"ENVCONFIG_MY_BOOLEAN_PROPERTY\" must be set with the value of true");
         }
-        if (!"haha".equals(System.getenv("my_string_property"))) {
-            Assert.fail("Before running this test, the environment variable \"my_string_property\" must be set with the value of haha");
+        if (!"haha".equals(System.getenv("envconfig_my_string_property"))) {
+            Assert.fail("Before running this test, the environment variable \"envconfig_my_string_property\" must be set with the value of haha");
         }
-        if (!"woohoo".equals(System.getenv("MY_STRING_PROPERTY"))) {
-            Assert.fail("Before running this test, the environment variable \"MY_STRING_PROPERTY\" must be set with the value of woohoo");
+        if (!"woohoo".equals(System.getenv("ENVCONFIG_MY_STRING_PROPERTY"))) {
+            Assert.fail("Before running this test, the environment variable \"ENVCONFIG_MY_STRING_PROPERTY\" must be set with the value of woohoo");
         }
 
     }
@@ -110,15 +110,15 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
     public static class SimpleValuesBean {
 
         @Inject
-        @ConfigProperty(name="my.string.property")
+        @ConfigProperty(name="envconfig.my.string.property")
         private String stringProperty;
 
         @Inject
-        @ConfigProperty(name="my.boolean.property")
+        @ConfigProperty(name="envconfig.my.boolean.property")
         private boolean booleanProperty;
 
         @Inject
-        @ConfigProperty(name="my.int.property")
+        @ConfigProperty(name="envconfig.my.int.property")
         private int intProperty;
     }
   }

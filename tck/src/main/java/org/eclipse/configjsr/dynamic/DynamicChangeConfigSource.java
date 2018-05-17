@@ -28,6 +28,8 @@ import java.util.function.Consumer;
 import javax.config.spi.ConfigSource;
 
 /**
+ * A ConfigSource which changes it's values in the background every 10 ms.
+ *
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  */
 public class DynamicChangeConfigSource implements ConfigSource, Closeable {
@@ -44,7 +46,9 @@ public class DynamicChangeConfigSource implements ConfigSource, Closeable {
             @Override
             public void run() {
                 while (i.incrementAndGet() < 10_000) {
-                    reportAttributeChange.accept(Collections.singleton(TEST_ATTRIBUTE));
+                    if (reportAttributeChange != null) {
+                        reportAttributeChange.accept(Collections.singleton(TEST_ATTRIBUTE));
+                    }
                     try {
                         Thread.sleep(10L);
                     }
@@ -60,6 +64,8 @@ public class DynamicChangeConfigSource implements ConfigSource, Closeable {
     @Override
     public void close() throws IOException {
         i.set(10_001);
+        worker.interrupt();
+        worker = null;
     }
 
     @Override

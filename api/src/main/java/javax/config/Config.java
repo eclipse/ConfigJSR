@@ -1,6 +1,6 @@
 /*
  *******************************************************************************
- * Copyright (c) 2011-2017 Contributors to the Eclipse Foundation
+ * Copyright (c) 2011-2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -26,14 +26,15 @@
  *      Extracted the Config part out of Apache DeltaSpike and proposed as Microprofile-Config
  *   2016-11-14 - Emily Jiang / IBM Corp
  *      Experiments with separate methods per type, JavaDoc, method renaming
+ *   2018-04-04 - Mark Struberg, Manfred Huber, Alex Falb, Gerhard Petracek
+ *      ConfigSnapshot added. Initially authored in Apache DeltaSpike fdd1e3dcd9a12ceed831dd
+ *      Additional reviews and feedback by Tomas Langer.
  *
  *******************************************************************************/
 
 package javax.config;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.function.Consumer;
 
 import javax.config.spi.ConfigSource;
 
@@ -61,7 +62,7 @@ import javax.config.spi.ConfigSource;
  * </pre>
  *
  * <p>For accessing a configuration in a dynamic way you can also use {@link #access(String)}.
- * This method returns a builder-style {@link ConfigValue} instance for the given key.
+ * This method returns a builder-style {@link ConfigAccessor} instance for the given key.
  * You can further specify a Type of the underlying configuration, a cache time, lookup paths and
  * many more.
  *
@@ -84,6 +85,8 @@ import javax.config.spi.ConfigSource;
  * @author <a href="mailto:rsmeral@apache.org">Ron Smeral</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  * @author <a href="mailto:gunnar@hibernate.org">Gunnar Morling</a>
+ * @author <a href="mailto:manfred.huber@downdrown.at">Manfred Huber</a>
+ * @author <a href="mailto:alexander.falb@rise-world.com">Alex Falb</a>
  *
  */
 public interface Config {
@@ -125,11 +128,56 @@ public interface Config {
     <T> Optional<T> getOptionalValue(String propertyName, Class<T> propertyType);
 
     /**
-     * Create a {@link ConfigValue} to access the underlying configuration.
+     * Create a {@link ConfigAccessor} to access the underlying configuration.
      *
-     * @param key the property key
+     * @param propertyName the property key
+     * @return a {@code ConfigAccessor} to access the given propertyName
      */
-    ConfigValue<String> access(String key);
+    ConfigAccessor<String> access(String propertyName);
+
+    /**
+     * <p>This method can be used to access multiple
+     * {@link ConfigAccessor} which must be consistent.
+     * The returned {@link ConfigSnapshot} is an immutable object which contains all the
+     * resolved values at the time of calling this method.
+     *
+     * <p>An example would be to access some {@code 'myapp.host'} and {@code 'myapp.port'}:
+     * The underlying values are {@code 'oldserver'} and {@code '8080'}.
+     *
+     * <pre>
+     *     // get the current host value
+     *     ConfigValue&lt;String&gt; hostCfg config.resolve("myapp.host")
+     *              .cacheFor(60, TimeUnit.MINUTES);
+     *
+     *     // and right inbetween the underlying values get changed to 'newserver' and port 8082
+     *
+     *     // get the current port for the host
+     *     ConfigValue&lt;Integer&gt; portCfg config.resolve("myapp.port")
+     *              .cacheFor(60, TimeUnit.MINUTES);
+     * </pre>
+     *
+     * In ths above code we would get the combination of {@code 'oldserver'} but with the new port {@code 8081}.
+     * And this will obviously blow up because that host+port combination doesn't exist.
+     *
+     * To consistently access n different config values we can start a {@link ConfigSnapshot} for those values.
+     *
+     * <pre>
+     *     ConfigSnapshot cfgSnap = config.createSnapshot(hostCfg, portCfg);
+     *
+     *     String host = hostCfg.getValue(cfgSnap);
+     *     Integer port = portCfg.getValue(cfgSnap);
+     * </pre>
+     *
+     * Note that there is no <em>close</em> on the snapshot.
+     * They should be used as local variables inside a method.
+     * Values will not be reloaded for an open {@link ConfigSnapshot}.
+     *
+     * @param configValues the list of {@link ConfigAccessor} to be accessed in an atomic way
+     *
+     * @return a new {@link ConfigSnapshot} which holds the resolved values of all the {@code configValues}.
+     */
+    ConfigSnapshot snapshotFor(ConfigAccessor<?>... configValues);
+
 
     /**
      * Return all property names used in any of the underlying {@link ConfigSource ConfigSources}.
@@ -142,11 +190,4 @@ public interface Config {
      */
     Iterable<ConfigSource> getConfigSources();
 
-    /**
-     * A user can register a lambda which gets notified when any configured value
-     * got changed. The parameter are the config key names which did change.
-     *
-     * @param configChangedListener the consumer to be notified when one or more keys changed
-     */
-    void registerConfigChangedListener(Consumer<Set<String>> configChangedListener);
 }

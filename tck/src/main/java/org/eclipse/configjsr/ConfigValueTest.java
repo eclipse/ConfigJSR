@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017 Contributors to the Eclipse Foundation
+ * Copyright (c) 2016-2018 Contributors to the Eclipse Foundation
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information regarding copyright ownership.
@@ -19,6 +19,7 @@
 package org.eclipse.configjsr;
 
 import org.eclipse.configjsr.base.AbstractTest;
+import org.eclipse.configjsr.configsources.ConfigurableConfigSource;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -29,7 +30,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.config.Config;
-import javax.config.ConfigValue;
+import javax.config.ConfigAccessor;
+import javax.config.spi.ConfigSource;
 import javax.inject.Inject;
 import java.util.concurrent.TimeUnit;
 
@@ -47,6 +49,7 @@ public class ConfigValueTest extends Arquillian {
             .addPackage(AbstractTest.class.getPackage())
             .addClass(ConfigValueTest.class)
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addAsServiceProvider(ConfigSource.class, ConfigurableConfigSource.class)
             .as(JavaArchive.class);
 
         AbstractTest.addFile(testJar, "META-INF/javaconfig.properties");
@@ -65,7 +68,7 @@ public class ConfigValueTest extends Arquillian {
 
     @Test
     public void testGetValueWithDefault() {
-        ConfigValue<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting")
+        ConfigAccessor<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting")
                 .as(Integer.class)
                 .withDefault(Integer.valueOf(1234));
 
@@ -74,7 +77,7 @@ public class ConfigValueTest extends Arquillian {
 
     @Test
     public void testGetValueWithStringDefault() {
-        ConfigValue<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting")
+        ConfigAccessor<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting")
                 .as(Integer.class)
                 .withStringDefault("1234");
 
@@ -83,6 +86,9 @@ public class ConfigValueTest extends Arquillian {
 
     @Test
     public void testLookupChain() {
+        // set the projectstage to 'Production'
+        ConfigurableConfigSource.configure(config, "javaconfig.projectStage", "Production");
+
         /**
          * 1  1 -> com.foo.myapp.mycorp.Production
          * 1  0 -> com.foo.myapp.mycorp
@@ -90,14 +96,26 @@ public class ConfigValueTest extends Arquillian {
          * 0  0 -> com.foo.myapp
          *
          */
-        String cv = config.access("com.foo.myapp")
-            .withLookupChain("mycorp", "${javaconfig.projectStage}")
-            .getValue();
+        ConfigAccessor<String> cv = config.access("com.foo.myapp")
+            .withLookupChain("mycorp", "${javaconfig.projectStage}");
 
-        //X TODO continue/finish
+        Assert.assertFalse(cv.getOptionalValue().isPresent());
 
+        ConfigurableConfigSource.configure(config, "com.foo.myapp", "TheDefault");
+        Assert.assertEquals(cv.getValue(), "TheDefault");
+        Assert.assertEquals(cv.getResolvedPropertyName(), "com.foo.myapp");
 
-        config.getValue("mykey", Integer[].class);
+        ConfigurableConfigSource.configure(config, "com.foo.myapp.Production", "BasicWithProjectStage");
+        Assert.assertEquals(cv.getValue(), "BasicWithProjectStage");
+        Assert.assertEquals(cv.getResolvedPropertyName(), "com.foo.myapp.Production");
+
+        ConfigurableConfigSource.configure(config, "com.foo.myapp.mycorp", "WithTenant");
+        Assert.assertEquals(cv.getValue(), "WithTenant");
+        Assert.assertEquals(cv.getResolvedPropertyName(), "com.foo.myapp.mycorp");
+
+        ConfigurableConfigSource.configure(config, "com.foo.myapp.mycorp.Production", "WithTenantAndProjectStage");
+        Assert.assertEquals(cv.getValue(), "WithTenantAndProjectStage");
+        Assert.assertEquals(cv.getResolvedPropertyName(), "com.foo.myapp.mycorp.Production");
     }
 
     @Test
@@ -162,42 +180,19 @@ public class ConfigValueTest extends Arquillian {
         Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.y_uppercase").as(Boolean.class).getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.ja").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.ja_uppercase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.ja_mixedcase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
+        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.no").as(Boolean.class).getValue(),
+            Boolean.FALSE);
 
         Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.no_mixedcase").as(Boolean.class).getValue(),
             Boolean.FALSE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.j").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.j_uppercase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.n_uppercase").as(Boolean.class).getValue(),
-            Boolean.FALSE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.oui").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.oui_uppercase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
-
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.oui_mixedcase").as(Boolean.class).getValue(),
-            Boolean.TRUE);
     }
 
     @Test
     public void testCacheFor() throws Exception {
         String key = "tck.config.test.javaconfig.cachefor.key";
         System.setProperty(key, "firstvalue");
-        ConfigValue<String> val = config.access(key).cacheFor(30, TimeUnit.MILLISECONDS);
+        ConfigAccessor<String> val = config.access(key).cacheFor(30, TimeUnit.MILLISECONDS);
         Assert.assertEquals(val.getValue(), "firstvalue");
 
         // immediately change the value
@@ -209,5 +204,31 @@ public class ConfigValueTest extends Arquillian {
         // but now let's wait a bit
         Thread.sleep(60);
         Assert.assertEquals(val.getValue(), "secondvalue");
+    }
+
+    @Test
+    public void testDefaultValue() {
+        String key = "tck.config.test.javaconfig.somerandom.default.key";
+
+        ConfigAccessor<String> val = config.access(key);
+        Assert.assertNull(val.getDefaultValue());
+
+        ConfigAccessor<String> val2 = config.access(key).withDefault("abc");
+        Assert.assertEquals(val2.getDefaultValue(), "abc");
+        Assert.assertEquals(val2.getValue(), "abc");
+
+        ConfigAccessor<Integer> vali = config.access(key).as(Integer.class).withDefault(123);
+        Assert.assertEquals(vali.getDefaultValue(), Integer.valueOf(123));
+        Assert.assertEquals(vali.getValue(), Integer.valueOf(123));
+
+        ConfigAccessor<Integer> vali2 = config.access(key).as(Integer.class).withStringDefault("123");
+        Assert.assertEquals(vali2.getDefaultValue(), Integer.valueOf(123));
+        Assert.assertEquals(vali2.getValue(), Integer.valueOf(123));
+
+        System.setProperty(key, "666");
+        Assert.assertEquals(vali2.getDefaultValue(), Integer.valueOf(123));
+        Assert.assertEquals(vali2.getValue(), Integer.valueOf(666));
+
+
     }
 }
