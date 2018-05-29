@@ -3,3 +3,4 @@
 Bundle-SymbolicName: javax.config
 Bundle-Name: JavaConfig Bundle
 Bundle-License: Apache License, Version 2.0
+Automatic-Module-Name: javax.config
