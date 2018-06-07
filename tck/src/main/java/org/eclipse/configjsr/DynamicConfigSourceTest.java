@@ -19,6 +19,8 @@
  */
 package org.eclipse.configjsr;
 
+import static org.testng.Assert.assertTrue;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.config.Config;
@@ -34,10 +36,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.assertTrue;
 
 /**
  *
@@ -73,8 +72,7 @@ public class DynamicConfigSourceTest extends Arquillian {
         assertTrue(value2 > value);
     }
 
-    @Test
-    @Ignore("disabled for now, Emily and Tomas will come up with a better TCK test")
+    @Test(enabled = false, description = "disabled for now, Emily and Tomas will come up with a better TCK test")
     public void testValueInvalidationOnConfigChange() throws Exception {
         ConfigAccessor<Integer> valCfg = config.access(DynamicChangeConfigSource.TEST_ATTRIBUTE)
             .as(Integer.class)
