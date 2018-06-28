@@ -49,7 +49,7 @@ public interface ConfigAccessor<T> {
 
     /**
      * Sets the type of the configuration entry to the given class and returns this builder.
-     * The default type of a ConfigValue is {@code String}.
+     * The default type of a ConfigAccessor is {@code String}.
      *
      * <p>Usage:
      * <pre>
@@ -59,31 +59,31 @@ public interface ConfigAccessor<T> {
      * </pre>
      *
      * Attention: this method should always be the first to be used and might
-     * return a new {@code ConfigValue} for the given target clazz.
+     * return a new {@code ConfigAccessor} for the given target clazz.
      *
      *
      * @param clazz The target type
      * @param <N> The target type
-     * @return This builder as a typed ConfigValue
+     * @return This builder as a typed ConfigAccessor
      */
     <N> ConfigAccessor<N> as(Class<N> clazz);
 
     /**
-     * Declare the ConfigValue to return a List of the given Type.
+     * Declare the ConfigAccessor to return a List of the given Type.
      * When getting value it will be split on each comma (',') character.
      * If a comma is contained in the values it must get escaped with a preceding backslash (&quot;\,&quot;).
      * Any backslash needs to get escaped via double-backslash (&quot;\\&quot;).
      * Note that in property files this leads to &quot;\\\\&quot; as properties escape themselves.
      *
-     * @return a ConfigValue for a list of configured comma separated values
+     * @return a ConfigAccessor for a list of configured comma separated values
      */
     ConfigAccessor<List<T>> asList();
 
     /**
-     * Declare the ConfigValue to return a Set of the given Type.
+     * Declare the ConfigAccessor to return a Set of the given Type.
      * The notation and escaping rules are the same like explained in {@link #asList()}
      *
-     * @return a ConfigValue for a list of configured comma separated values
+     * @return a ConfigAccessor for a list of configured comma separated values
      */
     ConfigAccessor<Set<T>> asSet();
 
@@ -91,7 +91,7 @@ public interface ConfigAccessor<T> {
      * Defines a {@link Converter} to be used instead of the default Converter resolving logic.
      *
      * @param converter The converter for the target type
-     * @return This builder as a typed ConfigValue
+     * @return This builder as a typed ConfigAccessor
      */
     ConfigAccessor<T> useConverter(Converter<T> converter);
 

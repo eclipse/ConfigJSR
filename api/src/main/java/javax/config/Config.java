@@ -146,13 +146,14 @@ public interface Config {
      *
      * <pre>
      *     // get the current host value
-     *     ConfigValue&lt;String&gt; hostCfg config.resolve("myapp.host")
+     *     ConfigAccessor&lt;String&gt; hostCfg config.resolve("myapp.host")
      *              .cacheFor(60, TimeUnit.MINUTES);
      *
      *     // and right inbetween the underlying values get changed to 'newserver' and port 8082
      *
      *     // get the current port for the host
-     *     ConfigValue&lt;Integer&gt; portCfg config.resolve("myapp.port")
+     *     ConfigAccessor&lt;Integer&gt; portCfg config.resolve("myapp.port")
+     *              .as(Integer.class)
      *              .cacheFor(60, TimeUnit.MINUTES);
      * </pre>
      *

@@ -22,27 +22,31 @@
 == ConfigAccessor
 
 
-The `ConfigValue` API is intended for typed configuration values and precise control over resolution.
+The `ConfigAccessor` API is intended for typed configuration values and precise control over resolution.
 
 === ConfigAccessor Usage
 
 The simplest usage of the API is resolution of a String property, equivalent to a call to `Config.getValue(propertyKey, String.class)`.
-This can also be handled via `ConfigValue` as shown in the following example:
+This can also be handled via `ConfigAccessor` as shown in the following example:
 
-.Simple example of ConfigValue
+.Simple example of ConfigAccessor
 [source,java]
 -----------------------------------------------------------------
-String userName = config.access("user.name").getValue();
+Config config = ConfigProvider.getConfig();
+ConfigAccessor<Integer> ftpPortCfg = config.access("myapp.someftp.port")
+                                           .as(Integer.class);
+...
+Integer port = ftpPortCfg.getValue();
 -----------------------------------------------------------------
 
 
-The call to `Config.access(..)` returns a builder which has methods to refine the resolution, including the
+The call to `config.access(..)` returns a builder which has methods to refine the resolution, including the
 following:
 
 * `as(Class<N> clazz)` -- defines the return type of the property
+* `asList()` --
 * `parameterizedBy(String propertyName)` -- sets a parameter for the resolution, similarly as in
 <<_getpropertyawarepropertyvalue, ConfigResolver.getPropertyAwarePropertyValue>>
-* `withCurrentProjectStage(boolean with)` -- indicates whether the current ProjectStage should be taken into account
 for the resolution
 * `strictly(boolean strictly)` -- indicates, whether the <<_property_value_resolution_sequence, property value
 resolution sequence>> should be taken into account. When set to true, the sequence is not followed.
