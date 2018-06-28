@@ -97,7 +97,8 @@ public class ConfigAccessorTest extends Arquillian {
          *
          */
         ConfigAccessor<String> cv = config.access("com.foo.myapp")
-            .withLookupChain("mycorp", "${javaconfig.projectStage}");
+            .addLookupSuffix("mycorp")
+            .addLookupSuffix(config.access("javaconfig.projectStage"));
 
         Assert.assertFalse(cv.getOptionalValue().isPresent());
 

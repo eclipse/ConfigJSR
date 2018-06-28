@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
+ * @author <a href="mailto:tomas.langer@oracle.com">Tomas Langer</a>
  */
 public interface ConfigAccessor<T> {
 
@@ -146,13 +147,20 @@ public interface ConfigAccessor<T> {
     ConfigAccessor<T> evaluateVariables(boolean evaluateVariables);
 
     /**
-     * Appends the resolved value of the given property to the key of this builder.
+     * The methods {@link #addLookupSuffix(String)} and {@link #addLookupSuffix(ConfigAccessor)}
+     * append the given parameters as optional suffixes to the {@link #getPropertyName()}.
+     * Those methods can be called multiple times.
+     * Each time the given suffix will be added to the end of suffix chain.
+     *
+     * This very version
      *
      * <p>Usage:
      * <pre>
      * String tenant = getCurrentTenant();
+     *
      * Integer timeout = config.access("some.server.url")
-     *                         .withLookupChain(tenant, "${javaconfig.projectStage}" )
+     *                         .addLookupSuffix(tenant)
+     *                         .addLookupSuffix(config.access("javax.config.projectStage"))
      *                         .getValue();
      * </pre>
      *
@@ -160,10 +168,10 @@ public interface ConfigAccessor<T> {
      * {@code javaconfig.projectStage} is 'Production' this would lead to the following lookup order:
      *
      * <ul>
-     *     <li>"some.server.url.myComp.Production</li>
-     *     <li>"some.server.url.myComp</li>
-     *     <li>"some.server.url.Production</li>
-     *     <li>"some.server.url</li>
+     *     <li>"some.server.url.myComp.Production"</li>
+     *     <li>"some.server.url.myComp"</li>
+     *     <li>"some.server.url.Production"</li>
+     *     <li>"some.server.url"</li>
      * </ul>
      *
      * The algorithm to use in {@link #getValue()} is a binary count down.
@@ -171,9 +179,18 @@ public interface ConfigAccessor<T> {
      * Having 3 parameters, we start with binary {@code 111} and count down to zero.
      * The first combination which resolves to a result is being treated as result.
      *
+     * @param suffixValue fixed String to be used as suffix
      * @return This builder
      */
-    ConfigAccessor<T> withLookupChain(String... postfixNames);
+    ConfigAccessor<T> addLookupSuffix(String suffixValue);
+
+    /**
+     *
+     * @param suffixAccessor {@link ConfigAccessor} to be used to resolve the suffix.
+     * @return This builder
+     * @see #addLookupSuffix(String)
+     */
+    ConfigAccessor<T> addLookupSuffix(ConfigAccessor<String> suffixAccessor);
 
     /**
      * Returns the converted resolved filtered value.
@@ -212,7 +229,7 @@ public interface ConfigAccessor<T> {
 
     /**
      * Returns the actual key which led to successful resolution and corresponds to the resolved value.
-     * This is useful when {@link #withLookupChain(String...)} is used.
+     * This is useful when {@link #addLookupSuffix(String)} is used.
      * Otherwise the resolved key should always be equal to the original key.
      * This method is provided for cases, when parameterized resolution is
      * requested and some of the fallback keys is used.
