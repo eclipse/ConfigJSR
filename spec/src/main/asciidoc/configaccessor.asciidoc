@@ -32,35 +32,33 @@ This can also be handled via `ConfigAccessor` as shown in the following example:
 .Simple example of ConfigAccessor
 [source,java]
 -----------------------------------------------------------------
-Config config = ConfigProvider.getConfig();
-ConfigAccessor<Integer> ftpPortCfg = config.access("myapp.someftp.port")
-                                           .as(Integer.class);
-...
-Integer port = ftpPortCfg.getValue();
+String userName = config.access("user.name").getValue();
 -----------------------------------------------------------------
 
+Additional to this the `ConfigAccessor` also allows for far more complex control over the access to configured values.
 
-The call to `config.access(..)` returns a builder which has methods to refine the resolution, including the
-following:
+The call to `config.access(..)` returns a `ConfigAccessor`.
+This is basically a builder which has methods to refine the resolution, including the following:
 
 * `as(Class<N> clazz)` -- defines the return type of the property
-* `asList()` --
-* `parameterizedBy(String propertyName)` -- sets a parameter for the resolution, similarly as in
-<<_getpropertyawarepropertyvalue, ConfigResolver.getPropertyAwarePropertyValue>>
-for the resolution
-* `strictly(boolean strictly)` -- indicates, whether the <<_property_value_resolution_sequence, property value
-resolution sequence>> should be taken into account. When set to true, the sequence is not followed.
+* `asList()` -- Declare the ConfigAccessor to return a List of the given Type.
+* `evaluateVariables(boolean evaluateVariables)`
+* `useConverter(Converter<T> converter)` -- Defines a specific {@link Converter} to be used instead of applying the default Converter resolving logic.
+* `withLookupChain(String... postfixNames)` -- sets a parameter for the resolution of a 'postfix' for the resolution
 * `withDefault(T value)` -- sets the default value, used in case the resolution returns `null`
-* `getValue()` -- terminates the builder and returns the resolved value with the appropriate type
+* `getValue()` -- returns the resolved value with the appropriate type
 
 .A more complete example of ConfigAccessor
 [source,java]
 -----------------------------------------------------------------
-Integer dbPort = config
-    .access("db.port")
-    .as(Integer.class)
-    .withProjectStage(true)
-    .parameterizedBy("db.vendor")
-    .withDefault(3306)
-    .getValue();
+Config config = ConfigProvider.getConfig();
+
+ConfigAccessor<Integer> dbPortCfg
+    = config.access("db.port")
+            .as(Integer.class)
+            .withProjectStage(true)
+            .withLookupChain("§{database.vendor}")
+            .withDefault(3306);
+...
+Integer port = dbPortCfg.getValue();
 -----------------------------------------------------------------

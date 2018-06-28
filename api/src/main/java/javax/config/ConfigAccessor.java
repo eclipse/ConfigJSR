@@ -88,7 +88,7 @@ public interface ConfigAccessor<T> {
     ConfigAccessor<Set<T>> asSet();
 
     /**
-     * Defines a {@link Converter} to be used instead of the default Converter resolving logic.
+     * Defines a specific {@link Converter} to be used instead of applying the default Converter resolving logic.
      *
      * @param converter The converter for the target type
      * @return This builder as a typed ConfigAccessor
@@ -136,7 +136,11 @@ public interface ConfigAccessor<T> {
      * If 'evaluateVariables' is enabled, the result for the above key
      * {@code "mycompany.some.url"} would be:
      * {@code "http://localhost:8081/some/path"}
+     *
+     * <p><b>ATTENTION:</b> This defaults to {@code true}! That means variable replacement is enabled by default!</p>
+     *
      * @param evaluateVariables whether to evaluate variables in values or not
+     *
      * @return This builder
      */
     ConfigAccessor<T> evaluateVariables(boolean evaluateVariables);
