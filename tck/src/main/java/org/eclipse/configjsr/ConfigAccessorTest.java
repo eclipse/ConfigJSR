@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  */
-public class ConfigValueTest extends Arquillian {
+public class ConfigAccessorTest extends Arquillian {
 
     private @Inject Config config;
 
@@ -47,7 +47,7 @@ public class ConfigValueTest extends Arquillian {
         JavaArchive testJar = ShrinkWrap
             .create(JavaArchive.class, "configValueTest.jar")
             .addPackage(AbstractTest.class.getPackage())
-            .addClass(ConfigValueTest.class)
+            .addClass(ConfigAccessorTest.class)
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .addAsServiceProvider(ConfigSource.class, ConfigurableConfigSource.class)
             .as(JavaArchive.class);
