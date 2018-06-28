@@ -20,31 +20,31 @@ image:https://badges.gitter.im/eclipse/ConfigJSR.svg[link="https://gitter.im/ecl
 
 image:https://api.travis-ci.org/eclipse/ConfigJSR.svg?branch=master[link="https://travis-ci.org/eclipse/ConfigJSR"]
 
-# JSR-382 - Configuration API for Java, v1.0
+= JSR-382 - Configuration API for Java, v1.0
 Specification Leads: Emily Jiang, Mark Struberg
 
 This is the official Source Repository of this very JSR.
 
-## Status
+== Status
 
 Configuration API for Java JSR Draft - Work In Progress!
 
-## How to Contribute?
+== How to Contribute?
 
-### JCP page
+=== JCP page
 
 https://jcp.org/en/jsr/detail?id=382
 
-### Twitter
+=== Twitter
 
 https://twitter.com/ConfigJSR
 
 
-### Source Repository
+=== Source Repository
 
 The source code is available under the Apache License, v2.0 and hosted at https://github.com/eclipse/ConfigJSR
 
-### Mailing Lists
+=== Mailing Lists
 
 The Expert Group list is only used for announcements and voting.
 
@@ -56,7 +56,7 @@ All the normal interaction is going on on the general discussion list
  
 To subscribe to a list just send a mail to `configjsr-discuss-join (at) eclipse.org` 
 
-### EG Meeting minutes
+=== EG Meeting minutes
 
 https://docs.google.com/document/d/1ixB3_Lu4Os__mw4_W5zlKspUE-lL3_h0asflewErlFY/edit?usp=sharing
 
