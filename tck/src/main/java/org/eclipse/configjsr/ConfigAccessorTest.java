@@ -84,6 +84,31 @@ public class ConfigAccessorTest extends Arquillian {
         Assert.assertEquals(cfga.getValue(), Integer.valueOf(1234));
     }
 
+    /**
+     * Checks whether variable substitution works.
+     * The following situation is configured in javaconfig.properties:
+     * <pre>
+     * tck.config.variable.baseHost = some.host.name
+     * tck.config.variable.firstEndpoint = http://${tck.config.variable.baseHost}/endpointOne
+     * tck.config.variable.secondEndpoint = http://${tck.config.variable.baseHost}/endpointTwo
+     * </pre>
+     */
+    @Test
+    public void testVariableReplacement() {
+        Assert.assertEquals(config.access("tck.config.variable.firstEndpoint").getValue(),
+                "http://some.host.name/endpointOne");
+
+        Assert.assertEquals(config.access("tck.config.variable.secondEndpoint").getValue(),
+                "http://some.host.name/endpointTwo");
+
+        // variables in Config.getValue and getOptionalValue do not get evaluated otoh
+        Assert.assertEquals(config.getValue("tck.config.variable.firstEndpoint", String.class),
+                "http://${tck.config.variable.baseHost}/endpointOne");
+
+        Assert.assertEquals(config.getOptionalValue("tck.config.variable.firstEndpoint", String.class).get(),
+                "http://${tck.config.variable.baseHost}/endpointOne");
+    }
+
     @Test
     public void testLookupChain() {
         // set the projectstage to 'Production'

@@ -97,8 +97,9 @@ public interface Config {
      *
      * If this method gets used very often then consider to locally store the configured value.
      *
-     * @param <T>
-     *             the property type
+     * <p>Note that no variable replacement like in {@link ConfigAccessor#evaluateVariables(boolean)} will be performed!
+     *
+     * @param <T>  the property type
      * @param propertyName
      *             The configuration propertyName.
      * @param propertyType
@@ -115,8 +116,9 @@ public interface Config {
      *
      * If this method is used very often then consider to locally store the configured value.
      *
-     * @param <T>
-     *             the property type
+     * <p>Note that no variable replacement like in {@link ConfigAccessor#evaluateVariables(boolean)} will be performed!
+     *
+     * @param <T>  the property type
      * @param propertyName
      *             The configuration propertyName.
      * @param propertyType
