@@ -23,12 +23,12 @@ It also defines ways to extend the configuration mechanism itself via a SPI (Ser
 
 === Rationale
 
-Released binaries often contain functionality which need to behave slightly differently depending on the deployment.
+Released binaries often contain functionality which needs to behave slightly differently depending on the deployment.
 This might be the port numbers and URLs of REST endpoints to talk to (e.g. depending on the customer for whom a WAR is deployed).
 Or it might even be whole features which need to be switched on and off depending on the installation.
 All this must be possible without the need to re-package the whole application binary.
 
-The Configuration for Java API specification (or short: JavaConfig) provides a way to achieve this goal by aggregating configuration from many different <<configsource,ConfigSources>> and presents a single merged view to the user - a `Config` instance.
+The Configuration for Java API specification (or short: JavaConfig) provides a way to achieve this goal by aggregating configuration from many different <<configsource,ConfigSources>> and presenting a single merged view to the user - a `Config` instance.
 This allows the application to bundle default configuration within the application.
 It also allows to override the defaults from outside, e.g. via an environment variable, a Java system property or via a container like Docker or Kubernetes.
 JavaConfig also allows to implement and register own configuration sources in a portable way, e.g. for reading configuration values from a shared database in an application cluster.
@@ -41,10 +41,10 @@ The configuration key might use dot-separated blocks to prevent name conflicts. 
 
 [source, text]
 ----
-com.acme.myproject.someserver.url = http://some.server/some/endpoint
-com.acme.myproject.someserver.port = 9085
-com.acme.myproject.someserver.active = true
-com.acme.other.stuff.name = Karl
+com.acme.myproject.someserver.url=http://some.server/some/endpoint
+com.acme.myproject.someserver.port=9085
+com.acme.myproject.someserver.active=true
+com.acme.other.stuff.name=Karl
 com.acme.myproject.notify.onerror=karl@mycompany,sue@mcompany
 some.library.own.config=some value
 ----
