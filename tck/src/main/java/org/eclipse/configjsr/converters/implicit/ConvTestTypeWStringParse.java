@@ -28,6 +28,17 @@ package org.eclipse.configjsr.converters.implicit;
 public class ConvTestTypeWStringParse {
     private String val;
 
+
+    public ConvTestTypeWStringParse() {
+    }
+
+    /**
+     * this ct should actually not be used by our test
+     */
+    public ConvTestTypeWStringParse(String val) {
+        this.val = "wrong" + val;
+    }
+
     public static ConvTestTypeWStringParse parse(String val) {
         ConvTestTypeWStringParse o = new ConvTestTypeWStringParse();
         o.val = val;
