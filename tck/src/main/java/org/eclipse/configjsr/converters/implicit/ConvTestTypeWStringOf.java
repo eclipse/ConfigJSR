@@ -25,22 +25,22 @@ package org.eclipse.configjsr.converters.implicit;
  *
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  */
-public class ConvTestTypeWCharSequenceParse {
+public class ConvTestTypeWStringOf {
     private String val;
 
-    public ConvTestTypeWCharSequenceParse() {
+    public ConvTestTypeWStringOf() {
     }
 
     /**
      * this ct should actually not be used by our test
      */
-    public ConvTestTypeWCharSequenceParse(CharSequence val) {
+    public ConvTestTypeWStringOf(String val) {
         this.val = "wrong" + val;
     }
 
-    public static ConvTestTypeWCharSequenceParse parse(CharSequence val) {
-        ConvTestTypeWCharSequenceParse o = new ConvTestTypeWCharSequenceParse();
-        o.val = val.toString();
+    public static ConvTestTypeWStringOf of(String val) {
+        ConvTestTypeWStringOf o = new ConvTestTypeWStringOf();
+        o.val = val;
         return o;
     }
 

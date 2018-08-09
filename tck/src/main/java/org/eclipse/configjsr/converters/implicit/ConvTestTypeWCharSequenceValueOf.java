@@ -28,6 +28,16 @@ package org.eclipse.configjsr.converters.implicit;
 public class ConvTestTypeWCharSequenceValueOf {
     private String val;
 
+    public ConvTestTypeWCharSequenceValueOf() {
+    }
+
+    /**
+     * this ct should actually not be used by our test
+     */
+    public ConvTestTypeWCharSequenceValueOf(CharSequence val) {
+        this.val = "wrong" + val;
+    }
+
     public static ConvTestTypeWCharSequenceValueOf valueOf(CharSequence val) {
         ConvTestTypeWCharSequenceValueOf o = new ConvTestTypeWCharSequenceValueOf();
         o.val = val.toString();
