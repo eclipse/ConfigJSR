@@ -84,7 +84,7 @@ Array as a class type is supported in the programmatic lookup.
 
 [source, java]
 ----
-String[] myPets = ConfigProvider.getValue("myPet", String[].class);
+String[] myPets = ConfigProvider.getConfig().getValue("myPet", String[].class);
 ----
 
 myPets will be "dog", "cat", "dog,cat" as an array
