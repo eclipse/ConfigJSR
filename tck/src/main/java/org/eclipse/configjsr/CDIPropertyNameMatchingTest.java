@@ -45,10 +45,10 @@ import org.testng.annotations.Test;
  *
  * Prerequisite:
  * The following environment variables must be set prior to running this test:
- * "my_int_property" with the value of "45"
- * "MY_BOOLEAN_PROPERTY" with the value of "true"
- * "my_string_property" with the value of "haha"
- * "MY_STRING_PROPERTY" with the value of "woohoo"
+ * "envconfig_my_int_property" with the value of "45"
+ * "ENVCONFIG_MY_BOOLEAN_PROPERTY" with the value of "true"
+ * "envconfig_my_string_property" with the value of "haha"
+ * "ENVCONFIG_MY_STRING_PROPERTY" with the value of "woohoo"
  * @author Emily Jiang
  */
 public class CDIPropertyNameMatchingTest extends Arquillian {
