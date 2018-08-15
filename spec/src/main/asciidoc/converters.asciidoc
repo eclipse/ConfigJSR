@@ -28,7 +28,7 @@ This happens by providing `Converter` s in the `Config`.
 
 === Built-in Converters
 
-The following `Converter` s are provided by JavaConfig by default:
+The following `Converter` s are provided by Microprofile-Config by default:
 
 * `boolean` and `Boolean` , values for `true` (case insensitive) "true", "1", "YES", "Y" "ON".
   Any other value will be interpreted as `false`
@@ -36,9 +36,18 @@ The following `Converter` s are provided by JavaConfig by default:
 * `long` and `Long`
 * `float` and `Float` , a dot '.' is used to separate the fractional digits
 * `double` and `Double` , a dot '.' is used to separate the fractional digits
-* `URL`
+* `Class` based on the result of `Class.forName`
 
 All built-in `Converter` have the `@Priority` of `1`.
+
+=== Automatic Converters
+
+If no built-in nor custom `Converter` for a requested Type `T`, an implicit Converter is automatically provided if the following conditions are met:
+
+* The target type {@code T} has a {@code public static T of(String)} method, or
+* The target type {@code T} has a {@code public static T valueOf(String)} method, or
+* The target type {@code T} has a public Constructor with a String parameter, or
+* The target type {@code T} has a {@code public static T parse(CharSequence)} method
 
 === Adding custom Converters
 
@@ -52,31 +61,13 @@ The `Config` will use the `Converter` with the highest `Priority` for each targe
 
 A custom `Converter` for a target type of any of the built-in Converters will overwrite the default Converter.
 
-
-=== Implicit Converters
-
-If no built-in nor custom `Converter` for a requested Type `T`, an implicit Converter is automatically provided if the following conditions are met:
-
-* The target type `T` has a Constructor with a String parameter, or
-* the target type `T` has a Constructor with a CharSequence parameter, or
-* the target type `T` has a `static T valueOf(String)` method, or
-* the target type `T` has a `static T valueOf(CharSequence)` method, or
-* the target type `T` has a `static T parse(String)` method, or
-* the target type `T` has a `static T parse(CharSequence)` method, or
-
-The lookup will be done in the order of the above list.
-
-Note that every `java.time` type has a `parse(CharSequence)` method and every enum has a generated 'valueOf(String)' method.
-They are thus all covered by an implicit converter!
-
-If an Implicit Converter cannot convert a value, a `java.lang.IllegalArgumentException` is to be thrown.
-
 === Array Converters
 
 For the built-in converters and custom converters, the corresponding Array converters are provided by default.
 The delimiter for the config value is ",".
 The escape character is "\".
 e.g. With this config `myPets=dog,cat,dog\,cat`, the values as an array will be `{"dog", "cat", "dog,cat"}`.
+
 
 ==== Programmatic lookup
 

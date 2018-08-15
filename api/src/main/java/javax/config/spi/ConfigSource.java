@@ -44,14 +44,18 @@ import java.util.function.Consumer;
  * <ol>
  * <li>System properties (ordinal=400)</li>
  * <li>Environment properties (ordinal=300)
- *    <p>Depending on the operating system type, environment variables with '.' are not always allowed.
- *    This ConfigSource searches 3 environment variables for a given property name (e.g. {@code "com.ACME.size"}):</p>
- *        <ol>
- *            <li>Exact match (i.e. {@code "com.ACME.size"})</li>
- *            <li>Replace all '.' by '_' (i.e. {@code "com_ACME_size"})</li>
- *            <li>Replace all '.' by '_' and convert to upper case (i.e. {@code "COM_ACME_SIZE"})</li>
- *        </ol>
- *    <p>The first environment variable that is found is returned by this ConfigSource.</p>
+     *    <p>Some operating systems allow only alphabetic characters or an underscore(_), in environment variables.
+     *    Other characters such as ., /, etc may be disallowed.
+     *    In order to set a value for a config property that has a name containing such disallowed characters from an environment variable,
+     *    the following rules are used.
+     *    This ConfigSource searches for potentially 3 environment variables with a given property name (e.g. {@code "com.ACME.size"}):</p>
+     *        <ol>
+     *            <li>Exact match (i.e. {@code "com.ACME.size"})</li>
+     *            <li>Replace the character that is neither alphanumeric nor '_' with '_' (i.e. {@code "com_ACME_size"})</li>
+     *            <li>Replace the character that is neither alphanumeric nor '_' with '_' and convert to upper case 
+     *            (i.e. {@code "COM_ACME_SIZE"})</li>
+     *        </ol>
+     *    <p>The first environment variable that is found is returned by this ConfigSource.</p>
  * </li>
  * <li>/META-INF/javaconfig.properties (ordinal=100)</li>
  * </ol>
@@ -90,7 +94,7 @@ public interface ConfigSource {
      * Gets all property names known to this config source, without evaluating the values.
      *
      * For backwards compatibility, there is a default implementation that just returns the keys of {@code getProperties()}
-     * slower ConfigSource implementations should replace this with a more performant implementation
+     * slower ConfigSource implementations should replace this with a better-performance implementation
      *
      * @return the set of property keys that are known to this ConfigSource
      */
@@ -105,7 +109,7 @@ public interface ConfigSource {
      * be used for sorting according to string sorting criteria.
      * Note that this property only gets evaluated during ConfigSource discovery.
      *
-     * The default ordinals for the default config sources:
+     * The default ordinal for the default config sources:
      * <ol>
      *  <li>System properties (default ordinal=400)</li>
      *  <li>Environment properties (default ordinal=300)</li>
@@ -115,7 +119,7 @@ public interface ConfigSource {
      *
      * Any ConfigSource part of an application will typically use an ordinal between 0 and 200.
      * ConfigSource provided by the container or 'environment' typically use an ordinal higher than 200.
-     * A framework which intends have values overwritten by the application will use ordinals between 0 and 100.
+     * A framework which intends have values overwritten by the application will use ordinal between 0 and 100.
      * The property "config_ordinal" can be specified to override the default value.
      *
      * @return the ordinal value
