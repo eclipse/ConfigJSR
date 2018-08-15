@@ -24,11 +24,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.testng.Assert.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.config.ConfigProvider;
 import javax.config.inject.ConfigProperty;
 import javax.config.spi.ConfigSource;
 import javax.enterprise.context.Dependent;
@@ -43,7 +43,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 /**
@@ -65,13 +65,14 @@ public class CDIPlainInjectionTest extends Arquillian {
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
-    @AfterTest
-    public void tearDown() {
-        clear_all_property_values();
+    @BeforeTest
+    public void setUpTest() {
+        clearAllPropertyValues();
+        ensureAllPropertyValuesAreDefined();
     }
 
     @Test
-    public void can_inject_simple_values_when_defined() {
+    public void canInjectSimpleValuesWhenDefined() {
         SimpleValuesBean bean = getBeanOfType(SimpleValuesBean.class);
 
         assertThat(bean.stringProperty, is(equalTo("text")));
@@ -88,37 +89,51 @@ public class CDIPlainInjectionTest extends Arquillian {
         assertThat(bean.doubleObjProperty, is(closeTo(11.5, 0.1)));
 
         assertThat(bean.doublePropertyWithDefaultValue, is(closeTo(3.1415, 0.1)));
+    }
 
-        // variable replacement parts
-        assertEquals(bean.endpointOne, "http://some.host.name/endpointOne");
-        assertEquals(bean.endpointTwo, "http://${my.server}/endpointTwo");
+    /*
+     * Refers to chapter "Accessing or Creating a certain Configuration"
+     */
+    @Test
+    public void injectedValuesAreEqualToProgrammaticValues() {
+        SimpleValuesBean bean = getBeanOfType(SimpleValuesBean.class);
+
+        assertThat(bean.stringProperty, is(equalTo(
+                ConfigProvider.getConfig().getValue("my.string.property", String.class))));
+        assertThat(bean.booleanProperty, is(equalTo(
+                ConfigProvider.getConfig().getValue("my.boolean.property", Boolean.class))));
+        assertThat(bean.intProperty, is(equalTo(
+                ConfigProvider.getConfig().getValue("my.int.property", Integer.class))));
+        assertThat(bean.longProperty, is(equalTo(
+                ConfigProvider.getConfig().getValue("my.long.property", Long.class))));
+        assertThat(bean.floatProperty, is(floatCloseTo(
+                ConfigProvider.getConfig().getValue("my.float.property", Float.class), 0.1f)));
+        assertThat(bean.doubleProperty, is(closeTo(
+                ConfigProvider.getConfig().getValue("my.double.property", Double.class), 0.1)));
+
+        assertThat(bean.doublePropertyWithDefaultValue, is(closeTo(
+                ConfigProvider.getConfig().getOptionalValue("my.not.configured.double.property", Double.class)
+                        .orElse(3.1415), 0.1)));
     }
 
     @Test
-    public void can_inject_dynamic_values_via_CDI_provider() {
-        clear_all_property_values();
+    public void canInjectDynamicValuesViaCdiProvider() {
 
         DynamicValuesBean bean = getBeanOfType(DynamicValuesBean.class);
 
         //X TODO clarify how Provider<T> should behave for missing values assertThat(bean.getIntProperty(), is(nullValue()));
 
-        ensure_all_property_values_are_defined();
-
         assertThat(bean.getIntProperty(), is(equalTo(5)));
     }
 
     @Test
-    public void can_inject_default_property_path() {
-        clear_all_property_values();
-
-        ensure_all_property_values_are_defined();
-
+    public void canInjectDefaultPropertyPath() {
         DefaultPropertyBean bean = getBeanOfType(DefaultPropertyBean.class);
 
         assertThat(bean.getConfigProperty(), is(equalTo("pathConfigValue")));
     }
 
-    private void ensure_all_property_values_are_defined() {
+    private void ensureAllPropertyValuesAreDefined() {
         System.setProperty("my.string.property", "text");
         System.setProperty("my.boolean.property", "true");
         System.setProperty("my.int.property", "5");
@@ -128,7 +143,7 @@ public class CDIPlainInjectionTest extends Arquillian {
         System.setProperty(DEFAULT_PROPERTY_BEAN_KEY, "pathConfigValue");
     }
 
-    private void clear_all_property_values() {
+    private void clearAllPropertyValues() {
         System.getProperties().remove("my.string.property");
         System.getProperties().remove("my.boolean.property");
         System.getProperties().remove("my.int.property");
@@ -141,7 +156,6 @@ public class CDIPlainInjectionTest extends Arquillian {
     private <T> T getBeanOfType(Class<T> beanClass) {
         return CDI.current().select(beanClass).get();
     }
-
     @Dependent
     public static class SimpleValuesBean {
 
@@ -189,14 +203,6 @@ public class CDIPlainInjectionTest extends Arquillian {
         @ConfigProperty(name="my.double.property")
         private double doubleProperty;
 
-        @Inject
-        @ConfigProperty(name="my.firstEndpoint")
-        private String endpointOne;
-
-        @Inject
-        @ConfigProperty(name="my.secondEndpoint", evaluateVariables = false)
-        private String endpointTwo;
-
         // the property is not configured in any ConfigSource but its defaultValue will
         // be used to set the field.
         @Inject
@@ -204,6 +210,7 @@ public class CDIPlainInjectionTest extends Arquillian {
         private Double doublePropertyWithDefaultValue;
 
     }
+    
 
     @Dependent
     public static class DynamicValuesBean {
@@ -241,12 +248,6 @@ public class CDIPlainInjectionTest extends Arquillian {
             properties.put("my.long.property", "10");
             properties.put("my.float.property", "10.5");
             properties.put("my.double.property", "11.5");
-
-
-            properties.put("my.server", "some.host.name");
-            properties.put("my.firstEndpoint", "http://${my.server}/endpointOne");
-            properties.put("my.secondEndpoint", "http://${my.server}/endpointTwo");
-
             properties.put(DEFAULT_PROPERTY_BEAN_KEY, "pathConfigValue");
         }
 

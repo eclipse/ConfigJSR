@@ -19,15 +19,18 @@
 
 package org.eclipse.configjsr;
 
-import javax.config.Config;
+import static org.eclipse.configjsr.base.AbstractTest.addFile;
+
+import java.time.YearMonth;
+
 import javax.inject.Inject;
 
-import org.eclipse.configjsr.converters.implicit.ConvTestTypeWCharSequenceCt;
+import javax.config.Config;
 import org.eclipse.configjsr.converters.implicit.ConvTestTypeWCharSequenceParse;
-import org.eclipse.configjsr.converters.implicit.ConvTestTypeWCharSequenceValueOf;
 import org.eclipse.configjsr.converters.implicit.ConvTestTypeWStringCt;
-import org.eclipse.configjsr.converters.implicit.ConvTestTypeWStringParse;
+import org.eclipse.configjsr.converters.implicit.ConvTestTypeWStringOf;
 import org.eclipse.configjsr.converters.implicit.ConvTestTypeWStringValueOf;
+import org.eclipse.configjsr.converters.implicit.SomeEnumToConvert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -36,12 +39,15 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import static org.eclipse.configjsr.base.AbstractTest.addFile;
+
 
 /**
  * Test the implicit converter handling.
  *
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
+ * @author <a href="mailto:jmesnil@redhat.com">Jeff Mesnil</a>
+ * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
+ * 
  */
 public class ImplicitConverterTest extends Arquillian {
 
@@ -49,11 +55,12 @@ public class ImplicitConverterTest extends Arquillian {
     public static WebArchive deploy() {
         JavaArchive testJar = ShrinkWrap
             .create(JavaArchive.class, "implicitConverterTest.jar")
-            .addPackage(ConvTestTypeWCharSequenceCt.class.getPackage())
+            .addPackage(ConvTestTypeWStringCt.class.getPackage())
+            .addClasses(ParseConverterInjection.class, ImplicitConverterTest.class)
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .as(JavaArchive.class);
 
-        addFile(testJar, "META-INF/javaconfig.properties");
+        addFile(testJar, "META-INF/microprofile-config.properties");
 
         WebArchive war = ShrinkWrap
             .create(WebArchive.class, "implicitConverterTest.war")
@@ -63,30 +70,9 @@ public class ImplicitConverterTest extends Arquillian {
 
 
     private @Inject Config config;
+    private @Inject ParseConverterInjection parserConverterInjection;
+    
 
-    @Test
-    public void testImplicitConverterCharSequenceCt() {
-        ConvTestTypeWCharSequenceCt value = config.getValue("tck.config.test.javaconfig.converter.implicit.charSequenceCt",
-            ConvTestTypeWCharSequenceCt.class);
-        Assert.assertNotNull(value);
-        Assert.assertEquals(value.getVal(), "charSequenceCt");
-    }
-
-    @Test
-    public void testImplicitConverterCharSequenceParse() {
-        ConvTestTypeWCharSequenceParse value = config.getValue("tck.config.test.javaconfig.converter.implicit.charSequenceParse",
-            ConvTestTypeWCharSequenceParse.class);
-        Assert.assertNotNull(value);
-        Assert.assertEquals(value.getVal(), "charSequenceParse");
-    }
-
-    @Test
-    public void testImplicitConverterCharSequenceValueOf() {
-        ConvTestTypeWCharSequenceValueOf value = config.getValue("tck.config.test.javaconfig.converter.implicit.charSequenceValueOf",
-            ConvTestTypeWCharSequenceValueOf.class);
-        Assert.assertNotNull(value);
-        Assert.assertEquals(value.getVal(), "charSequenceValueOf");
-    }
     @Test
     public void testImplicitConverterStringCt() {
         ConvTestTypeWStringCt value = config.getValue("tck.config.test.javaconfig.converter.implicit.stringCt",
@@ -96,18 +82,49 @@ public class ImplicitConverterTest extends Arquillian {
     }
 
     @Test
-    public void testImplicitConverterStringParse() {
-        ConvTestTypeWStringParse value = config.getValue("tck.config.test.javaconfig.converter.implicit.stringParse",
-            ConvTestTypeWStringParse.class);
-        Assert.assertNotNull(value);
-        Assert.assertEquals(value.getVal(), "stringParse");
-    }
-
-    @Test
     public void testImplicitConverterStringValueOf() {
         ConvTestTypeWStringValueOf value = config.getValue("tck.config.test.javaconfig.converter.implicit.stringValueOf",
             ConvTestTypeWStringValueOf.class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.getVal(), "stringValueOf");
     }
+    @Test
+    public void testImplicitConverterStringOf() {
+        ConvTestTypeWStringOf value = config.getValue("tck.config.test.javaconfig.converter.implicit.stringOf",
+            ConvTestTypeWStringOf.class);
+        Assert.assertNotNull(value);
+        Assert.assertEquals(value.getVal(), "stringOf");
+    }
+    
+    @Test
+    public void testImplicitConverterCharSequenceParse() {
+        ConvTestTypeWCharSequenceParse value = config.getValue("tck.config.test.javaconfig.converter.implicit.charSequenceParse", 
+             ConvTestTypeWCharSequenceParse.class);
+        Assert.assertNotNull(value);
+        Assert.assertEquals(value.getVal(), "charSequenceParse");
+    }
+    @Test
+    public void testImplicitConverterCharSequenceParseJavaTime() {
+        YearMonth value = config.getValue("tck.config.test.javaconfig.converter.implicit.charSequenceParse.yearmonth", 
+             YearMonth.class);
+        Assert.assertNotNull(value);
+        Assert.assertEquals(value, YearMonth.parse("2017-12"));
+    }
+    
+    @Test
+    public void testImplicitConverterCharSequenceParseJavaTimeInjection() {
+        Assert.assertNotNull(parserConverterInjection.getYearMonth());
+        Assert.assertEquals(parserConverterInjection.getYearMonth(), YearMonth.parse("2017-12"));
+    }
+
+    @Test
+    public void testImplicitConverterEnumValueOf() {
+        SomeEnumToConvert value = config.getValue("tck.config.test.javaconfig.converter.implicit.enumValueOf",
+            SomeEnumToConvert.class);
+        Assert.assertNotNull(value);
+        Assert.assertEquals(value, SomeEnumToConvert.BAZ);
+        Assert.assertEquals(value.name(), "BAZ");
+    }
 }
+
+

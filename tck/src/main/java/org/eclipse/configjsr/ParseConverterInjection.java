@@ -16,35 +16,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.eclipse.configjsr.converters.implicit;
 
-/**
- * Part of the implicit Converter test.
- *
- * Sample class which has a valueOf(String) method
- *
- * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
- */
-public class ConvTestTypeWCharSequenceOf {
-    private String val;
+package org.eclipse.configjsr;
 
-    public ConvTestTypeWCharSequenceOf() {
-    }
+import java.time.YearMonth;
 
-    /**
-     * this ct should actually not be used by our test
-     */
-    public ConvTestTypeWCharSequenceOf(CharSequence val) {
-        this.val = "wrong" + val;
-    }
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
-    public static ConvTestTypeWCharSequenceOf of(CharSequence val) {
-        ConvTestTypeWCharSequenceOf o = new ConvTestTypeWCharSequenceOf();
-        o.val = val.toString();
-        return o;
-    }
+import javax.config.inject.ConfigProperty;
 
-    public String getVal() {
-        return val;
+@Dependent
+public class ParseConverterInjection {
+    private @Inject @ConfigProperty(name = "tck.config.test.javaconfig.converter.implicit.charSequenceParse.yearmonth") YearMonth yearMonth;
+
+    public YearMonth getYearMonth(){
+        return yearMonth;
     }
 }
+
+
