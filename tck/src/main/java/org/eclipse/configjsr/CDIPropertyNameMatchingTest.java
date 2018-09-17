@@ -60,7 +60,7 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
             .create(JavaArchive.class, "CDIPropertyNameMatchingTest.jar")
             .addClasses(CDIPropertyNameMatchingTest.class, SimpleValuesBean.class)
             .addAsManifestResource(new StringAsset(
-                    "envconfig.my.int.property=3"+
+                    "envconfig.my.int/property=3"+
                         "\nenvconfig.my.string.property=fake"),
                 "javaconfig.properties")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -118,7 +118,7 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
         private boolean booleanProperty;
 
         @Inject
-        @ConfigProperty(name="envconfig.my.int.property")
+        @ConfigProperty(name="envconfig.my.int/property")
         private int intProperty;
     }
   }
