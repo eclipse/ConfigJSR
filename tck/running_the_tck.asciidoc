@@ -54,10 +54,10 @@ To enable the tests in your project you need to add the following dependency to 
 Some tests are asserting statements related to environment variables.
 The following environment variable and their values must be present in the test runner environment:
 
-* `envconfig_my_int_property` with the value `45`
-* `ENVCONFIG_MY_BOOLEAN_PROPERTY` with the value `true`
-* `envconfig_my_string_property` with the value `haha`
-* `ENVCONFIG_MY_STRING_PROPERTY` with the value `woohoo`
+* `my_int_property` with the value `45`
+* `MY_BOOLEAN_PROPERTY` with the value `true`
+* `my_string_property` with the value `haha`
+* `MY_STRING_PROPERTY` with the value `woohoo`
 
 See below for an example configuration to provide these environment variables in a Maven pom.xml.
 
