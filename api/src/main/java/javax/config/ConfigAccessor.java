@@ -49,27 +49,6 @@ import java.util.concurrent.TimeUnit;
 public interface ConfigAccessor<T> {
 
     /**
-     * Sets the type of the configuration entry to the given class and returns this builder.
-     * The default type of a ConfigAccessor is {@code String}.
-     *
-     * <p>Usage:
-     * <pre>
-     * Integer timeout = config.access("some.timeout")
-     *                         .as(Integer.class)
-     *                         .getValue();
-     * </pre>
-     *
-     * Attention: this method should always be the first to be used and might
-     * return a new {@code ConfigAccessor} for the given target clazz.
-     *
-     *
-     * @param clazz The target type
-     * @param <N> The target type
-     * @return This builder as a typed ConfigAccessor
-     */
-    <N> ConfigAccessor<N> as(Class<N> clazz);
-
-    /**
      * Declare the ConfigAccessor to return a List of the given Type.
      * When getting value it will be split on each comma (',') character.
      * If a comma is contained in the values it must get escaped with a preceding backslash (&quot;\,&quot;).
@@ -222,7 +201,7 @@ public interface ConfigAccessor<T> {
     Optional<T> getOptionalValue();
 
     /**
-     * Returns the property name key given in {@link javax.config.Config#access(String)}.
+     * Returns the property name key given in {@link javax.config.Config#access(String,Class)}.
      * @return the original property name
      */
     String getPropertyName();

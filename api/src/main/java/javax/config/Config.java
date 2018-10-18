@@ -61,7 +61,7 @@ import javax.config.spi.ConfigSource;
  *   Integer archivePort = cfg.getValue("my.project.archive.port", Integer.class);
  * </pre>
  *
- * <p>For accessing a configuration in a dynamic way you can also use {@link #access(String)}.
+ * <p>For accessing a configuration in a dynamic way you can also use {@link #access(String,Class)}.
  * This method returns a builder-style {@link ConfigAccessor} instance for the given key.
  * You can further specify a Type of the underlying configuration, a cache time, lookup paths and
  * many more.
@@ -75,7 +75,8 @@ import javax.config.spi.ConfigSource;
  * }
  * </pre>
  *
- * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} and {@link #access(String)} for accessing a configured value.
+ * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} 
+ *    and {@link #access(String,Class)} for accessing a configured value.
  *
  * <p>Configured values can also be accessed via injection.
  * See {@link javax.config.inject.ConfigProperty} for more information.
@@ -132,10 +133,14 @@ public interface Config {
     /**
      * Create a {@link ConfigAccessor} to access the underlying configuration.
      *
-     * @param propertyName the property key
+     * @param <T>  the {@code ConfigAccessor}  type
+     * @param propertyName 
+     *          The property key
+     * @param clazz 
+     *          The type into which the resolve property value should get converted
      * @return a {@code ConfigAccessor} to access the given propertyName
      */
-    ConfigAccessor<String> access(String propertyName);
+    <T> ConfigAccessor<T> access(String propertyName, Class<T> clazz);
 
     /**
      * <p>This method can be used to access multiple
