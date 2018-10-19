@@ -151,6 +151,19 @@ public interface ConfigSource {
      */
     String getName();
 
+
+    /**
+     * Determines if this config source should be scanned for its list of properties.
+     *
+     * Generally, slow ConfigSources should return false here.
+     *
+     * @return {@code true} if this ConfigSource should be scanned for its list of properties,
+     *         {@code false} if it should not be scanned.
+     */
+    default boolean isScannable() {
+        return true;
+    }
+
     /**
      * This callback should get invoked if an attribute change got detected inside the ConfigSource.
      *
