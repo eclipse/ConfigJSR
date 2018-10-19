@@ -85,8 +85,9 @@ public class DynamicChangeConfigSource implements ConfigSource, Closeable {
     }
 
     @Override
-    public void setOnAttributeChange(Consumer<Set<String>> reportAttributeChange) {
+    public ChangeSupport setOnAttributeChange(Consumer<Set<String>> reportAttributeChange) {
         this.reportAttributeChange = reportAttributeChange;
+        return ChangeSupport.SUPPORTED;
     }
 
 }

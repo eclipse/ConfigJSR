@@ -78,6 +78,7 @@ import java.util.function.Consumer;
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>
  * @author <a href="mailto:john.d.ament@gmail.com">John D. Ament</a>
+ * @author <a href="mailto:tomas.langer@oracle.com">Tomas Langer</a>
  *
  */
 public interface ConfigSource {
@@ -85,8 +86,10 @@ public interface ConfigSource {
     int DEFAULT_ORDINAL = 100;
 
     /**
-     * Return the properties in this config source
-     * @return the map containing the properties in this config source
+     * Return the properties in this config source.
+     *
+     * @return the map containing the properties in this config source if these can be scanned, or empty Map
+     * @see #isScannable()
      */
     Map<String, String> getProperties();
 
@@ -96,7 +99,8 @@ public interface ConfigSource {
      * For backwards compatibility, there is a default implementation that just returns the keys of {@code getProperties()}
      * slower ConfigSource implementations should replace this with a more performant implementation
      *
-     * @return the set of property keys that are known to this ConfigSource
+     * @return the set of property keys that are known to this config source if these can be scanned or empty Set
+     * @see #isScannable()
      */
     default Set<String> getPropertyNames() {
         return getProperties().keySet();
@@ -126,7 +130,7 @@ public interface ConfigSource {
      */
     default int getOrdinal() {
         String configOrdinal = getValue(CONFIG_ORDINAL);
-        if(configOrdinal != null) {
+        if (configOrdinal != null) {
             try {
                 return Integer.parseInt(configOrdinal);
             }
@@ -139,13 +143,14 @@ public interface ConfigSource {
 
     /**
      * Return the value for the specified property in this config source.
+     *
      * @param propertyName the property name
-     * @return the property value
+     * @return the property value, or {@code null} when property is not defined by this config source
      */
     String getValue(String propertyName);
 
     /**
-     * The name of the config might be used for logging or analysis of configured values.
+     * The name of this config source might be used for logging or analysis of configured values.
      *
      * @return the 'name' of the configuration source, e.g. 'property-file mylocation/myproperty.properties'
      */
@@ -165,13 +170,44 @@ public interface ConfigSource {
     }
 
     /**
-     * This callback should get invoked if an attribute change got detected inside the ConfigSource.
+     * The callback should get invoked if an attribute change got detected inside the ConfigSource.
      *
-     * @param reportAttributeChange will be set by the {@link javax.config.Config} after this
-     *                              {@code ConfigSource} got created and before any configured values
-     *                              get served.
+     * @param callback will be set by the {@link javax.config.Config} after this
+     *                 {@code ConfigSource} got created and before any configured values
+     *                 get served.
+     * @return ChangeSupport informing the {@link javax.config.Config} implementation about support for changes by this source
+     * @see ChangeSupport
      */
-    default void setOnAttributeChange(Consumer<Set<String>> reportAttributeChange) {
+    default ChangeSupport setOnAttributeChange(Consumer<Set<String>> callback) {
         // do nothing by default. Just for compat with older ConfigSources.
+        // return unsupported to tell config that it must re-query this source every time
+        return ChangeSupport.UNSUPPORTED;
+    }
+
+    /**
+     * What kind of change support this config source has.
+     * <p>
+     * {@link javax.config.Config} implementations may use this information for internal optimizations.
+     */
+    enum ChangeSupport {
+        /**
+         * Config change is supported, this config source will invoke the callback provided by
+         * {@link ConfigSource#setOnAttributeChange(Consumer)}.
+         * <p>
+         * Example: File based config source that watches the file for changes
+         */
+        SUPPORTED,
+        /**
+         * Config change is not supported. Configuration values can change, though this change is not reported back.
+         * <p>
+         * Example: LDAP based config source
+         */
+        UNSUPPORTED,
+        /**
+         * Configuration values cannot change for the lifetime of this {@link ConfigSource}.
+         * <p>
+         * Example: Environment variables config source, classpath resource config source
+         */
+        IMMUTABLE
     }
 }
