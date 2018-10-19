@@ -19,6 +19,8 @@
  */
 package org.eclipse.configjsr.base;
 
+import java.net.URL;
+
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.asset.UrlAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -31,12 +33,21 @@ public class AbstractTest extends Arquillian {
 
 
     public static void addFile(JavaArchive archive, String originalPath) {
-        archive.addAsResource(new UrlAsset(Thread.currentThread().getContextClassLoader().getResource("internal/" + originalPath)),
+        String resName = "internal/" + originalPath;
+        URL resource = Thread.currentThread().getContextClassLoader().getResource(resName);
+        if (resource == null) {
+            throw new IllegalStateException("could not load test resource " + resName);
+        }
+        archive.addAsResource(new UrlAsset(resource),
                 originalPath);
     }
 
     public static void addFile(JavaArchive archive, String originalFile, String targetFile) {
-        archive.addAsResource(new UrlAsset(Thread.currentThread().getContextClassLoader().getResource(originalFile)),
+        URL resource = Thread.currentThread().getContextClassLoader().getResource(originalFile);
+        if (resource == null) {
+            throw new IllegalStateException("could not load test resource " + originalFile);
+        }
+        archive.addAsResource(new UrlAsset(resource),
                 targetFile);
     }
 
