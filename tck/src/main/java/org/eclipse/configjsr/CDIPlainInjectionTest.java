@@ -19,13 +19,6 @@
 
 package org.eclipse.configjsr;
 
-import static org.eclipse.configjsr.matchers.AdditionalMatchers.floatCloseTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.testng.Assert.assertEquals;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +38,13 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.Test;
+
+import static org.eclipse.configjsr.matchers.AdditionalMatchers.floatCloseTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Test cases for CDI-based API that test retrieving values from the configuration.
