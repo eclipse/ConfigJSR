@@ -212,6 +212,18 @@ public interface ConfigAccessor<T> {
      *          for this {@link ConfigAccessor}
      */
     T getValue(ConfigSnapshot configSnapshot);
+    
+    /**
+     * Returns the value from a previously taken {@link ConfigSnapshot}.
+     *
+     * @param configSnapshot previously taken via {@link Config#snapshotFor(ConfigAccessor[])}
+     * @return the resolved value as Optional
+     * @see Config#snapshotFor(ConfigAccessor...)
+     * @throws IllegalArgumentException if the {@link ConfigSnapshot} hasn't been resolved
+     *          for this {@link ConfigAccessor}
+     */
+    Optional<T> getOptionalValue(ConfigSnapshot configSnapshot);
+    
 
     /**
      * Returns the converted resolved filtered value.
