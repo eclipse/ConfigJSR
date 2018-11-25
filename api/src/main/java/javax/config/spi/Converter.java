@@ -44,7 +44,6 @@ package javax.config.spi;
  *
  * </ul>
 
-<p>
  * <p>Custom Converters will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
  * providing a file<br>
  * <code>META-INF/services/javax.config.spi.Converter</code><br>

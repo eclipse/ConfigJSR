@@ -136,6 +136,17 @@ public interface Config {
      * @return a {@code ConfigAccessor} to access the given propertyName
      */
     ConfigAccessor<String> access(String propertyName);
+    
+    /**
+     * Create a {@link ConfigAccessor} to access the underlying configuration.
+     *
+     * @param <T>  the property type
+     * @param propertyName the property key
+     * @param propertyType
+     *             The type into which the resolve property value should be converted
+     * @return a {@code ConfigAccessor} to access the given propertyName
+     */
+    <T> ConfigAccessor<T> access(String propertyName,Class<T> propertyType);
 
     /**
      * <p>This method can be used to access multiple

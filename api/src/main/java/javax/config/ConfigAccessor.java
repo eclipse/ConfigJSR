@@ -27,11 +27,10 @@
 package javax.config;
 
 
-import javax.config.spi.Converter;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import javax.config.spi.Converter;
 
 
 /**
@@ -47,46 +46,6 @@ import java.util.concurrent.TimeUnit;
  * @author <a href="mailto:tomas.langer@oracle.com">Tomas Langer</a>
  */
 public interface ConfigAccessor<T> {
-
-    /**
-     * Sets the type of the configuration entry to the given class and returns this builder.
-     * The default type of a ConfigAccessor is {@code String}.
-     *
-     * <p>Usage:
-     * <pre>
-     * Integer timeout = config.access("some.timeout")
-     *                         .as(Integer.class)
-     *                         .getValue();
-     * </pre>
-     *
-     * Attention: this method should always be the first to be used and might
-     * return a new {@code ConfigAccessor} for the given target clazz.
-     *
-     *
-     * @param clazz The target type
-     * @param <N> The target type
-     * @return This builder as a typed ConfigAccessor
-     */
-    <N> ConfigAccessor<N> as(Class<N> clazz);
-
-    /**
-     * Declare the ConfigAccessor to return a List of the given Type.
-     * When getting value it will be split on each comma (',') character.
-     * If a comma is contained in the values it must get escaped with a preceding backslash (&quot;\,&quot;).
-     * Any backslash needs to get escaped via double-backslash (&quot;\\&quot;).
-     * Note that in property files this leads to &quot;\\\\&quot; as properties escape themselves.
-     *
-     * @return a ConfigAccessor for a list of configured comma separated values
-     */
-    ConfigAccessor<List<T>> asList();
-
-    /**
-     * Declare the ConfigAccessor to return a Set of the given Type.
-     * The notation and escaping rules are the same like explained in {@link #asList()}
-     *
-     * @return a ConfigAccessor for a list of configured comma separated values
-     */
-    ConfigAccessor<Set<T>> asSet();
 
     /**
      * Defines a specific {@link Converter} to be used instead of applying the default Converter resolving logic.

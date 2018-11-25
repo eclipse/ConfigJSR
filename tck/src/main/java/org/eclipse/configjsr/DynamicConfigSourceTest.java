@@ -74,8 +74,7 @@ public class DynamicConfigSourceTest extends Arquillian {
 
     @Test(enabled = false, description = "disabled for now, Emily and Tomas will come up with a better TCK test")
     public void testValueInvalidationOnConfigChange() throws Exception {
-        ConfigAccessor<Integer> valCfg = config.access(DynamicChangeConfigSource.TEST_ATTRIBUTE)
-            .as(Integer.class)
+        ConfigAccessor<Integer> valCfg = config.access(DynamicChangeConfigSource.TEST_ATTRIBUTE,Integer.class)
             .cacheFor(15, TimeUnit.MINUTES);
 
         // we try to read the same value for 30 consecutive times
