@@ -43,8 +43,6 @@ package javax.config.spi;
  *     <li>{@code URL} as defined by {@link java.net.URL#URL(java.lang.String)}</li>
  *
  * </ul>
-
-<p>
  * <p>Custom Converters will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
  * providing a file<br>
  * <code>META-INF/services/javax.config.spi.Converter</code><br>
@@ -90,19 +88,14 @@ package javax.config.spi;
  *  <code>
  *  String[] myPets = ConfigProvider.getValue("myPet", String[].class);
  *  </code>
- *
  *  <p>
  *  <code>
  *  {@code @Inject @ConfigProperty(name="myPets") String[] myPets};
  *  </code>
  *  <p>
- *  <code>
  *  {@code @Inject @ConfigProperty(name="myPets") List<String> myPets};
- *  </code>
  *  <p>
- *  <code>
  *  {@code @Inject @ConfigProperty(name="myPets") Set<String> myPets};
- *  </code>
  *  <p>
  *  myPets will be "dog", "cat", "dog,cat"
  *

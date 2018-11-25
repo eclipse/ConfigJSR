@@ -27,7 +27,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.concurrent.TimeUnit;
+import java.time.temporal.ChronoUnit;
 
 import javax.enterprise.util.Nonbinding;
 import javax.inject.Qualifier;
@@ -126,7 +126,7 @@ public @interface ConfigProperty {
     String defaultValue() default UNCONFIGURED_VALUE;
 
     /**
-     * @see javax.config.ConfigAccessor#evaluateVariables(boolean)
+     * @see javax.config.ConfigAccessorBuilder#evaluateVariables(boolean)
      * @return whether variable replacement is enabled. Defaults to {@code true}.
      */
     @Nonbinding
@@ -137,11 +137,11 @@ public @interface ConfigProperty {
      * @return {@code TimeUnit} for {@link #cacheFor()}
      */
     @Nonbinding
-    TimeUnit cacheTimeUnit() default TimeUnit.SECONDS;
+    ChronoUnit cacheForTimeUnit() default ChronoUnit.SECONDS;
 
     /**
      * Only valid for injection of dynamically readable values, e.g. {@code Provider<String>}!
-     * @return how long should dynamic values be locally cached. Measured in {@link #cacheTimeUnit()}.
+     * @return how long should dynamic values be locally cached. Measured in {@link #cacheForTimeUnit()}.
      */
     @Nonbinding
     long cacheFor() default 0L;

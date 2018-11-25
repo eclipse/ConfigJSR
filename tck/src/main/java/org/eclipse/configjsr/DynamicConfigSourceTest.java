@@ -21,7 +21,7 @@ package org.eclipse.configjsr;
 
 import static org.testng.Assert.assertTrue;
 
-import java.util.concurrent.TimeUnit;
+import java.time.temporal.ChronoUnit;
 
 import javax.config.Config;
 import javax.config.ConfigAccessor;
@@ -74,9 +74,8 @@ public class DynamicConfigSourceTest extends Arquillian {
 
     @Test(enabled = false, description = "disabled for now, Emily and Tomas will come up with a better TCK test")
     public void testValueInvalidationOnConfigChange() throws Exception {
-        ConfigAccessor<Integer> valCfg = config.access(DynamicChangeConfigSource.TEST_ATTRIBUTE)
-            .as(Integer.class)
-            .cacheFor(15, TimeUnit.MINUTES);
+        ConfigAccessor<Integer> valCfg = config.access(DynamicChangeConfigSource.TEST_ATTRIBUTE, Integer.class)
+            .cacheFor(15, ChronoUnit.MILLIS).build();
 
         // we try to read the same value for 30 consecutive times
         // it might happen that we have bad luck and the configsource switches values
