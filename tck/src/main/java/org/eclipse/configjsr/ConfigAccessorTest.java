@@ -18,6 +18,7 @@
  */
 package org.eclipse.configjsr;
 
+import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
 import javax.config.Config;
@@ -217,7 +218,7 @@ public class ConfigAccessorTest extends Arquillian {
     public void testCacheFor() throws Exception {
         String key = "tck.config.test.javaconfig.cachefor.key";
         System.setProperty(key, "firstvalue");
-        ConfigAccessor<String> val = config.access(key, String.class).cacheFor(30, ChronoUnit.MILLIS).build();
+        ConfigAccessor<String> val = config.access(key, String.class).cacheFor(Duration.of(30, ChronoUnit.MILLIS)).build();
         Assert.assertEquals(val.getValue(), "firstvalue");
 
         // immediately change the value

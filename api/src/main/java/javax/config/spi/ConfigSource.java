@@ -178,7 +178,7 @@ public interface ConfigSource {
      * @return ChangeSupport informing the {@link javax.config.Config} implementation about support for changes by this source
      * @see ChangeSupport
      */
-    default ChangeSupport onAttributeChange(Consumer<Set<String>> callback) {
+    default ChangeSupport setAttributeChangeCallback(Consumer<Set<String>> callback) {
         // do nothing by default. Just for compat with older ConfigSources.
         // return unsupported to tell config that it must re-query this source every time
         return ChangeSupport.UNSUPPORTED;
@@ -192,7 +192,7 @@ public interface ConfigSource {
     enum ChangeSupport {
         /**
          * Config change is supported, this config source will invoke the callback provided by
-         * {@link ConfigSource#onAttributeChange(Consumer)}.
+         * {@link ConfigSource#setAttributeChangeCallback(Consumer)}.
          * <p>
          * Example: File based config source that watches the file for changes
          */

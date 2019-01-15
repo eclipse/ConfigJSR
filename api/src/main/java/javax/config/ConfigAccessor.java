@@ -27,7 +27,7 @@
 package javax.config;
 
 
-import java.time.temporal.ChronoUnit;
+import java.time.Duration;
 import java.util.Optional;
 
 import javax.config.spi.Converter;
@@ -162,13 +162,12 @@ public interface ConfigAccessor<T> {
          * Note that that the cache will get flushed if a {@code ConfigSource} notifies
          * the underlying {@link Config} about a value change.
          * This is done by invoking the callback provided to the {@code ConfigSource} via
-         * {@link javax.config.spi.ConfigSource#onAttributeChange(java.util.function.Consumer)}.
+         * {@link javax.config.spi.ConfigSource#setAttributeChangeCallback(java.util.function.Consumer)}.
          *
-         * @param value the amount of the TimeUnit to wait
-         * @param timeUnit the TimeUnit for the value
+         * @param duration the maximum amount of the time to cache this value.
          * @return This builder
          */
-        Builder<T> cacheFor(long value, ChronoUnit timeUnit);
+        Builder<T> cacheFor(Duration duration);
 
         /**
          * Whether to evaluate variables in configured values.
