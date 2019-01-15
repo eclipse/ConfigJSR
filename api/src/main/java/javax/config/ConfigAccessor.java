@@ -27,7 +27,10 @@
 package javax.config;
 
 
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
+
+import javax.config.spi.Converter;
 
 
 /**
@@ -94,7 +97,7 @@ public interface ConfigAccessor<T> {
 
     /**
      * Returns the actual key which led to successful resolution and corresponds to the resolved value.
-     * This is useful when {@link ConfigAccessorBuilder#addLookupSuffix(String)} is used.
+     * This is useful when {@link Builder#addLookupSuffix(String)} is used.
      * Otherwise the resolved key should always be equal to the original key.
      * This method is provided for cases, when parameterized resolution is
      * requested and some of the fallback keys is used.
@@ -108,11 +111,129 @@ public interface ConfigAccessor<T> {
     String getResolvedPropertyName();
 
     /**
-     * Returns the default value provided by {@link ConfigAccessorBuilder#withDefault(Object)} 
-     * or {@link ConfigAccessorBuilder#withStringDefault(String)}.
+     * Returns the default value provided by {@link Builder#withDefault(Object)}
+     * or {@link Builder#withStringDefault(String)}.
      *
      * @return the default value or {@code null} if no default was provided.
      */
     T getDefaultValue();
 
+
+    /**
+     * Accessor to a configured value.
+     *
+     * It follows a builder-like pattern to define in which ways to access the configured value
+     * of a certain property name.
+     *
+     * Accessing the configured value is finally done via {@link ConfigAccessor#getValue()}
+     *
+     */
+    interface Builder<T> {
+
+
+        /**
+         * Defines a specific {@link Converter} to be used instead of applying the default Converter resolving logic.
+         *
+         * @param converter The converter for the target type
+         * @return This builder as a typed ConfigAccessor
+         */
+        Builder<T> useConverter(Converter<T> converter);
+
+        /**
+         * Sets the default value to use in case the resolution returns null.
+         * @param value the default value
+         * @return This builder
+         */
+        Builder<T> withDefault(T value);
+
+        /**
+         * Sets the default value to use in case the resolution returns null. Converts the given String to the type of
+         * this resolver using the same method as used for the configuration entries.
+         * @param value string value to be converted and used as default
+         * @return This builder
+         */
+        Builder<T> withStringDefault(String value);
+
+        /**
+         * Specify that a resolved value will get cached for a certain maximum amount of time.
+         * After the time expires the next {@link ConfigAccessor#getValue()} will again resolve the value
+         * from the underlying {@link Config}.
+         *
+         * Note that that the cache will get flushed if a {@code ConfigSource} notifies
+         * the underlying {@link Config} about a value change.
+         * This is done by invoking the callback provided to the {@code ConfigSource} via
+         * {@link javax.config.spi.ConfigSource#onAttributeChange(java.util.function.Consumer)}.
+         *
+         * @param value the amount of the TimeUnit to wait
+         * @param timeUnit the TimeUnit for the value
+         * @return This builder
+         */
+        Builder<T> cacheFor(long value, ChronoUnit timeUnit);
+
+        /**
+         * Whether to evaluate variables in configured values.
+         * A variable starts with '${' and ends with '}', e.g.
+         * <pre>
+         * mycompany.some.url=${myserver.host}/some/path
+         * myserver.host=http://localhost:8081
+         * </pre>
+         * If 'evaluateVariables' is enabled, the result for the above key
+         * {@code "mycompany.some.url"} would be:
+         * {@code "http://localhost:8081/some/path"}
+         *
+         * <p><b>ATTENTION:</b> This defaults to {@code true}! That means variable replacement is enabled by default!</p>
+         *
+         * @param evaluateVariables whether to evaluate variables in values or not
+         *
+         * @return This builder
+         */
+        Builder<T> evaluateVariables(boolean evaluateVariables);
+
+        /**
+         * The methods {@link Builder#addLookupSuffix(String)}
+         * append the given parameters as optional suffixes to the {@link ConfigAccessor#getPropertyName()}.
+         * Those methods can be called multiple times.
+         * Each time the given suffix will be added to the end of suffix chain.
+         *
+         * This very version
+         *
+         * <p>Usage:
+         * <pre>
+         * String tenant = getCurrentTenant();
+         *
+         * Integer timeout = config.access("some.server.url", Integer.class)
+         *                         .addLookupSuffix(tenant)
+         *                         .addLookupSuffix(config.access("javax.config.projectStage").build())
+         *                         .build()
+         *                         .getValue();
+         * </pre>
+         *
+         * Given the current tenant name is 'myComp' and the property
+         * {@code javaconfig.projectStage} is 'Production' this would lead to the following lookup order:
+         *
+         * <ul>
+         *     <li>"some.server.url.myComp.Production"</li>
+         *     <li>"some.server.url.myComp"</li>
+         *     <li>"some.server.url.Production"</li>
+         *     <li>"some.server.url"</li>
+         * </ul>
+         *
+         * The algorithm to use in {@link ConfigAccessor#getValue()} is a binary count down.
+         * Every parameter is either available (1) or not (0).
+         * Having 3 parameters, we start with binary {@code 111} and count down to zero.
+         * The first combination which resolves to a result is being treated as result.
+         *
+         * @param suffixValue fixed String to be used as suffix
+         * @return This builder
+         */
+        Builder<T> addLookupSuffix(String suffixValue);
+
+
+        /**
+         * Build a ConfigAccessor
+         * @return the configAccessor
+         */
+        ConfigAccessor<T> build();
+
+    }
 }

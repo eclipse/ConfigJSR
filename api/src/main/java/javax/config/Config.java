@@ -98,7 +98,7 @@ public interface Config {
      *
      * If this method gets used very often then consider to locally store the configured value.
      *
-     * <p>Note that no variable replacement like in {@link ConfigAccessorBuilder#evaluateVariables(boolean)} will be performed!
+     * <p>Note that no variable replacement like in {@link ConfigAccessor.Builder#evaluateVariables(boolean)} will be performed!
      *
      * @param <T>  the property type
      * @param propertyName
@@ -117,7 +117,7 @@ public interface Config {
      *
      * If this method is used very often then consider to locally store the configured value.
      *
-     * <p>Note that no variable replacement like in {@link ConfigAccessorBuilder#evaluateVariables(boolean)} will be performed!
+     * <p>Note that no variable replacement like in {@link ConfigAccessor.Builder#evaluateVariables(boolean)} will be performed!
      *
      * @param <T>  the property type
      * @param propertyName
@@ -138,7 +138,7 @@ public interface Config {
      * @param <T> the property type 
      * @return a {@code ConfigAccessor} to access the given propertyName
      */
-    <T> ConfigAccessorBuilder<T> access(String propertyName, Class<T> type);
+    <T> ConfigAccessor.Builder<T> access(String propertyName, Class<T> type);
 
     /**
      * <p>This method can be used to access multiple

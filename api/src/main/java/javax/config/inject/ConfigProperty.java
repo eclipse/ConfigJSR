@@ -126,7 +126,7 @@ public @interface ConfigProperty {
     String defaultValue() default UNCONFIGURED_VALUE;
 
     /**
-     * @see javax.config.ConfigAccessorBuilder#evaluateVariables(boolean)
+     * @see javax.config.ConfigAccessor.Builder#evaluateVariables(boolean)
      * @return whether variable replacement is enabled. Defaults to {@code true}.
      */
     @Nonbinding
