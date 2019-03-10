@@ -227,6 +227,13 @@ public interface ConfigAccessor<T> {
          */
         Builder<T> addLookupSuffix(String suffixValue);
 
+        /**
+         *
+         * @param suffixAccessor {@link ConfigAccessor} to be used to resolve the suffix.
+         * @return This builder
+         * @see #addLookupSuffix(String)
+         */
+        Builder<T> addLookupSuffix(ConfigAccessor<String> suffixAccessor);
 
         /**
          * Build a ConfigAccessor
