@@ -36,6 +36,7 @@ The following `Converter` s are provided by JavaConfig by default:
 * `long` and `Long`
 * `float` and `Float` , a dot '.' is used to separate the fractional digits
 * `double` and `Double` , a dot '.' is used to separate the fractional digits
+* `Class` based on the result of `Class.forName`
 * `URL`
 
 All built-in `Converter` have the `@Priority` of `1`.
@@ -52,6 +53,9 @@ The `Config` will use the `Converter` with the highest `Priority` for each targe
 
 A custom `Converter` for a target type of any of the built-in Converters will overwrite the default Converter.
 
+Converters can be added to the `ConfigBuilder` programmatically via `ConfigBuilder#withConverters(Converter<?>... converters)`
+where the type of the converters can be obtained via reflection. However, this is not possible for a lambda converter.
+In this case, use the method `ConfigBuilder#withConverter(Class<T> type, int priority, Converter<T> converter)`.
 
 === Implicit Converters
 
@@ -84,7 +88,8 @@ Array as a class type is supported in the programmatic lookup.
 
 [source, java]
 ----
-String[] myPets = ConfigProvider.getConfig().getValue("myPet", String[].class);
+Config = ConfigProvider.getConfig();
+String[] myPets = config.getValue("myPets", String[].class);
 ----
 
 myPets will be "dog", "cat", "dog,cat" as an array
