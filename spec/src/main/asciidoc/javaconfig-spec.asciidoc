@@ -16,10 +16,10 @@
 //
 
 = Configuration API for Java, v1.0
-:authors: Mark Struberg, Emily Jiang, John D. Ament
+:authors: Mark Struberg, Emily Jiang, John D. Ament, et al
 :email: struberg@apache.org, emijiang@uk.ibm.com, john.d.ament@gmail.com
 :revnumber: 1.0-Draft
-:revdate: 2018-07-05
+:revdate: 2019-03-13
 :revremark: Draft
 :version-label!:
 :sectanchors:

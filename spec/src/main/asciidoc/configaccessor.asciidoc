@@ -32,17 +32,15 @@ This can also be handled via `ConfigAccessor` as shown in the following example:
 .Simple example of ConfigAccessor
 [source,java]
 -----------------------------------------------------------------
-String userName = config.access("user.name").getValue();
+String userName = config.access("user.name", String.class).build().getValue();
 -----------------------------------------------------------------
 
 Additional to this the `ConfigAccessor` also allows for far more complex control over the access to configured values.
 
-The call to `config.access(..)` returns a `ConfigAccessor`.
+The call to `config.access(..)` returns a `ConfigAccessor.Builder`.
 This is basically a builder which has methods to refine the resolution, including the following:
 
-* `as(Class<N> clazz)` -- defines the return type of the property
-* `asList()` -- Declare the ConfigAccessor to return a List of the given Type.
-* `evaluateVariables(boolean evaluateVariables)`
+* `evaluateVariables(boolean evaluateVariables)` -- Allows variable parts in configured values.
 * `useConverter(Converter<T> converter)` -- Defines a specific {@link Converter} to be used instead of applying the default Converter resolving logic.
 * `addLookupSuffix(String postfixName)` -- sets a parameter for the resolution of a 'postfix' for the resolution
 * `addLookupSuffix(ConfigAccessor)` -- you can also use a `ConfigAccessor` to determine the 'postfix' for the resolution
@@ -55,11 +53,12 @@ This is basically a builder which has methods to refine the resolution, includin
 Config config = ConfigProvider.getConfig();
 
 ConfigAccessor<Integer> dbPortCfg
-    = config.access("db.port")
-            .as(Integer.class)
-            .addLookupSuffix(config.access("project.projectStage").cacheFor(12, TimeUnit.HOURS))
+    = config.access("db.port", Integer.class)
+            .addLookupSuffix(config.access("project.projectStage")
+            .cacheFor(Duration.ofHours(12L))
             .addLookupSuffix("database.vendor")
-            .withDefault(3306);
+            .withDefault(3306)
+            .build();
 ...
 Integer port = dbPortCfg.getValue();
 -----------------------------------------------------------------
