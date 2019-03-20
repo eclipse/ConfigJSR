@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2016-2018 Eclipse ConfigJSR Contributors:
+// Copyright (c) 2016-2019 Eclipse ConfigJSR Contributors:
 // Mark Struberg
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,10 @@
 //
 
 = Configuration API for Java, v1.0
-:authors: Mark Struberg, Emily Jiang, John D. Ament
+:authors: Mark Struberg, Emily Jiang, John D. Ament, et al
 :email: struberg@apache.org, emijiang@uk.ibm.com, john.d.ament@gmail.com
 :revnumber: 1.0-Draft
-:revdate: 2018-07-05
+:revdate: 2019-03-13
 :revremark: Draft
 :version-label!:
 :sectanchors:
