@@ -37,6 +37,8 @@ import javax.inject.Qualifier;
  * Can be used to annotate injection points of type {@code TYPE}, {@code Optional<TYPE>} or {@code javax.inject.Provider<TYPE>},
  * where {@code TYPE} can be {@code String} and all types which have appropriate converters.
  *
+ * <p>This features is only supported in environments which support {@code @Inject} dependency injection.
+ *
  * <h2>Examples</h2>
  *
  * <h3>Injecting Native Values</h3>
