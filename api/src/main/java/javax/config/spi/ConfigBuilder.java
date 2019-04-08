@@ -77,6 +77,8 @@ public interface ConfigBuilder {
     /**
      * Add the specified {@link ConfigSource}.
      *
+     * Attention: If you register the same {@code ConfigSource} instance within multiple {@link Config} then non-portable behaviour results.
+     *
      * @param sources the config sources
      * @return the ConfigBuilder with the configured sources
      */
