@@ -19,7 +19,7 @@
     <parent>
         <groupId>javax.config</groupId>
         <artifactId>javaconfig-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0-EDR1</version>
     </parent>
 
     <artifactId>javaconfig-api</artifactId>
