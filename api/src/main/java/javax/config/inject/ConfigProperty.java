@@ -50,7 +50,11 @@ import javax.inject.Qualifier;
  * <p>Injecting a native value is recommended for a mandatory property and its value does not change at runtime or used by a bean with RequestScoped.
  * <p>A further recommendation is to use the built in {@code META-INF/javaconfig.properties} file mechanism
  * to provide default values inside an Application.
- * If no configured value exists for this property, a {@code DeploymentException} will be thrown during startup.
+ *
+ * <p>If no configured value exists for this property and no default value is defined, an {@code Exception} will be thrown during startup.
+ * If running in a a CDI Environment a single {@code javax.enterprise.inject.spi.DeploymentException}
+ * will be thrown which will contain information of all the missing configs.
+ *
  * <pre>
  * &#064;Inject
  * &#064;ConfigProperty(name="my.long.property")
@@ -61,7 +65,7 @@ import javax.inject.Qualifier;
  * <h3>Injecting Optional Values</h3>
  *
  *
- * Contrary to natively injecting, if the property is not specified, this will not lead to a DeploymentException.
+ * Contrary to natively injecting, if the property is not specified, this will not lead to a Deployment Exception.
  * The following code injects a Long value to the {@code my.optional.long.property}.
  * If the property does not exist, the value {@code 123} will be assigned.
  * to {@code injectedLongValue}.
