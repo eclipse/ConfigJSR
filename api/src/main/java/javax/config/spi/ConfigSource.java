@@ -74,7 +74,7 @@ import java.util.function.Consumer;
  *  then the {@link AutoCloseable#close()} method will be called when
  *  the underlying {@link javax.config.Config} is being released.
  *
- *  <p> If you register the same {@code ConfigSource} instance within multiple {@link Config} then non-portable behaviour results.
+ *  <p> If you register the same {@code ConfigSource} instance within multiple {@link javax.config.Config} then non-portable behaviour results.
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
