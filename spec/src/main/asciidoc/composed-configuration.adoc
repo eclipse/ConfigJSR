@@ -22,7 +22,7 @@
 == Composed Configuration
 
 Developers can specify composed configuration types in order to define multiple, coherent configuration values, and access them conveniently and consistently.
-Composed configuration types, which are annotated with `@ComposedConfig`, comprise multiple, potentially hierarchical, configuration values.
+Composed configuration types, which are specified in an interface type, comprise multiple, potentially hierarchical, configuration values.
 
 === Usage
 
@@ -30,19 +30,14 @@ See the following example that defines a coherent server socket configuration.
 
 [source,java]
 ----
-@ComposedConfig
-public class SocketConfig {
+public interface SocketConfig {
 
-    @ConfigProperty(name = "name")
-    private String name;
+    String name();
 
     @ConfigProperty(name = "protocol", defaultValue = "http")
-    private String protocolName;
+    String protocolName();
 
-    @ConfigProperty(name = "port")
-    private int port;
-
-    // getters & setters
+    int getPort();
 }
 ----
 
@@ -63,94 +58,34 @@ The example will resolve the configuration values as follows, provided by the co
 
 [source,text]
 ----
-socketConfig.getName() -> server.socket.name
-socketConfig.getProtocolName() -> server.socket.protocol (or "http" if undefined)
+socketConfig.name() -> server.socket.name
+socketConfig.protocolName() -> server.socket.protocol (or "http" if undefined)
 socketConfig.getPort() -> server.socket.port
 ----
 
-
-==== Implicit Property Resolution
-
-It's possible to omit the individual `@ConfigProperty` annotations on the fields of the composed type.
-In this case the composed property keys are derived from the field names:
-
-[source,java]
-----
-public class SomeBean {
-
-    @Inject
-    @ConfigProperty(name = "server.socket")
-    private SocketConfig socketConfig;
-
-    @ComposedConfig
-    public static class SocketConfig {
-
-        private String name;
-        private String protocol;
-        private int port;
-
-        // getters & setters
-    }
-}
-----
-
-This example will result in the same configuration resolution as in the previous example, apart from the default value (`http`) for `server.socket.protocol`.
-
-If the property keys differ from the field names, they can be overridden individually via the `@ConfigProperty` annotation.
-The same is true for default values, as seen before.
-
-The `@ConfigProperty` annotation can be annotated on fields as well as on methods.
-The latter is useful if interfaces instead of classes are defined as composed types.
-Per default, methods are not implicitly taken to resolve composed configuration properties.
-If both fields and methods are annotated within a single type, methods take precedence.
-
-See the following example for a composed interface configuration type.
-
-[source,java]
-----
-@ComposedConfig
-public interface SocketConfig {
-
-    @ConfigProperty(name = "name")
-    String name();
-
-    @ConfigProperty(name = "protocol", defaultValue = "http")
-    String protocolName();
-
-    @ConfigProperty(name = "port")
-    int getPort();
-}
-----
-
-Again, this example will result in the same configuration as before.
+All public, non-static methods of the interface are resolved as configuration values of the composed configuration.
+The configuration property names are derived implicitly by following the JavaBean naming standards (name of `get` methods), or alternatively the full name of the method.
+Additionally, a property name can be overridden with the `name` attribute of the `@ConfigProperty` annotation.
 
 
 ==== Hierarchical Type Resolution
 
 The configuration properties of composed types are resolved hierarchically.
-That is, properties in composed types are implicitly considered as possible composed types themselves, as well.
-This allows developers to define complex configuration structures without repeating annotations.
-
-The types of composed properties are therefore resolved as possible composed configuration types, if no built-in, custom, or implicit converters are defined.
-
-The hierarchical resolution works both for implicitly resolved fields and explicitly annotated members.
+That is, properties in composed types may be composed types themselves, as well.
+This allows developers to define complex configuration structures without repeating types or annotations.
 
 [source,java]
 ----
-@ComposedConfig
-public class ServerConfig {
+public interface ServerConfig {
 
-    private String host;
-    private SocketConfig socket;
+    String host();
+    SocketConfig socket();
 
-    // getters & setters
-
-    public static class SocketConfig {
-        private String name;
-        private String protocol;
-        private int port;
-
-        // getters & setters
+    interface SocketConfig {
+        String name();
+        @ConfigProperty(name = "protocol")
+        String protocolName();
+        int port();
     }
 
 }
@@ -173,15 +108,13 @@ This leads to:
 
 [source,text]
 ----
-serverConfig.getHost() -> server.host
-serverConfig.getSocket().getName() -> server.socket.name
-serverConfig.getSocket().getProtocol() -> server.socket.protocol
-serverConfig.getSocket().getPort() -> server.socket.port
+serverConfig.host() -> server.host
+serverConfig.socket().name() -> server.socket.name
+serverConfig.socket().protocol() -> server.socket.protocol
+serverConfig.socket().port() -> server.socket.port
 ----
 
-The property keys are resolved by the field names, or the names defined in `@ConfigProperty`, respectively, and combined via dot (`.`).
-
-The example above is congruent with annotating `SocketConfig` with `@ComposedConfig`, as well.
+The property keys are resolved by the method names, or the names defined in `@ConfigProperty`, respectively, and combined via dot (`.`).
 
 
 ==== Collection Resolution
@@ -190,20 +123,15 @@ Composed configuration types also resolve collections and array types.
 
 [source,java]
 ----
-@ComposedConfig
-public class MultiSocketServerConfig {
+public interface MultiSocketServerConfig {
 
-    private String[] hosts;
-    private List<SocketConfig> sockets;
+    String[] hosts();
+    List<SocketConfig> getSockets();
 
-    // getters & setters
-
-    public static class SocketConfig {
-        private String name;
-        private String protocol;
-        private int port;
-
-        // getters & setters
+    interface SocketConfig {
+        String name();
+        String protocol();
+        int port();
     }
 
 }
@@ -213,31 +141,49 @@ If the `MultiSocketServerConfig` type is resolved by key `alternative-server`, i
 
 [source,text]
 ----
-serverConfig.getHosts()[0] -> server.hosts.0
-serverConfig.getHosts()[1] -> server.hosts.1
+serverConfig.hosts()[0] -> alternative-server.hosts.0
+serverConfig.hosts()[1] -> alternative-server.hosts.1
 ...
-serverConfig.getSockets().get(0).getName() -> server.sockets.0.name
-serverConfig.getSockets().get(0).getProtocol() -> server.sockets.0.protocol
-serverConfig.getSockets().get(1).getName() -> server.sockets.1.name
+serverConfig.getSockets().get(0).name() -> alternative-server.sockets.0.name
+serverConfig.getSockets().get(0).protocol() -> alternative-server.sockets.0.protocol
+serverConfig.getSockets().get(1).name() -> alternative-server.sockets.1.name
 ...
 ----
 
-Element types of collections and arrays are resolved by an implicit zero-based index, which is part of the resulting, combined property key.
+Element types of collections and arrays can be resolved by an implicit zero-based index, which is part of the resulting, combined property key.
 
 This collection resolution works for array types, and types that are assignable to `java.util.Collection`.
 For unordered collection types, e.g. `java.util.Set`, the order in which the configured elements will be retrieved is non-deterministic, despite the (zero-based) indexed key names.
 
 Similar to singular sub-types, the element types within the collection or array are resolved by potentially existent converters, and resolved recursively if no built-in, custom, or implicit converters are defined.
 
+In order to facilitate writing larger structures, collection elements can also be indexed by arbitrary names instead of zero-based indexes.
+See the following example:
+
+[source,text]
+----
+server.sockets.public.name=http
+server.sockets.public.port=80
+server.sockets.alternative.name=http-alt
+server.sockets.alternative.port=8080
+server.sockets.admin.name=http-admin
+server.sockets.admin.port=9999
+----
+
+The socket names `public`, `alternative`, and `admin` are used to avoid following strict ordering of numbers.
+The `alternative` element, for example, can be removed without reordering the indexes of the other elements.
+If the resulting collection type is ordered, the order of the resulting elements follow the alphabetical order of the provided names (`admin`, `alternative`, `public` in the example).
+
+
 [[resolution]]
 === Resolution
 
 The following examines how the resolution for composed configuration values works.
-This information is particularly interesting for implementors.
+This information is particularly interesting for implementers.
 
 1. The `Config` implementation detects whether the type of a retrieved configuration value is a composed configuration.
 This is handled equally, whether the configuration is retrieved programmatically, or via dependency injection.
-The configuration value type is considered a composed type if the type definition is annotated with `@ComposedConfig`.
+The configuration value type is considered a composed type if the retrieved type is an interface and doesn't define a built-in, custom, or implicit converter.
 
 2. The retrieval of a composed value MUST be performed by a single config source at a time, in order of their defined priority.
 Due to the potential hierarchical nature of composed configuration, the individual sources must define coherent configuration compositions.
@@ -245,10 +191,10 @@ Defining multiple parts of composed values in multiple config sources is not sup
 The config sources will override the whole composition of a composed configuration value individually.
 
 3. The individual, potentially hierarchical properties are resolved by the implementation by inspecting the composed configuration type definition.
-The following order MUST be followed, while subsequent, colliding definitions might override the resolved field names.
-  - every non-static, non-final field that is not annotated with `@ConfigProperty`, with its declared field name as key suffix and field type as configured property type
-  - every non-static, non-final field that is annotated with `@ConfigProperty`, with the specified name as key suffix, optional default value and field type as configured property type
-  - every non-static, non-void method that is annotated with `@ConfigProperty`, with the specified name as key suffix, optional default value and method return type as configured property type
+The following order MUST be followed, while subsequent, colliding definitions might override the resolved method names.
+  - every public, non-static method that is not annotated with `@ConfigProperty` that follows the JavaBean getter naming standard, with its declared method name with out the `get` prefix as key suffix and method return type as configured property type
+  - every public, non-static method that is not annotated with `@ConfigProperty`, with its declared method name as key suffix and method return type as configured property type
+  - every public, non-static method that is annotated with `@ConfigProperty`, with the annotation `name` as key suffix, optional default value and method return type as configured property type
 
 4. The resolved properties are looked-up via the config source following the same mechanism as for any other configuration values, except the constraints mentioned in steps 5. and 6.
 The configured keys used lookup the configuration values are concatenated as follows:
@@ -261,7 +207,7 @@ Unlike general configuration lookup, configured property types are considered as
 If no build-in, custom, or implicit converter could be resolved by the implementation, following the corresponding priorities, the configured type is considered a composed configuration and resolution is performed recursively, starting from step 3.
 To ensure configuration consistency, implementations MUST resolve hierarchical sub-types using a single config source throughout the whole hierarchy for a single (root) composed configuration.
 Unlike conventional configuration lookup, configured properties contained in composed types do not cause an error in case single configured properties are undefined (i.e. the computed property key doesn't lead to a configured value) in the config source, 
-In case a configured property is not defined, the value of the corresponding field is the default primitive value (e.g. `0` for `int`, `false` for `boolean`), `null` for reference types, `Optional.EMPTY` for `java.util.Optional` types, an empty array, or an empty collection of the corresponding collection type, respectively, depending on the property type.
+In case a configured property is not defined, the value of the corresponding property is the default primitive value (e.g. `0` for `int`, `false` for `boolean`), `null` for reference types, `Optional.EMPTY` for `java.util.Optional` types, an empty array, or an empty collection of the corresponding collection type, respectively, depending on the property type.
 In order to notify users of JSR 382 about configuration mismatches implementations SHOULD emit a warning if none of the resolved properties could be resolved within a (root) composed configuration value.
 
 6. Properties within the composed type are themselves resolved and inspected for collection types.
@@ -277,6 +223,9 @@ For example, a collection type configuration `socketNames` of type `List<String>
 Types within the collection that are themselves composed types compute their properties starting from the property key of the collection type and following the rules described in step 4.
 Collection types that are not explicitly ordered compute the property keys following the same rules with non-deterministic ordering of the elements.
 To ensure configuration consistency, implementations MUST resolve collection sub-types using a single config source throughout the whole hierarchy for a single (root) composed configuration.
+  - alternatively, the elements of the collection can be referred by arbitrary names instead of zero-based indexes.
+The implementations will resolve and populate the collections accordingly.
+Ordered collections, such as arrays or `List` types are resolved by sorting the specified elements by the provided element key names in alphabetical order.
 
 
 === Relationship to CDI Beans
@@ -327,6 +276,17 @@ Developers might want to prefer to use composed configuration values in the foll
   - composed configuration types are defined by a third-party, or being reused, and thus can't or shouldn't be annotated with JSR 382 annotations
 
 
+=== Consistency
+
+The retrieval of a composed value MUST be performed by a single config source at a time, in order of their defined priority.
+Due to the potential hierarchical nature of composed configuration, the individual sources must define coherent configuration compositions.
+Defining multiple parts of composed values in multiple config sources is not supported.
+The config sources will override the whole composition of a composed configuration value individually.
+
+Additionally, the lookup of composed configuration values is not allowed to specify a `cacheFor` behavior.
+The individual or composed values of retrieved composed configurations MUST not change, once the values are returned to the users.
+
+
 === Hierarchical Configuration File Formats
 
 Config sources that are backed by file format with a hierarchical structure, such as XML, JSON, or YAML, SHOULD resolve the individual properties following the same rules as described in steps 4. and 6. of <<resolution,Resolution>> in order to end up with the same hierarchical semantics of the property keys.
@@ -367,9 +327,3 @@ server.sockets.1.name=https-default
 server.sockets.1.protocol=https
 server.sockets.1.port=443
 ----
-
-
-=== Decisions &amp; Considerations (for EG members, to be removed)
-- No prefix attribute added on `@ComposedConfig`, since it arguable doesn't provide much benefits. The injection point has to specify some property name anyway. Discussed on 2018-09-06.
-- Starting with supporting to annotate `@ComposedConfig` on types only, i.e. no qualifier and no annotation on the injection point. Discussed on 2018-09-06.
-- The programmatic `ConfigAccessor` API doesn't require a specific method (such as `composed()`), since the resolution currently requires the composed type to be annotated with `@ComposedConfig`.
