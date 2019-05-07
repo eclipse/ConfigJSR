@@ -28,7 +28,7 @@
  *      Methods renamed, JavaDoc and cleanup
  *
  *******************************************************************************/
-package javax.config.spi;
+package jakarta.config.spi;
 
 import java.util.Map;
 import java.util.Set;
@@ -63,18 +63,18 @@ import java.util.function.Consumer;
  * <p>Custom ConfigSource will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
  * providing a file
  * <pre>
- *     META-INF/services/javax.config.spi.ConfigSource
+ *     META-INF/services/ConfigSource
  * </pre>
  * which contains the fully qualified {@code ConfigSource} implementation class name as content.
  *
  * <p>Adding a dynamic amount of custom config sources can be done programmatically via
- * {@link javax.config.spi.ConfigSourceProvider}.
+ * {@link ConfigSourceProvider}.
  *
  *  <p>If a ConfigSource implements the {@link AutoCloseable} interface
  *  then the {@link AutoCloseable#close()} method will be called when
- *  the underlying {@link javax.config.Config} is being released.
+ *  the underlying {@link jakarta.config.Config} is being released.
  *
- *  <p> If you register the same {@code ConfigSource} instance within multiple {@link javax.config.Config} then non-portable behaviour results.
+ *  <p> If you register the same {@code ConfigSource} instance within multiple {@link jakarta.config.Config} then non-portable behaviour results.
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>
@@ -174,10 +174,10 @@ public interface ConfigSource {
     /**
      * The callback should get invoked if an attribute change got detected inside the ConfigSource.
      *
-     * @param callback will be set by the {@link javax.config.Config} after this
+     * @param callback will be set by the {@link jakarta.config.Config} after this
      *                 {@code ConfigSource} got created and before any configured values
      *                 get served.
-     * @return ChangeSupport informing the {@link javax.config.Config} implementation about support for changes by this source
+     * @return ChangeSupport informing the {@link jakarta.config.Config} implementation about support for changes by this source
      * @see ChangeSupport
      */
     default ChangeSupport setAttributeChangeCallback(Consumer<Set<String>> callback) {
@@ -189,7 +189,7 @@ public interface ConfigSource {
     /**
      * What kind of change support this config source has.
      * <p>
-     * {@link javax.config.Config} implementations may use this information for internal optimizations.
+     * {@link jakarta.config.Config} implementations may use this information for internal optimizations.
      */
     enum ChangeSupport {
         /**

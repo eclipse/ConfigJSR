@@ -24,13 +24,13 @@
  *      Extracted the Config part out of DeltaSpike and proposed as Microprofile-Config 8ff76eb3bcfaf4fd
  *
  *******************************************************************************/
-package javax.config;
+package jakarta.config;
 
 
 import java.time.Duration;
 import java.util.Optional;
 
-import javax.config.spi.Converter;
+import jakarta.config.spi.Converter;
 
 
 /**
@@ -90,7 +90,7 @@ public interface ConfigAccessor<T> {
     Optional<T> getOptionalValue();
 
     /**
-     * Returns the property name key given in {@link javax.config.Config#access(String, Class)}.
+     * Returns the property name key given in {@link Config#access(String, Class)}.
      * @return the original property name
      */
     String getPropertyName();
@@ -162,7 +162,7 @@ public interface ConfigAccessor<T> {
          * Note that that the cache will get flushed if a {@code ConfigSource} notifies
          * the underlying {@link Config} about a value change.
          * This is done by invoking the callback provided to the {@code ConfigSource} via
-         * {@link javax.config.spi.ConfigSource#setAttributeChangeCallback(java.util.function.Consumer)}.
+         * {@link jakarta.config.spi.ConfigSource#setAttributeChangeCallback(java.util.function.Consumer)}.
          *
          * @param duration the maximum amount of the time to cache this value.
          * @return This builder
@@ -202,7 +202,7 @@ public interface ConfigAccessor<T> {
          *
          * Integer timeout = config.access("some.server.url", Integer.class)
          *                         .addLookupSuffix(tenant)
-         *                         .addLookupSuffix(config.access("javax.config.projectStage").build())
+         *                         .addLookupSuffix(config.access("jakarta.config.projectStage").build())
          *                         .build()
          *                         .getValue();
          * </pre>

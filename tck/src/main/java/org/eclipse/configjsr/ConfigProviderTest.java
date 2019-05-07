@@ -28,10 +28,10 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.config.Config;
+import jakarta.config.Config;
 import javax.inject.Inject;
 
-import javax.config.spi.ConfigSource;
+import jakarta.config.spi.ConfigSource;
 import org.eclipse.configjsr.base.AbstractTest;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;

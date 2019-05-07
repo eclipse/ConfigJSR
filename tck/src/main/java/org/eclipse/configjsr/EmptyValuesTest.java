@@ -19,7 +19,7 @@
  */
 package org.eclipse.configjsr;
 
-import javax.config.Config;
+import jakarta.config.Config;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.testng.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;

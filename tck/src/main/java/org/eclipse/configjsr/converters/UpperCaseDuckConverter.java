@@ -20,7 +20,7 @@
 package org.eclipse.configjsr.converters;
 
 import javax.annotation.Priority;
-import javax.config.spi.Converter;
+import jakarta.config.spi.Converter;
 
 /**
  * Always create a duck with an upper case name

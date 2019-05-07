@@ -34,7 +34,7 @@
  * <h2>How it works</h2>
  *
  * <p>A 'Configuration' consists of the information collected from the registered
- * {@link javax.config.spi.ConfigSource ConfigSources}.
+ * {@link jakarta.config.spi.ConfigSource ConfigSources}.
  * These {@code ConfigSources} get sorted according to their <i>ordinal</i>.
  * That way it is possible to overwrite configuration with lower importance from outside.
  *
@@ -50,13 +50,13 @@
  * <p>That means that one can put the default configuration in a {@code META-INF/javaconfig.properties} anywhere on the classpath.
  * and the Operations team can later simply e.g set a system property to change this default configuration.
  *
- * <p>It is of course also possible to register own {@link javax.config.spi.ConfigSource ConfigSources}.
+ * <p>It is of course also possible to register own {@link jakarta.config.spi.ConfigSource ConfigSources}.
  * A {@code ConfigSource} could e.g. read configuration values from a database table, a remote server, etc
  *
  *  <h2>Accessing and Using the Configuration</h2>
  *
- *  <p> The configuration of an application is represented by an instance of {@link javax.config.Config}.
- *  The {@link javax.config.Config} can be accessed via the {@link javax.config.ConfigProvider}.
+ *  <p> The configuration of an application is represented by an instance of {@link jakarta.config.Config}.
+ *  The {@link jakarta.config.Config} can be accessed via the {@link jakarta.config.ConfigProvider}.
  *
  *  <pre>
  *  Config config = ConfigProvider#getConfig();
@@ -75,5 +75,5 @@
  *
  */
 @org.osgi.annotation.versioning.Version("1.0")
-package javax.config;
+package jakarta.config;
 

@@ -30,13 +30,13 @@ To enable the tests in your project you need to add the following dependency to 
 </properties>
 
 <dependency>
-    <groupId>javax.config</groupId>
+    <groupId>jakarta.config</groupId>
     <artifactId>javaconfig-api</artifactId>
     <version>${javaconfig.version}</version>
 </dependency>
 
 <dependency>
-    <groupId>javax.config</groupId>
+    <groupId>jakarta.config</groupId>
     <artifactId>javaconfig-tck</artifactId>
     <version>${javaconfig.version}</version>
     <scope>test</scope>
@@ -119,7 +119,7 @@ If you don't want to use a tck-suite.xml file, you can also just use in line sur
     <artifactId>maven-surefire-plugin</artifactId>
     <configuration>
         <dependenciesToScan>
-            <dependency>javax.config:javaconfig-tck</dependency>
+            <dependency>jakarta.config:javaconfig-tck</dependency>
         </dependenciesToScan>
     </configuration>
 </plugin>

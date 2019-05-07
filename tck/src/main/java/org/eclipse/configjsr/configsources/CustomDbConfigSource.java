@@ -22,7 +22,7 @@ package org.eclipse.configjsr.configsources;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.config.spi.ConfigSource;
+import jakarta.config.spi.ConfigSource;
 
 /**
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>

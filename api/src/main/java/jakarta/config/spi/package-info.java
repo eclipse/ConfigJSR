@@ -20,13 +20,13 @@
 
 /**
  * <p>This package contains classes which are used to extend the standard functionality in a portable way.
- * <p>A user can provide own {@link javax.config.spi.ConfigSource ConfigSources} and
- * {@link javax.config.spi.Converter Converters} to extend the information available in the Config.
+ * <p>A user can provide own {@link jakarta.config.spi.ConfigSource ConfigSources} and
+ * {@link jakarta.config.spi.Converter Converters} to extend the information available in the Config.
  *
- * <p>The package also contains the class {@link javax.config.spi.ConfigProviderResolver}
+ * <p>The package also contains the class {@link jakarta.config.spi.ConfigProviderResolver}
  * which is used to pick up the actual implementation.
  * <h2>Usage</h2>
- * <p>This is used to build up a builder and manually add {@link javax.config.spi.ConfigSource ConfigSources}..</p>
+ * <p>This is used to build up a builder and manually add {@link jakarta.config.spi.ConfigSource ConfigSources}..</p>
  *
  *
  * <ol>
@@ -49,4 +49,4 @@
  *
  */
 @org.osgi.annotation.versioning.Version("1.1")
-package javax.config.spi;
+package jakarta.config.spi;

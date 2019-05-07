@@ -21,9 +21,9 @@ package org.eclipse.configjsr;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-import javax.config.Config;
-import javax.config.ConfigAccessor;
-import javax.config.spi.ConfigSource;
+import jakarta.config.Config;
+import jakarta.config.ConfigAccessor;
+import jakarta.config.spi.ConfigSource;
 import javax.inject.Inject;
 
 import org.eclipse.configjsr.base.AbstractTest;

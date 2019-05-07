@@ -24,7 +24,7 @@
  *
  *******************************************************************************/
 
-package javax.config;
+package jakarta.config;
 
 /**
  * A value holder for ConfigAccessor values which all got resolved in a guaranteed atomic way.
