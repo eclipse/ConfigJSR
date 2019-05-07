@@ -29,9 +29,9 @@
  *
  *******************************************************************************/
 
-package javax.config;
+package jakarta.config;
 
-import javax.config.spi.ConfigProviderResolver;
+import jakarta.config.spi.ConfigProviderResolver;
 
 /**
  * <p>
@@ -45,13 +45,13 @@ import javax.config.spi.ConfigProviderResolver;
  * {@link Thread#getContextClassLoader()}).
  *
  * <p>
- * A 'Configuration' consists of the information collected from the registered {@link javax.config.spi.ConfigSource ConfigSources}.
- * These {@link javax.config.spi.ConfigSource ConfigSources} get sorted according to
- * their <em>ordinal</em> defined via {@link javax.config.spi.ConfigSource#getOrdinal()}.
+ * A 'Configuration' consists of the information collected from the registered {@link jakarta.config.spi.ConfigSource ConfigSources}.
+ * These {@link jakarta.config.spi.ConfigSource ConfigSources} get sorted according to
+ * their <em>ordinal</em> defined via {@link jakarta.config.spi.ConfigSource#getOrdinal()}.
  * Thus it is possible to overwrite configuration by providing in a ConfigSource with higher importance from outside.
  *
  * <p>
- * It is also possible to register custom {@link javax.config.spi.ConfigSource ConfigSources} to flexibly
+ * It is also possible to register custom {@link jakarta.config.spi.ConfigSource ConfigSources} to flexibly
  * extend the configuration mechanism. An example would be to pick up
  * configuration values from a database table.
  *
@@ -77,7 +77,7 @@ public final class ConfigProvider {
     }
 
     /**
-     * Provide a {@link Config} based on all {@link javax.config.spi.ConfigSource ConfigSources} of the
+     * Provide a {@link Config} based on all {@link jakarta.config.spi.ConfigSource ConfigSources} of the
      * current Thread Context ClassLoader (TCCL)
      * The {@link Config} will be stored for future retrieval.
      * <p>
@@ -90,7 +90,7 @@ public final class ConfigProvider {
     }
 
     /**
-     * Provide a {@link Config} based on all {@link javax.config.spi.ConfigSource ConfigSources} of the
+     * Provide a {@link Config} based on all {@link jakarta.config.spi.ConfigSource ConfigSources} of the
      * specified ClassLoader
      *
      * <p>

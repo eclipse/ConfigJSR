@@ -22,8 +22,8 @@ package org.eclipse.configjsr;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.config.inject.ConfigProperty;
-import javax.config.spi.ConfigSource;
+import jakarta.config.inject.ConfigProperty;
+import jakarta.config.spi.ConfigSource;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;

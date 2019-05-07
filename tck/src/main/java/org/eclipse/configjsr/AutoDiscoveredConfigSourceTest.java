@@ -19,10 +19,10 @@
  *******************************************************************************/
 package org.eclipse.configjsr;
 
-import javax.config.Config;
-import javax.config.spi.ConfigProviderResolver;
-import javax.config.spi.ConfigSource;
-import javax.config.spi.Converter;
+import jakarta.config.Config;
+import jakarta.config.spi.ConfigProviderResolver;
+import jakarta.config.spi.ConfigSource;
+import jakarta.config.spi.Converter;
 import org.eclipse.configjsr.configsources.CustomDbConfigSource;
 import org.eclipse.configjsr.converters.Pizza;
 import org.eclipse.configjsr.converters.PizzaConverter;

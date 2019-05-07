@@ -25,8 +25,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import javax.config.Config;
-import javax.config.spi.ConfigSource;
+import jakarta.config.Config;
+import jakarta.config.spi.ConfigSource;
 
 /**
  * A ConfigSource which can be used to play through multiple

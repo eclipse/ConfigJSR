@@ -17,8 +17,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>javax.config</groupId>
-        <artifactId>javaconfig-parent</artifactId>
+        <groupId>jakarta.config</groupId>
+        <artifactId>jakartaconfig-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 

@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.config.spi.ConfigSource;
-import javax.config.spi.ConfigSourceProvider;
+import jakarta.config.spi.ConfigSource;
+import jakarta.config.spi.ConfigSourceProvider;
 
 
 /**

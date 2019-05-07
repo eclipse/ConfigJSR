@@ -27,7 +27,7 @@
  *
  *******************************************************************************/
 
-package javax.config.spi;
+package jakarta.config.spi;
 
 /**
  * <p>Interface for converting configured values from String to any Java type.
@@ -45,7 +45,7 @@ package javax.config.spi;
  * </ul>
  * <p>Custom Converters will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
  * providing a file<br>
- * <code>META-INF/services/javax.config.spi.Converter</code><br>
+ * <code>META-INF/services/Converter</code><br>
  * which contains the fully qualified {@code Converter} implementation class name as content.
  *
  * <p>A Converter can specify a {@code javax.annotation.Priority}.
@@ -103,7 +103,7 @@ package javax.config.spi;
  *
  *  <p>If a Converter implements the {@link AutoCloseable} interface
  *  then the {@link AutoCloseable#close()} method will be called when
- *  the underlying {@link javax.config.Config} is being released.
+ *  the underlying {@link jakarta.config.Config} is being released.
  *
  * @author <a href="mailto:rsmeral@apache.org">Ron Smeral</a>
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>

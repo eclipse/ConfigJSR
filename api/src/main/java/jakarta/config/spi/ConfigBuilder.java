@@ -26,9 +26,9 @@
  *      API improvements + JavaDoc  f53258b8eca1253fee52
  *
  *******************************************************************************/
-package javax.config.spi;
+package jakarta.config.spi;
 
-import javax.config.Config;
+import jakarta.config.Config;
 
 /**
  * Builder for manually creating an instance of a {@code Config}.

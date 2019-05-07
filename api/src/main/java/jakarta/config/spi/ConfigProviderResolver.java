@@ -18,13 +18,13 @@
  * limitations under the License.
  *******************************************************************************/
 
-package javax.config.spi;
+package jakarta.config.spi;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ServiceLoader;
 
-import javax.config.Config;
+import jakarta.config.Config;
 
 /**
  * This class is not intended to be used by end-users but for
@@ -44,13 +44,13 @@ public abstract class ConfigProviderResolver {
     private static volatile ConfigProviderResolver instance = null;
 
     /**
-     * @see javax.config.ConfigProvider#getConfig()
+     * @see jakarta.config.ConfigProvider#getConfig()
      * @return config the config object for the Thread Context Classloader
      */
     public abstract Config getConfig();
 
     /**
-     * @see javax.config.ConfigProvider#getConfig(ClassLoader)
+     * @see jakarta.config.ConfigProvider#getConfig(ClassLoader)
      * @param loader the classloader
      * @return config the config object for the specified classloader
      */
@@ -96,7 +96,7 @@ public abstract class ConfigProviderResolver {
 
     /**
      * Creates a ConfigProviderResolver object
-     * Only used internally from within {@link javax.config.ConfigProvider}
+     * Only used internally from within {@link jakarta.config.ConfigProvider}
      * @return ConfigProviderResolver an instance of ConfigProviderResolver
      */
     public static ConfigProviderResolver instance() {

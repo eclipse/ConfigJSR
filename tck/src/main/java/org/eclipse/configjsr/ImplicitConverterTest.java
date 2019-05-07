@@ -19,7 +19,7 @@
 
 package org.eclipse.configjsr;
 
-import javax.config.Config;
+import jakarta.config.Config;
 import javax.inject.Inject;
 
 import org.eclipse.configjsr.converters.implicit.ConvTestTypeWCharSequenceCt;

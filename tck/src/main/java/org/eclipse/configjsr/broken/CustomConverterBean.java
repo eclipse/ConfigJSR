@@ -22,7 +22,7 @@ package org.eclipse.configjsr.broken;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
-import javax.config.inject.ConfigProperty;
+import jakarta.config.inject.ConfigProperty;
 /**
  * A bean contains a config property injection, which converts to CustomType
  *

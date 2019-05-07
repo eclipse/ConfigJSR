@@ -19,7 +19,7 @@
  */
 package org.eclipse.configjsr.converters;
 
-import javax.config.spi.Converter;
+import jakarta.config.spi.Converter;
 
 /**
  * @author <a href="mailto:emijiang@uk.ibm.com">Emily Jiang</a>

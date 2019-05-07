@@ -19,7 +19,7 @@
  */
 package org.eclipse.configjsr;
 
-import javax.config.inject.ConfigProperty;
+import jakarta.config.inject.ConfigProperty;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

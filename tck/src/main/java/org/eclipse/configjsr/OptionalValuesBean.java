@@ -28,7 +28,7 @@ import java.util.Optional;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import javax.config.inject.ConfigProperty;
+import jakarta.config.inject.ConfigProperty;
 
 @Dependent
 public class OptionalValuesBean {

@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-import javax.config.spi.ConfigSource;
+import jakarta.config.spi.ConfigSource;
 
 /**
  * A ConfigSource which changes it's values in the background every 10 ms.

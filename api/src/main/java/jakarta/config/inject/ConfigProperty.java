@@ -17,7 +17,7 @@
  * limitations under the License.
  */
 
-package javax.config.inject;
+package jakarta.config.inject;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -32,6 +32,7 @@ import java.time.temporal.ChronoUnit;
 import javax.enterprise.util.Nonbinding;
 import javax.inject.Qualifier;
 
+
 /**
  * Binds the injection point with a configured value.
  * Can be used to annotate injection points of type {@code TYPE}, {@code Optional<TYPE>} or {@code javax.inject.Provider<TYPE>},
@@ -45,7 +46,7 @@ import javax.inject.Qualifier;
  *
  * The first sample injects the configured value of the {@code my.long.property} property.
  * The injected value does not change even if the underline
- * property value changes in the {@link javax.config.Config}.
+ * property value changes in the {@link jakarta.config.Config}.
  *
  * <p>Injecting a native value is recommended for a mandatory property and its value does not change at runtime or used by a bean with RequestScoped.
  * <p>A further recommendation is to use the built in {@code META-INF/javaconfig.properties} file mechanism
@@ -84,7 +85,7 @@ import javax.inject.Qualifier;
  * <h3>Injecting Dynamic Values</h3>
  *
  * The next sample injects a Provider for the value of {@code my.long.property} property to resolve the property dynamically.
- * Each invocation to {@code Provider#get()} will resolve the latest value from underlying {@link javax.config.Config} again.
+ * Each invocation to {@code Provider#get()} will resolve the latest value from underlying {@link jakarta.config.Config} again.
  * The existence of configured values will get checked during startup.
  * Instances of {@code javax.inject.Provider<T>} are guaranteed to be Serializable.
  * <pre>
@@ -93,7 +94,7 @@ import javax.inject.Qualifier;
  * private Provider&lt;Long&gt; longConfigValue;
  * </pre>
  *
- * <p>If {@code ConfigProperty} is used with a type where no {@link javax.config.spi.Converter} exists,
+ * <p>If {@code ConfigProperty} is used with a type where no {@link jakarta.config.spi.Converter} exists,
  * a deployment error will be thrown.
  *
  * @author Ondrej Mihalyi
@@ -105,7 +106,7 @@ import javax.inject.Qualifier;
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, PARAMETER, TYPE})
 public @interface ConfigProperty {
-    String UNCONFIGURED_VALUE="javax.config.configproperty.unconfigureddvalue";
+    String UNCONFIGURED_VALUE="jakarta.config.configproperty.unconfigureddvalue";
 
     /**
      * The key of the config property used to look up the configuration value.
@@ -122,7 +123,7 @@ public @interface ConfigProperty {
     /**
      * <p>The default value if the configured property value does not exist.
      *
-     * <p>If the target Type is not String a proper {@link javax.config.spi.Converter} will get applied.
+     * <p>If the target Type is not String a proper {@link jakarta.config.spi.Converter} will get applied.
      * That means that any default value string should follow the formatting rules of the registered Converters.
      *
      *
@@ -132,7 +133,7 @@ public @interface ConfigProperty {
     String defaultValue() default UNCONFIGURED_VALUE;
 
     /**
-     * @see javax.config.ConfigAccessor.Builder#evaluateVariables(boolean)
+     * @see jakarta.config.ConfigAccessor.Builder#evaluateVariables(boolean)
      * @return whether variable replacement is enabled. Defaults to {@code true}.
      */
     @Nonbinding

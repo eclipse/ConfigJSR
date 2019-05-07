@@ -27,7 +27,8 @@
  *
  *******************************************************************************/
 
-package javax.config.spi;
+package jakarta.config.spi;
+
 
 /**
  * <p>Implement this interfaces to provide multiple ConfigSources.
@@ -40,7 +41,7 @@ package javax.config.spi;
  *
  * <p>A ConfigSourceProvider will get picked up via the
  * {@link java.util.ServiceLoader} mechanism and can be registered by providing a
- * {@code META-INF/services/javax.config.spi.ConfigSourceProvider} file which contains
+ * {@code META-INF/services/ConfigSourceProvider} file which contains
  * the fully qualified classname of the custom ConfigSourceProvider.
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
@@ -55,7 +56,7 @@ public interface ConfigSourceProvider {
      * For each e.g. property file, we return a single ConfigSource or an empty list if no ConfigSource exists.
      *
      * @param forClassLoader the classloader which should be used if any is needed
-     * @return the {@link ConfigSource ConfigSources} to register within the {@link javax.config.Config}.
+     * @return the {@link ConfigSource ConfigSources} to register within the {@link jakarta.config.Config}.
      */
     Iterable<ConfigSource> getConfigSources(ClassLoader forClassLoader);
 }

@@ -19,12 +19,12 @@
  */
 package org.eclipse.configjsr;
 
-import javax.config.spi.ConfigProviderResolver;
+import jakarta.config.spi.ConfigProviderResolver;
 import javax.inject.Inject;
 
-import javax.config.Config;
-import javax.config.spi.ConfigSource;
-import javax.config.spi.ConfigSourceProvider;
+import jakarta.config.Config;
+import jakarta.config.spi.ConfigSource;
+import jakarta.config.spi.ConfigSourceProvider;
 import org.eclipse.configjsr.configsources.CustomConfigSourceProvider;
 import org.eclipse.configjsr.configsources.CustomDbConfigSource;
 import org.jboss.arquillian.container.test.api.Deployment;

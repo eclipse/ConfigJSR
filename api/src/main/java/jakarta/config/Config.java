@@ -32,11 +32,11 @@
  *
  *******************************************************************************/
 
-package javax.config;
+package jakarta.config;
 
 import java.util.Optional;
 
-import javax.config.spi.ConfigSource;
+import jakarta.config.spi.ConfigSource;
 
 /**
  * <p>
@@ -79,7 +79,7 @@ import javax.config.spi.ConfigSource;
  * {@link #access(String, Class)} for accessing a configured value.
  *
  * <p>Configured values can also be accessed via injection.
- * See {@link javax.config.inject.ConfigProperty} for more information.
+ * See {@link jakarta.config.inject.ConfigProperty} for more information.
  *
  * @author <a href="mailto:struberg@apache.org">Mark Struberg</a>
  * @author <a href="mailto:gpetracek@apache.org">Gerhard Petracek</a>

@@ -29,12 +29,12 @@ import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 
-import javax.config.Config;
-import javax.config.inject.ConfigProperty;
-import javax.config.spi.ConfigProviderResolver;
-import javax.config.spi.ConfigSource;
-import javax.config.spi.ConfigSourceProvider;
-import javax.config.spi.Converter;
+import jakarta.config.Config;
+import jakarta.config.inject.ConfigProperty;
+import jakarta.config.spi.ConfigProviderResolver;
+import jakarta.config.spi.ConfigSource;
+import jakarta.config.spi.ConfigSourceProvider;
+import jakarta.config.spi.Converter;
 import javax.inject.Inject;
 
 import org.eclipse.configjsr.base.AbstractTest;

@@ -31,12 +31,12 @@
  * <p>The following types can be injected:
  * <ul>
  *
- *     <li><code>T</code> where T is a Type where a {@link javax.config.spi.Converter} exists and the property must exist.</li>
+ *     <li><code>T</code> where T is a Type where a {@link jakarta.config.spi.Converter} exists and the property must exist.</li>
  *     <li><code>
- *     Optional&lt;T&gt;</code> where T is a Type where a {@link javax.config.spi.Converter} exists where the property may exist.
+ *     Optional&lt;T&gt;</code> where T is a Type where a {@link jakarta.config.spi.Converter} exists where the property may exist.
  *     </li>
  *     <li><code>
- *     Provider&lt;T&gt;</code> where T is a Type where a {@link javax.config.spi.Converter} exists where the property may exist.
+ *     Provider&lt;T&gt;</code> where T is a Type where a {@link jakarta.config.spi.Converter} exists where the property may exist.
  *     </li>
  * </ul>
  *
@@ -45,5 +45,5 @@
  *
  */
 @org.osgi.annotation.versioning.Version("1.0")
-package javax.config.inject;
+package jakarta.config.inject;
 

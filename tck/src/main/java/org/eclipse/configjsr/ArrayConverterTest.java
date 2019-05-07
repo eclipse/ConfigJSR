@@ -33,11 +33,11 @@ import java.time.OffsetTime;
 import java.util.List;
 import java.util.Set;
 
-import javax.config.spi.Converter;
+import jakarta.config.spi.Converter;
 import javax.inject.Inject;
 
-import javax.config.Config;
-import javax.config.inject.ConfigProperty;
+import jakarta.config.Config;
+import jakarta.config.inject.ConfigProperty;
 import org.eclipse.configjsr.converters.Pizza;
 import org.eclipse.configjsr.converters.PizzaConverter;
 import org.jboss.arquillian.container.test.api.Deployment;
