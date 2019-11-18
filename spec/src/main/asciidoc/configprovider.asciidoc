@@ -42,15 +42,15 @@ There are 4 different ways to create an `Config` instance:
   Subsequent calls to this method for a certain Application will return the same `Config` instance.
 
 * A factory method `ConfigProviderResolver#getBuilder()` to create a `ConfigBuilder` object.
-The builder has no config sources but with only the default converters added. The `ConfigBuilder` object can be filled manually via `ConfigBuilder#withSources(ConfigSources... sources)`.
+The builder has no `ConfigSource` objects but with only the default converters added. The `ConfigBuilder` object can be filled manually via `ConfigBuilder#withSources(ConfigSources... sources)`.
    This configuration instance will by default not be shared by the `ConfigProvider`.
   This method is intended be used if a IoC container or any other external Factory can be used to give access to a manually created shared `Config`.
 
 The `Config` object created via builder pattern can be managed as follows:
 
 * A factory method `ConfigProviderResolver#registerConfig(Config config, ClassLoader classloader)` can be used to register a `Config` within the application.
-  This configuration instance *will* be shared by `ConfigProvider#getConfig()`.
-  Any subsequent call to `ConfigProvider#getConfig()` will return the registered `Config` instance for this application.
+  This configuration instance will be shared by `ConfigProvider#getConfig(ClassLoader forClassLoader)`.
+  Any subsequent call to `ConfigProvider#getConfig(ClassLoader forClassLoader)` will return the registered `Config` instance for this application.
 
 * A factory method `ConfigProviderResolver#releaseConfig(Config config)` to release the `Config` instance. This will unbind the current `Config` from the application.
 The <<configsource, ConfigSources>> that implement the `java.io.Closeable` interface will be properly destroyed.
@@ -59,8 +59,9 @@ Any subsequent call to `ConfigProvider#getConfig()` or `ConfigProvider#getConfig
 
 All methods in the `ConfigProvider`, `ConfigProviderResolver` and `Config` implementations are thread safe and reentrant.
 
-The `Config` instances created via CDI are `Serializable`.
+All `Config` instances implement the `java.io.Serializable` interface.
 
+// Question: how is the release done in non-CDI environments?
 If a `Config` instance is created via `@Inject Config` or `ConfigProvider#getConfig()` or via the builder pattern but later called `ConfigProviderResolver#registerConfig(Config config, Classloader classloader)`, the `Config` instance will be released when the application is closed.
 
 

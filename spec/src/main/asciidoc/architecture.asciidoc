@@ -50,5 +50,5 @@ some.library.own.config=some value
 ----
 
 
-TIP: while the above example is in the java property file syntax the actual content could also e.g. be read from a database.
+TIP: while the above example is in the Java property file syntax the actual content could also e.g. be read from a database.
 

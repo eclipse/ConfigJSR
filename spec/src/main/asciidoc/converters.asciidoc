@@ -23,22 +23,25 @@
 [[converter]]
 == Converter
 
-For providing typeseafe configuration we need to convert from the configured Strings into target types.
+For providing typesafe configuration we need to convert from the configured Strings into target types.
 This happens by providing `Converter` s in the `Config`.
+
+Each `Converter` can define a priority.
+The `Config` will use the `Converter` with the highest `Priority` for each target type.
 
 === Built-in Converters
 
 The following `Converter` s are provided by JavaConfig by default:
 
-* `boolean` and `Boolean` , values for `true` (case insensitive) "true", "1", "YES", "Y" "ON".
+* `boolean` and `Boolean`, values for `true` are (case insensitive) `true`, `1`, `YES`, `Y` and `ON`.
   Any other value will be interpreted as `false`
 * `int` and `Integer`
 * `long` and `Long`
-* `float` and `Float` , a dot '.' is used to separate the fractional digits
-* `double` and `Double` , a dot '.' is used to separate the fractional digits
+* `float` and `Float`, a dot '.' is used to separate the fractional digits. A syntax with an explicit exponent is not supported.
+* `double` and `Double`, a dot '.' is used to separate the fractional digits. A syntax with an explicit exponent is not supported.
 * `URL` as defined by `java.net.URL#URL(java.lang.String)`
 
-All built-in `Converter` have the `@Priority` of `1`.
+All built-in `Converter` have the priority of `1`.
 
 === Adding custom Converters
 
@@ -48,7 +51,6 @@ You have to register your implementation in a file `/META-INF/services/javax.con
 
 A custom `Converter` can define a priority with the `@javax.annotation.Priority` annotation.
 If a Priority annotation isn't applied, a default priority of 100 is assumed.
-The `Config` will use the `Converter` with the highest `Priority` for each target type.
 
 A custom `Converter` for a target type of any of the built-in Converters will overwrite the default Converter.
 
@@ -77,8 +79,8 @@ If an Implicit Converter cannot convert a value, a `java.lang.IllegalArgumentExc
 === Array Converters
 
 For the built-in converters and custom converters, the corresponding Array converters are provided by default.
-The delimiter for the config value is ",".
-The escape character is "\".
+The delimiter for the config value is comma (`,` U+002C).
+The escape character is backslash (`\` U+005C).
 e.g. With this config `myPets=dog,cat,dog\,cat`, the values as an array will be `{"dog", "cat", "dog,cat"}`.
 
 ==== Programmatic lookup
@@ -95,7 +97,7 @@ myPets will be "dog", "cat", "dog,cat" as an array
 
 ==== Injection model
 
-For the property injection, Array, List and Set are supported.
+For the property injection Array, List and Set are supported.
 
 [source, java]
 ----
@@ -108,7 +110,7 @@ myPets will be "dog", "cat", "dog,cat" as an array, List or Set.
 
 === Cleaning up a Converter
 
-If a `Converter` implements the `java.lang.AutoCloseable` interface  then the `close()` method will be called when the underlying `Config` is being released.
+If a `Converter` implements the `java.lang.AutoCloseable` interface then the `close()` method will be called when the underlying `Config` is being released.
 
 
 <<<

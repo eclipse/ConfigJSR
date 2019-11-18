@@ -41,11 +41,12 @@ The call to `config.access(..)` returns a `ConfigAccessor.Builder`.
 This is basically a builder which has methods to refine the resolution, including the following:
 
 * `evaluateVariables(boolean evaluateVariables)` -- Allows variable parts in configured values.
-* `useConverter(Converter<T> converter)` -- Defines a specific {@link Converter} to be used instead of applying the default Converter resolving logic.
+* `useConverter(Converter<T> converter)` -- Defines a specific <<converter,Converter>> to be used instead of applying the default Converter resolving logic.
 * `addLookupSuffix(String postfixName)` -- sets a parameter for the resolution of a 'postfix' for the resolution
 * `addLookupSuffix(ConfigAccessor)` -- you can also use a `ConfigAccessor` to determine the 'postfix' for the resolution
 * `withDefault(T value)` -- sets the default value, used in case the resolution returns `null`
 * `getValue()` -- returns the resolved value with the appropriate type
+* `cacheFor(Duration)` -- specify that a resolved value will get cached for a certain maximum amount of time. After the time expires the next `getValue()` will again resolve the value from the underlying `Config`
 
 .A more complete example of ConfigAccessor
 [source,java]
