@@ -45,7 +45,7 @@ public class WrongConverterOnInstanceInjectionTest extends Arquillian {
                 .create(JavaArchive.class, "wrongConverterOnInstanceInjectionTest.jar")
                 .addClass(ConfigOwner.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsManifestResource(new StringAsset("my.long.value=xxxxx"), "javaconfig.properties")
+                .addAsManifestResource(new StringAsset("my.long.value=xxxxx"), "jakartaconfig.properties")
                 .as(JavaArchive.class);
 
         WebArchive war = ShrinkWrap

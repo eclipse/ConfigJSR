@@ -77,7 +77,7 @@ public class ConverterTest extends Arquillian {
                 .addAsServiceProvider(Converter.class, DuckConverter.class)
                 .as(JavaArchive.class);
 
-        AbstractTest.addFile(testJar, "META-INF/javaconfig.properties");
+        AbstractTest.addFile(testJar, "META-INF/jakartaconfig.properties");
         AbstractTest.addFile(testJar, "sampleconfig.yaml");
 
         WebArchive war = ShrinkWrap
@@ -87,12 +87,12 @@ public class ConverterTest extends Arquillian {
     }
 
     @Inject
-    @ConfigProperty(name = "tck.config.test.javaconfig.converter.duckname")
+    @ConfigProperty(name = "tck.config.test.jakartaconfig.converter.duckname")
     private Duck namedDuck;
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDonaldNotConvertedByDefault() {
-        config.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        config.getValue("tck.config.test.jakartaconfig.converter.donaldname", Donald.class);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class ConverterTest extends Arquillian {
         Config newConfig = ConfigProviderResolver.instance().getBuilder().addDefaultSources()
             .withConverter(Donald.class, 100, (s) -> Donald.iLikeDonald(s))
             .build();
-        Donald donald = newConfig.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        Donald donald = newConfig.getValue("tck.config.test.jakartaconfig.converter.donaldname", Donald.class);
         Assert.assertNotNull(donald);
         Assert.assertEquals(donald.getName(), "Duck");
     }
@@ -118,11 +118,11 @@ public class ConverterTest extends Arquillian {
             .withConverter(Donald.class, 101, (s) -> Donald.iLikeDonald(s.toUpperCase()))
             .build();
 
-        Donald donald = config1.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        Donald donald = config1.getValue("tck.config.test.jakartaconfig.converter.donaldname", Donald.class);
         Assert.assertNotNull(donald);
         Assert.assertEquals(donald.getName(), "DUCK",
             "The converter with the highest priority (using upper case) must be used.");
-        donald = config2.getValue("tck.config.test.javaconfig.converter.donaldname", Donald.class);
+        donald = config2.getValue("tck.config.test.jakartaconfig.converter.donaldname", Donald.class);
         Assert.assertNotNull(donald);
         Assert.assertEquals(donald.getName(), "DUCK",
             "The converter with the highest priority (using upper case) must be used.");
@@ -130,188 +130,188 @@ public class ConverterTest extends Arquillian {
 
     @Test
     public void testEnum() {
-        SomeEnumToConvert value = config.getValue("tck.config.test.javaconfig.converter.implicit.enumvalue", SomeEnumToConvert.class);
+        SomeEnumToConvert value = config.getValue("tck.config.test.jakartaconfig.converter.implicit.enumvalue", SomeEnumToConvert.class);
         Assert.assertEquals(value, SomeEnumToConvert.FOO);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testEnum_Broken() {
-        config.getValue("tck.config.test.javaconfig.converter.implicit.enumvalue.broken", SomeEnumToConvert.class);
+        config.getValue("tck.config.test.jakartaconfig.converter.implicit.enumvalue.broken", SomeEnumToConvert.class);
     }
 
 
     @Test
     public void testInteger() {
-        Integer value = config.getValue("tck.config.test.javaconfig.converter.integervalue", Integer.class);
+        Integer value = config.getValue("tck.config.test.jakartaconfig.converter.integervalue", Integer.class);
         Assert.assertEquals(value, Integer.valueOf(1234));
     }
 
     @Test
     public void testInt() {
-        int value = config.getValue("tck.config.test.javaconfig.converter.integervalue", int.class);
+        int value = config.getValue("tck.config.test.jakartaconfig.converter.integervalue", int.class);
         Assert.assertEquals(value, 1234);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testInteger_Broken() {
-        Integer value = config.getValue("tck.config.test.javaconfig.converter.integervalue.broken", Integer.class);
+        Integer value = config.getValue("tck.config.test.jakartaconfig.converter.integervalue.broken", Integer.class);
     }
 
     @Test
     public void testLong() {
-        Long value = config.getValue("tck.config.test.javaconfig.converter.longvalue", Long.class);
+        Long value = config.getValue("tck.config.test.jakartaconfig.converter.longvalue", Long.class);
         Assert.assertEquals(value, Long.valueOf(1234567890));
     }
 
     @Test
     public void testlong() {
-        long primitiveValue = config.getValue("tck.config.test.javaconfig.converter.longvalue", long.class);
+        long primitiveValue = config.getValue("tck.config.test.jakartaconfig.converter.longvalue", long.class);
         Assert.assertEquals(primitiveValue, 1234567890L);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testLong_Broken() {
-        config.getValue("tck.config.test.javaconfig.converter.longvalue.broken", Long.class);
+        config.getValue("tck.config.test.jakartaconfig.converter.longvalue.broken", Long.class);
     }
 
     @Test
     public void testFloat() {
-        Float value = config.getValue("tck.config.test.javaconfig.converter.floatvalue", Float.class);
+        Float value = config.getValue("tck.config.test.jakartaconfig.converter.floatvalue", Float.class);
         Assert.assertEquals(value, 12.34f);
     }
 
     @Test
     public void testfloat() {
-        float value = config.getValue("tck.config.test.javaconfig.converter.floatvalue", float.class);
+        float value = config.getValue("tck.config.test.jakartaconfig.converter.floatvalue", float.class);
         Assert.assertEquals(value, 12.34f);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testFloat_Broken() {
-        config.getValue("tck.config.test.javaconfig.converter.floatvalue.broken", Float.class);
+        config.getValue("tck.config.test.jakartaconfig.converter.floatvalue.broken", Float.class);
     }
 
     @Test
     public void testDouble() {
-        Double value = config.getValue("tck.config.test.javaconfig.converter.doublevalue", Double.class);
+        Double value = config.getValue("tck.config.test.jakartaconfig.converter.doublevalue", Double.class);
         Assert.assertEquals(value, 12.34d);
     }
 
     @Test
     public void testdouble() {
-        double value = config.getValue("tck.config.test.javaconfig.converter.doublevalue", double.class);
+        double value = config.getValue("tck.config.test.jakartaconfig.converter.doublevalue", double.class);
         Assert.assertEquals(value,12.34d);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDouble_Broken() {
-        Double value = config.getValue("tck.config.test.javaconfig.converter.doublevalue.broken", Double.class);
+        Double value = config.getValue("tck.config.test.jakartaconfig.converter.doublevalue.broken", Double.class);
     }
 
     @Test
     public void testDuration() {
-        Duration value = config.getValue("tck.config.test.javaconfig.converter.durationvalue", Duration.class);
+        Duration value = config.getValue("tck.config.test.jakartaconfig.converter.durationvalue", Duration.class);
         Assert.assertEquals(value, Duration.parse("PT15M"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testDuration_Broken() {
-        Duration value = config.getValue("tck.config.test.javaconfig.converter.durationvalue.broken", Duration.class);
+        Duration value = config.getValue("tck.config.test.jakartaconfig.converter.durationvalue.broken", Duration.class);
     }
 
     @Test
     public void testLocalTime() {
-        LocalTime value = config.getValue("tck.config.test.javaconfig.converter.localtimevalue", LocalTime.class);
+        LocalTime value = config.getValue("tck.config.test.jakartaconfig.converter.localtimevalue", LocalTime.class);
         Assert.assertEquals(value, LocalTime.parse("10:37"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testLocalTime_Broken() {
-        LocalTime value = config.getValue("tck.config.test.javaconfig.converter.localtimevalue.broken", LocalTime.class);
+        LocalTime value = config.getValue("tck.config.test.jakartaconfig.converter.localtimevalue.broken", LocalTime.class);
     }
 
     @Test
     public void testLocalDate() {
-        LocalDate value = config.getValue("tck.config.test.javaconfig.converter.localdatevalue", LocalDate.class);
+        LocalDate value = config.getValue("tck.config.test.jakartaconfig.converter.localdatevalue", LocalDate.class);
         Assert.assertEquals(value, LocalDate.parse("2017-12-24"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testLocalDate_Broken() {
-        LocalDate value = config.getValue("tck.config.test.javaconfig.converter.localdatevalue.broken", LocalDate.class);
+        LocalDate value = config.getValue("tck.config.test.jakartaconfig.converter.localdatevalue.broken", LocalDate.class);
     }
 
     @Test
     public void testLocalDateTime() {
-        LocalDateTime value = config.getValue("tck.config.test.javaconfig.converter.localdatetimevalue", LocalDateTime.class);
+        LocalDateTime value = config.getValue("tck.config.test.jakartaconfig.converter.localdatetimevalue", LocalDateTime.class);
         Assert.assertEquals(value, LocalDateTime.parse("2017-12-24T10:25:30"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testLocalDateTime_Broken() {
-        LocalDateTime value = config.getValue("tck.config.test.javaconfig.converter.localdatetimevalue.broken", LocalDateTime.class);
+        LocalDateTime value = config.getValue("tck.config.test.jakartaconfig.converter.localdatetimevalue.broken", LocalDateTime.class);
     }
 
     @Test
     public void testOffsetDateTime() {
-        OffsetDateTime value = config.getValue("tck.config.test.javaconfig.converter.offsetdatetimevalue", OffsetDateTime.class);
+        OffsetDateTime value = config.getValue("tck.config.test.jakartaconfig.converter.offsetdatetimevalue", OffsetDateTime.class);
         Assert.assertEquals(value, OffsetDateTime.parse("2007-12-03T10:15:30+01:00"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testOffsetDateTime_Broken() {
-        OffsetDateTime value = config.getValue("tck.config.test.javaconfig.converter.offsetdatetimevalue.broken", OffsetDateTime.class);
+        OffsetDateTime value = config.getValue("tck.config.test.jakartaconfig.converter.offsetdatetimevalue.broken", OffsetDateTime.class);
     }
 
     @Test
     public void testOffsetTime() {
-        OffsetTime value = config.getValue("tck.config.test.javaconfig.converter.offsettimevalue", OffsetTime.class);
+        OffsetTime value = config.getValue("tck.config.test.jakartaconfig.converter.offsettimevalue", OffsetTime.class);
         OffsetTime parsed = OffsetTime.parse("13:45:30.123456789+02:00");
         Assert.assertEquals(value, parsed);
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testOffsetTime_Broken() {
-        OffsetTime value = config.getValue("tck.config.test.javaconfig.converter.offsettimevalue.broken", OffsetTime.class);
+        OffsetTime value = config.getValue("tck.config.test.jakartaconfig.converter.offsettimevalue.broken", OffsetTime.class);
     }
 
     @Test
     public void testInstant() {
-        Instant value = config.getValue("tck.config.test.javaconfig.converter.instantvalue", Instant.class);
+        Instant value = config.getValue("tck.config.test.jakartaconfig.converter.instantvalue", Instant.class);
         Assert.assertEquals(value, Instant.parse("2015-06-02T21:34:33.616Z"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testInstant_Broken() {
-        Instant value = config.getValue("tck.config.test.javaconfig.converter.instantvalue.broken", Instant.class);
+        Instant value = config.getValue("tck.config.test.jakartaconfig.converter.instantvalue.broken", Instant.class);
     }
 
     @Test
     public void testBoolean() {
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.true", Boolean.class));
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.true", boolean.class));
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.true_uppercase", Boolean.class));
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.true_mixedcase", Boolean.class));
-        Assert.assertFalse(config.getValue("tck.config.test.javaconfig.configvalue.boolean.false", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.true", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.true", boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.true_uppercase", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.true_mixedcase", Boolean.class));
+        Assert.assertFalse(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.false", Boolean.class));
 
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.one", Boolean.class));
-        Assert.assertFalse(config.getValue("tck.config.test.javaconfig.configvalue.boolean.zero", Boolean.class));
-        Assert.assertFalse(config.getValue("tck.config.test.javaconfig.configvalue.boolean.seventeen", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.one", Boolean.class));
+        Assert.assertFalse(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.zero", Boolean.class));
+        Assert.assertFalse(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.seventeen", Boolean.class));
 
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.yes", Boolean.class));
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.yes_uppercase", Boolean.class));
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.yes_mixedcase", Boolean.class));
-        Assert.assertFalse(config.getValue("tck.config.test.javaconfig.configvalue.boolean.no", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.yes", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.yes_uppercase", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.yes_mixedcase", Boolean.class));
+        Assert.assertFalse(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.no", Boolean.class));
 
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.y", Boolean.class));
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.y_uppercase", Boolean.class));
-        Assert.assertFalse(config.getValue("tck.config.test.javaconfig.configvalue.boolean.n", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.y", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.y_uppercase", Boolean.class));
+        Assert.assertFalse(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.n", Boolean.class));
 
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.on", Boolean.class));
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.on_uppercase", Boolean.class));
-        Assert.assertTrue(config.getValue("tck.config.test.javaconfig.configvalue.boolean.on_mixedcase", Boolean.class));
-        Assert.assertFalse(config.getValue("tck.config.test.javaconfig.configvalue.boolean.off", Boolean.class));
-        Assert.assertFalse(config.getValue("tck.config.test.javaconfig.configvalue.boolean.off", boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.on", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.on_uppercase", Boolean.class));
+        Assert.assertTrue(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.on_mixedcase", Boolean.class));
+        Assert.assertFalse(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.off", Boolean.class));
+        Assert.assertFalse(config.getValue("tck.config.test.jakartaconfig.configvalue.boolean.off", boolean.class));
     }
 
     @Test
@@ -330,12 +330,12 @@ public class ConverterTest extends Arquillian {
             .withConverters(new DuckConverter(), new UpperCaseDuckConverter())
             .build();
 
-        Duck duck = config1.getValue("tck.config.test.javaconfig.converter.duckname", Duck.class);
+        Duck duck = config1.getValue("tck.config.test.jakartaconfig.converter.duckname", Duck.class);
         Assert.assertNotNull(duck);
         Assert.assertEquals(duck.getName(), "HANNELORE",
             "The converter with the highest priority (UpperCaseDuckConverter) must be used.");
 
-        duck = config2.getValue("tck.config.test.javaconfig.converter.duckname", Duck.class);
+        duck = config2.getValue("tck.config.test.jakartaconfig.converter.duckname", Duck.class);
         Assert.assertNotNull(duck);
         // the UpperCaseDuckConverter has highest priority
         Assert.assertEquals(duck.getName(), "HANNELORE",
@@ -344,13 +344,13 @@ public class ConverterTest extends Arquillian {
 
     @Test
     public void testURLConverter() throws MalformedURLException {
-        URL url = config.getValue("tck.config.test.javaconfig.converter.urlvalue", URL.class);
+        URL url = config.getValue("tck.config.test.jakartaconfig.converter.urlvalue", URL.class);
         Assert.assertEquals(url, new URL("http://microprofile.io"));
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testURLConverterBroken() throws Exception {
-        URL ignored = config.getValue("tck.config.test.javaconfig.converter.urlvalue.broken", URL.class);
+        URL ignored = config.getValue("tck.config.test.jakartaconfig.converter.urlvalue.broken", URL.class);
     }
 
     @Test

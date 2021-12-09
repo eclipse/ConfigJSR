@@ -66,7 +66,7 @@ public class ArrayConverterTest extends Arquillian {
                 .addAsServiceProvider(Converter.class, PizzaConverter.class)
                 .as(JavaArchive.class);
 
-        addFile(testJar, "META-INF/javaconfig.properties");
+        addFile(testJar, "META-INF/jakartaconfig.properties");
 
         WebArchive war = ShrinkWrap
                 .create(WebArchive.class, "arrayConverterTest.war")
@@ -83,7 +83,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testBooleanLookupProgrammatically() {
-        Boolean[] value = config.getValue("tck.config.test.javaconfig.converter.booleanvalues",
+        Boolean[] value = config.getValue("tck.config.test.jakartaconfig.converter.booleanvalues",
             Boolean[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 3);
@@ -92,7 +92,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( value[2].booleanValue(), true);
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.booleanvalues") Boolean[] myBooleans;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.booleanvalues") Boolean[] myBooleans;
     @Test
     public void testBooleanArrayInjection() {
 
@@ -103,7 +103,7 @@ public class ArrayConverterTest extends Arquillian {
     }
 
   //test bool[] support
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.booleanvalues") boolean[] mybooleans;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.booleanvalues") boolean[] mybooleans;
     @Test
     public void testbooleanArrayInjection() {
 
@@ -114,7 +114,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( mybooleans[2], true);
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.booleanvalues") List<Boolean> myBooleanList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.booleanvalues") List<Boolean> myBooleanList;
     @Test
     public void testbooleanListInjection() {
 
@@ -123,7 +123,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue( myBooleanList.contains(false));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.booleanvalues") Set<Boolean> myBooleanSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.booleanvalues") Set<Boolean> myBooleanSet;
     @Test
     public void testbooleanSetInjection() {
 
@@ -134,7 +134,7 @@ public class ArrayConverterTest extends Arquillian {
     ///////////////////////////////////Test String[] //////////////////////////
     @Test
     public void testStringLookupProgrammatically() {
-        String[] value = config.getValue("tck.config.test.javaconfig.converter.stringvalues",
+        String[] value = config.getValue("tck.config.test.jakartaconfig.converter.stringvalues",
             String[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 4);
@@ -145,7 +145,7 @@ public class ArrayConverterTest extends Arquillian {
 
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.stringvalues") String[] myStrings;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.stringvalues") String[] myStrings;
     @Test
     public void testStringArrayInjection() {
 
@@ -157,7 +157,7 @@ public class ArrayConverterTest extends Arquillian {
     }
 
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.stringvalues") List<String> myStringList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.stringvalues") List<String> myStringList;
 
     @Test
     public void testStringListInjection() {
@@ -167,7 +167,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue( myStringList.contains("microprofile"));
         Assert.assertTrue( myStringList.contains("m,f"));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.stringvalues") Set<String> myStringSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.stringvalues") Set<String> myStringSet;
 
     @Test
     public void testStringSetInjection() {
@@ -182,7 +182,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testIntLookupProgrammatically() {
-        Integer[] value = config.getValue("tck.config.test.javaconfig.converter.integervalues",
+        Integer[] value = config.getValue("tck.config.test.jakartaconfig.converter.integervalues",
             Integer[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -192,7 +192,7 @@ public class ArrayConverterTest extends Arquillian {
 
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.integervalues") Integer[] myInts;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.integervalues") Integer[] myInts;
 
     @Test
     public void testIntArrayInjection() {
@@ -203,14 +203,14 @@ public class ArrayConverterTest extends Arquillian {
     }
 
   //test int[] support
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.integervalues") int[] myints;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.integervalues") int[] myints;
     @Test
     public void testintArrayInjection() {
         Assert.assertEquals(myints.length, 2);
         Assert.assertEquals( myints[0], 1234);
         Assert.assertEquals( myints[1], 9999);
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.integervalues") List<Integer> myIntList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.integervalues") List<Integer> myIntList;
     @Test
     public void testIntListInjection() {
 
@@ -219,7 +219,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue( myIntList.contains(9999));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.integervalues") Set<Integer> myIntSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.integervalues") Set<Integer> myIntSet;
     @Test
     public void testIntSetInjection() {
         Assert.assertEquals(myIntSet.size(), 2);
@@ -229,11 +229,11 @@ public class ArrayConverterTest extends Arquillian {
     ///////////////////////////////////////////////////////////////////
     //////////////////Test Long[] long[]///////////////////////////////
     //test Long[] support
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.longvalues") Long[] myLongs;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.longvalues") Long[] myLongs;
 
     @Test
     public void testLongLookupProgrammatically() {
-        Long[] value = config.getValue("tck.config.test.javaconfig.converter.longvalues",
+        Long[] value = config.getValue("tck.config.test.jakartaconfig.converter.longvalues",
             Long[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -251,7 +251,7 @@ public class ArrayConverterTest extends Arquillian {
     }
 
   //test long[] support
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.longvalues") long[] mylongs;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.longvalues") long[] mylongs;
     @Test
     public void testlongArrayInjection() {
 
@@ -260,7 +260,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals(mylongs[1], 1999999999L);
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.longvalues") List<Long> myLongList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.longvalues") List<Long> myLongList;
 
     @Test
     public void testLongListInjection() {
@@ -269,7 +269,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue( myLongList.contains(1234567890L));
         Assert.assertTrue( myLongList.contains(1999999999L));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.longvalues") Set<Long> myLongSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.longvalues") Set<Long> myLongSet;
     @Test
     public void testLongSetInjection() {
         Assert.assertEquals(myLongSet.size(), 2);
@@ -280,11 +280,11 @@ public class ArrayConverterTest extends Arquillian {
    ///////////////////////////////////Test Float[] float[]/////////////////////
 
     //test Float[] support
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.floatvalues") Float[] myFloats;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.floatvalues") Float[] myFloats;
 
     @Test
     public void testFloatLookupProgrammatically() {
-        Float[] value = config.getValue("tck.config.test.javaconfig.converter.floatvalues",
+        Float[] value = config.getValue("tck.config.test.jakartaconfig.converter.floatvalues",
             Float[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -304,7 +304,7 @@ public class ArrayConverterTest extends Arquillian {
     }
 
   //test float[] support
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.floatvalues") float[] myfloats;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.floatvalues") float[] myfloats;
     @Test
     public void testfloatArrayInjection() {
 
@@ -313,7 +313,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals(myfloats[0], 12.34f);
         Assert.assertEquals(myfloats[1], 99.99f);
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.floatvalues") List<Float> myFloatList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.floatvalues") List<Float> myFloatList;
     @Test
     public void testFloatListInjection() {
 
@@ -321,7 +321,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue( myFloatList.contains(12.34f));
         Assert.assertTrue( myFloatList.contains(99.99f));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.floatvalues") Set<Float> myFloatSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.floatvalues") Set<Float> myFloatSet;
 
     @Test
     public void testFloatSetInjection() {
@@ -334,11 +334,11 @@ public class ArrayConverterTest extends Arquillian {
 
     ///////////////////////////////////Test Double[] double[]/////////////
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.doublevalues") Double[] myDoubles;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.doublevalues") Double[] myDoubles;
 
     @Test
     public void testDoubleLookupProgrammatically() {
-        Double[] value = config.getValue("tck.config.test.javaconfig.converter.doublevalues",
+        Double[] value = config.getValue("tck.config.test.jakartaconfig.converter.doublevalues",
             Double[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -358,7 +358,7 @@ public class ArrayConverterTest extends Arquillian {
     }
 
     //test double[] support
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.doublevalues") double[] mydoubles;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.doublevalues") double[] mydoubles;
 
     @Test
     public void testdoubleArrayInjection() {
@@ -369,7 +369,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals(mydoubles[1], 99.9999d);
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.doublevalues") List<Double> myDoubleList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.doublevalues") List<Double> myDoubleList;
     @Test
     public void testDoubleListInjection() {
 
@@ -378,7 +378,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue(myDoubleList.contains(12.34d));
         Assert.assertTrue(myDoubleList.contains(99.9999d));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.doublevalues") Set<Double> myDoubleSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.doublevalues") Set<Double> myDoubleSet;
 
     @Test
     public void testDoubleSetInjection() {
@@ -395,7 +395,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testDurationLookupProgrammatically() {
-        Duration[] value = config.getValue("tck.config.test.javaconfig.converter.durationvalues",
+        Duration[] value = config.getValue("tck.config.test.jakartaconfig.converter.durationvalues",
             Duration[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -404,7 +404,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( value[1], Duration.parse("PT20M"));
 
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.durationvalues") Duration[] myDurations;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.durationvalues") Duration[] myDurations;
 
     @Test
     public void testDurationArrayInjection() {
@@ -415,7 +415,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals(myDurations[1], Duration.parse("PT20M"));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.durationvalues") List<Duration> myDurationList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.durationvalues") List<Duration> myDurationList;
     @Test
     public void testDurationListInjection() {
 
@@ -424,7 +424,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue(myDurationList.contains(Duration.parse("PT15M")));
         Assert.assertTrue(myDurationList.contains(Duration.parse("PT20M")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.durationvalues") Set<Duration> myDurationSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.durationvalues") Set<Duration> myDurationSet;
 
     @Test
     public void testDurationSetInjection() {
@@ -438,7 +438,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testLocalTimeLookupProgrammatically() {
-        LocalTime[] value = config.getValue("tck.config.test.javaconfig.converter.localtimevalues",
+        LocalTime[] value = config.getValue("tck.config.test.jakartaconfig.converter.localtimevalues",
             LocalTime[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -447,7 +447,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( value[1], LocalTime.parse("11:44"));
 
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localtimevalues") LocalTime[] myLocaltimes;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localtimevalues") LocalTime[] myLocaltimes;
 
     @Test
     public void testLocalTimeArrayInjection() {
@@ -458,7 +458,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals(myLocaltimes[1], LocalTime.parse("11:44"));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localtimevalues") List<LocalTime> myLocalTimeList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localtimevalues") List<LocalTime> myLocalTimeList;
     @Test
     public void testLocalTimeListInjection() {
 
@@ -467,7 +467,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue(myLocalTimeList.contains(LocalTime.parse("10:37")));
         Assert.assertTrue(myLocalTimeList.contains(LocalTime.parse("11:44")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localtimevalues") Set<LocalTime> myLocalTimeSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localtimevalues") Set<LocalTime> myLocalTimeSet;
 
     @Test
     public void testLocalTimeSetInjection() {
@@ -478,11 +478,11 @@ public class ArrayConverterTest extends Arquillian {
 
     //////////////////////////////////////////////////////////////////////
     ///////////////////////////Test LocalDate////////////////////////////
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localdatevalues") LocalDate[] myDates;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localdatevalues") LocalDate[] myDates;
 
     @Test
     public void testLocalDateLookupProgrammatically() {
-        LocalDate[] value = config.getValue("tck.config.test.javaconfig.converter.localdatevalues",
+        LocalDate[] value = config.getValue("tck.config.test.jakartaconfig.converter.localdatevalues",
             LocalDate[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -500,7 +500,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( myDates[1], LocalDate.parse("2017-11-29"));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localdatevalues") List<LocalDate> myLocalDateList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localdatevalues") List<LocalDate> myLocalDateList;
     @Test
     public void testLocalDateListInjection() {
 
@@ -509,7 +509,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue(myLocalDateList.contains(LocalDate.parse("2017-12-24")));
         Assert.assertTrue(myLocalDateList.contains(LocalDate.parse("2017-11-29")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localdatevalues") Set<LocalDate> myLocalDateSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localdatevalues") Set<LocalDate> myLocalDateSet;
 
     @Test
     public void testLocalDateSetInjection() {
@@ -523,7 +523,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testLocalDateTimeLookupProgrammatically() {
-        LocalDateTime[] value = config.getValue("tck.config.test.javaconfig.converter.localdatetimevalues",
+        LocalDateTime[] value = config.getValue("tck.config.test.jakartaconfig.converter.localdatetimevalues",
              LocalDateTime[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -533,7 +533,7 @@ public class ArrayConverterTest extends Arquillian {
 
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localdatetimevalues") LocalDateTime[] myLocalDateTimes;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localdatetimevalues") LocalDateTime[] myLocalDateTimes;
 
     @Test
     public void testLocalDateTimeArrayInjection() {
@@ -544,7 +544,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( myLocalDateTimes[1], LocalDateTime.parse("2017-12-24T10:25:33"));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localdatetimevalues") List<LocalDateTime> myLocalDateTimeList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localdatetimevalues") List<LocalDateTime> myLocalDateTimeList;
     @Test
     public void testLocalDateTimeListInjection() {
 
@@ -553,7 +553,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue(myLocalDateTimeList.contains(LocalDateTime.parse("2017-12-24T10:25:30")));
         Assert.assertTrue(myLocalDateTimeList.contains(LocalDateTime.parse("2017-12-24T10:25:33")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.localdatetimevalues") Set<LocalDateTime> myLocalDateTimeSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.localdatetimevalues") Set<LocalDateTime> myLocalDateTimeSet;
 
     @Test
     public void testLocalDateTimeSetInjection() {
@@ -565,11 +565,11 @@ public class ArrayConverterTest extends Arquillian {
     //////////////////////////////////////////////////////////////////////
     ////////////////////////Test OffsetDateTime////////////////////////////
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.offsetdatetimevalues") OffsetDateTime[] myOffsetDateTimes;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.offsetdatetimevalues") OffsetDateTime[] myOffsetDateTimes;
 
     @Test
     public void testOffsetDateTimeLookupProgrammatically() {
-        OffsetDateTime[] value = config.getValue("tck.config.test.javaconfig.converter.offsetdatetimevalues",
+        OffsetDateTime[] value = config.getValue("tck.config.test.jakartaconfig.converter.offsetdatetimevalues",
                 OffsetDateTime[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -586,7 +586,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( myOffsetDateTimes[1], OffsetDateTime.parse("2007-12-03T10:15:30+02:00"));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.offsetdatetimevalues") List<OffsetDateTime> myOffsetDateTimeList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.offsetdatetimevalues") List<OffsetDateTime> myOffsetDateTimeList;
     @Test
     public void testOffsetDateTimeListInjection() {
 
@@ -595,7 +595,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue(myOffsetDateTimeList.contains(OffsetDateTime.parse("2007-12-03T10:15:30+01:00")));
         Assert.assertTrue(myOffsetDateTimeList.contains(OffsetDateTime.parse("2007-12-03T10:15:30+02:00")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.offsetdatetimevalues") Set<OffsetDateTime> myOffsetDateTimeSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.offsetdatetimevalues") Set<OffsetDateTime> myOffsetDateTimeSet;
 
     @Test
     public void testOffsetDateTimeSetInjection() {
@@ -612,7 +612,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testOffsetTimeLookupProgrammatically() {
-        OffsetTime[] value = config.getValue("tck.config.test.javaconfig.converter.offsettimevalues",
+        OffsetTime[] value = config.getValue("tck.config.test.jakartaconfig.converter.offsettimevalues",
               OffsetTime[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -621,7 +621,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( value[1], OffsetTime.parse("13:45:30.123456789+03:00"));
 
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.offsettimevalues") OffsetTime[] myOffsetTimes;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.offsettimevalues") OffsetTime[] myOffsetTimes;
 
     @Test
     public void testOffsetTimeArrayInjection() {
@@ -631,7 +631,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( myOffsetTimes[1], OffsetTime.parse("13:45:30.123456789+03:00"));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.offsettimevalues") List<OffsetTime> myOffsetTimeList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.offsettimevalues") List<OffsetTime> myOffsetTimeList;
     @Test
     public void testOffsetTimeListInjection() {
 
@@ -640,7 +640,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue(myOffsetTimeList.contains(OffsetTime.parse("13:45:30.123456789+02:00")));
         Assert.assertTrue(myOffsetTimeList.contains(OffsetTime.parse("13:45:30.123456789+03:00")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.offsettimevalues") Set<OffsetTime> myOffsetTimeSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.offsettimevalues") Set<OffsetTime> myOffsetTimeSet;
 
     @Test
     public void testOffsetTimeSetInjection() {
@@ -655,7 +655,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testInstantLookupProgrammatically() {
-        Instant[] value = config.getValue("tck.config.test.javaconfig.converter.instantvalues",
+        Instant[] value = config.getValue("tck.config.test.jakartaconfig.converter.instantvalues",
                Instant[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 2);
@@ -664,7 +664,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( value[1], Instant.parse("2017-06-02T21:34:33.616Z"));
 
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.instantvalues") Instant[] myInstants;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.instantvalues") Instant[] myInstants;
 
     @Test
     public void testInstantArrayInjection() {
@@ -673,7 +673,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( myInstants[0], Instant.parse("2015-06-02T21:34:33.616Z"));
         Assert.assertEquals( myInstants[1], Instant.parse("2017-06-02T21:34:33.616Z"));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.instantvalues") List<Instant> myInstantList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.instantvalues") List<Instant> myInstantList;
     @Test
     public void testInstantListInjection() {
 
@@ -682,7 +682,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue(myInstantList.contains(Instant.parse("2015-06-02T21:34:33.616Z")));
         Assert.assertTrue(myInstantList.contains(Instant.parse("2017-06-02T21:34:33.616Z")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.instantvalues") Set<Instant> myInstantSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.instantvalues") Set<Instant> myInstantSet;
 
     @Test
     public void testInstantSetInjection() {
@@ -697,7 +697,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testUrlLookupProgrammatically() throws MalformedURLException {
-        URL[] value = config.getValue("tck.config.test.javaconfig.converter.urlvalues",
+        URL[] value = config.getValue("tck.config.test.jakartaconfig.converter.urlvalues",
             URL[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 3);
@@ -706,7 +706,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( value[2],  new URL("http://microprofile.io"));
     }
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.urlvalues") URL[] myUrls;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.urlvalues") URL[] myUrls;
 
     @Test
     public void testUrlArrayInjection() throws MalformedURLException {
@@ -718,7 +718,7 @@ public class ArrayConverterTest extends Arquillian {
     }
 
 
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.urlvalues") List<URL> myUrlList;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.urlvalues") List<URL> myUrlList;
 
     @Test
     public void testURLListInjection() throws MalformedURLException {
@@ -728,7 +728,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue( myUrlList.contains(new URL("http://openliberty.io")));
         Assert.assertTrue( myUrlList.contains(new URL("http://microprofile.io")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.urlvalues") Set<URL> myUrlSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.urlvalues") Set<URL> myUrlSet;
 
     @Test
     public void testURLSetInjection() throws MalformedURLException {
@@ -743,7 +743,7 @@ public class ArrayConverterTest extends Arquillian {
 
     @Test
     public void testCustomTypeArrayLookupProgrammatically() {
-        Pizza[] value = config.getValue("tck.config.test.javaconfig.converter.array.pizza",
+        Pizza[] value = config.getValue("tck.config.test.jakartaconfig.converter.array.pizza",
             Pizza[].class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.length, 3);
@@ -753,7 +753,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( value[2],  (new Pizza("pepperoni", "small")));
     }
 
-    private @Inject @ConfigProperty(name ="tck.config.test.javaconfig.converter.array.pizza") Pizza[] pizzas;
+    private @Inject @ConfigProperty(name ="tck.config.test.jakartaconfig.converter.array.pizza") Pizza[] pizzas;
     @Test
     public void testCustomTypeArrayInjection() {
 
@@ -763,7 +763,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertEquals( pizzas[1],  (new Pizza("chicken", "medium")));
         Assert.assertEquals( pizzas[2],  (new Pizza("pepperoni", "small")));
     }
-    private @Inject @ConfigProperty(name ="tck.config.test.javaconfig.converter.array.pizza") List<Pizza> pizzaList;
+    private @Inject @ConfigProperty(name ="tck.config.test.jakartaconfig.converter.array.pizza") List<Pizza> pizzaList;
     @Test
     public void testCustomTypeListInjection()  {
 
@@ -773,7 +773,7 @@ public class ArrayConverterTest extends Arquillian {
         Assert.assertTrue( pizzaList.contains(new Pizza("chicken", "medium")));
         Assert.assertTrue( pizzaList.contains(new Pizza("pepperoni", "small")));
     }
-    private @Inject @ConfigProperty(name="tck.config.test.javaconfig.converter.array.pizza") Set<Pizza> pizzaSet;
+    private @Inject @ConfigProperty(name="tck.config.test.jakartaconfig.converter.array.pizza") Set<Pizza> pizzaSet;
 
     @Test
     public void testCustomTypeSetInjection()  {

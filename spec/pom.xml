@@ -22,12 +22,12 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>javaconfig-spec</artifactId>
+    <artifactId>jakartaconfig-spec</artifactId>
     <packaging>pom</packaging>
 
     <properties>
-        <asciidoctor-maven.version>1.5.5</asciidoctor-maven.version>
-        <asciidoctorj-pdf.version>1.5.0-alpha.15</asciidoctorj-pdf.version>
+        <asciidoctor-maven.version>2.2.1</asciidoctor-maven.version>
+        <asciidoctorj-pdf.version>1.6.0</asciidoctorj-pdf.version>
         <license>Apache License v 2.0</license>
         <maven.build.timestamp.format>MMMM dd, yyyy</maven.build.timestamp.format>
         <revisiondate>${maven.build.timestamp}</revisiondate>
@@ -73,7 +73,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <sourceDocumentName>javaconfig-spec.asciidoc</sourceDocumentName>
+                    <sourceDocumentName>jakartaconfig-spec.asciidoc</sourceDocumentName>
                     <sourceHighlighter>coderay</sourceHighlighter>
                     <attributes>
                         <license>Apache License v2.0</license>

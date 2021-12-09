@@ -49,7 +49,7 @@ import javax.inject.Qualifier;
  * property value changes in the {@link jakarta.config.Config}.
  *
  * <p>Injecting a native value is recommended for a mandatory property and its value does not change at runtime or used by a bean with RequestScoped.
- * <p>A further recommendation is to use the built in {@code META-INF/javaconfig.properties} file mechanism
+ * <p>A further recommendation is to use the built in {@code META-INF/jakartaconfig.properties} file mechanism
  * to provide default values inside an Application.
  *
  * <p>If no configured value exists for this property and no default value is defined, an {@code Exception} will be thrown during startup.
@@ -63,7 +63,7 @@ import javax.inject.Qualifier;
  * </pre>
  *
  *
- * <h3>Injecting Optional Values</h3>
+ * <h2>Injecting Optional Values</h2>
  *
  *
  * Contrary to natively injecting, if the property is not specified, this will not lead to a Deployment Exception.
@@ -82,7 +82,7 @@ import javax.inject.Qualifier;
  * private Optional&lt;Integer&gt; intConfigValue;
  * </pre>
  *
- * <h3>Injecting Dynamic Values</h3>
+ * <h2>Injecting Dynamic Values</h2>
  *
  * The next sample injects a Provider for the value of {@code my.long.property} property to resolve the property dynamically.
  * Each invocation to {@code Provider#get()} will resolve the latest value from underlying {@link jakarta.config.Config} again.

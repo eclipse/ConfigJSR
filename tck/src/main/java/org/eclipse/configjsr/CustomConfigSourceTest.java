@@ -56,7 +56,7 @@ public class CustomConfigSourceTest extends Arquillian {
                 .addAsServiceProvider(ConfigSourceProvider.class, CustomConfigSourceProvider.class)
                 .as(JavaArchive.class);
 
-        addFile(testJar, "META-INF/javaconfig.properties");
+        addFile(testJar, "META-INF/jakartaconfig.properties");
 
         WebArchive war = ShrinkWrap
                 .create(WebArchive.class, "customConfigSourceTest.war")

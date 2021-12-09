@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-= Running the JavaConfig TCK
+= Running the jakartaconfig TCK
 
 Any final Configuration for Java API, v1.0 implementation release must pass this test suite.
 The TCK uses `testng`
@@ -26,19 +26,19 @@ To enable the tests in your project you need to add the following dependency to 
 [source, xml]
 ----
 <properties>
-   <javaconfig.version>1.0</javaconfig.version>
+   <jakartaconfig.version>1.0</jakartaconfig.version>
 </properties>
 
 <dependency>
     <groupId>jakarta.config</groupId>
-    <artifactId>javaconfig-api</artifactId>
-    <version>${javaconfig.version}</version>
+    <artifactId>config-api</artifactId>
+    <version>${jakartaconfig.version}</version>
 </dependency>
 
 <dependency>
     <groupId>jakarta.config</groupId>
-    <artifactId>javaconfig-tck</artifactId>
-    <version>${javaconfig.version}</version>
+    <artifactId>config-tck</artifactId>
+    <version>${jakartaconfig.version}</version>
     <scope>test</scope>
 </dependency>
 <dependency>
@@ -68,9 +68,9 @@ You also need to specify which tests you want to run, e.g. create a file `tck-su
 ----
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="javaconfig-TCK" verbose="2" configfailurepolicy="continue" >
+<suite name="jakartaconfig-TCK" verbose="2" configfailurepolicy="continue" >
 
-    <test name="JavaConfig 1.0 TCK">
+    <test name="jakartaconfig 1.0 TCK">
         <packages>
             <package name="org.eclipse.configjsr.*">
             </package>
@@ -119,7 +119,7 @@ If you don't want to use a tck-suite.xml file, you can also just use in line sur
     <artifactId>maven-surefire-plugin</artifactId>
     <configuration>
         <dependenciesToScan>
-            <dependency>jakarta.config:javaconfig-tck</dependency>
+            <dependency>jakarta.config:jakartaconfig-tck</dependency>
         </dependenciesToScan>
     </configuration>
 </plugin>
@@ -134,7 +134,7 @@ If your implementation needs additional Artifacts in the test Deployments then y
 - https://github.com/apache/geronimo-config/blob/trunk/impl/src/test/resources/META-INF/services/org.jboss.arquillian.core.spi.LoadableExtension[Arquillian Loadable Extension service provider]
 
 == Example Implementation Using the TCK
-An example of how an implementation might go about integrating the JavaConfig TCK into a build
+An example of how an implementation might go about integrating the jakartaconfig TCK into a build
 can be found in the
 https://svn.apache.org/repos/asf/geronimo/components/config/trunk/[Apache Geronimo Project].
 

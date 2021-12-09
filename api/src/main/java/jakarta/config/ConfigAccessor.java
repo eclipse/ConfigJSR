@@ -29,6 +29,7 @@ package jakarta.config;
 
 import java.time.Duration;
 import java.util.Optional;
+import java.util.function.BiFunction;
 
 import jakarta.config.spi.Converter;
 
@@ -47,7 +48,7 @@ import jakarta.config.spi.Converter;
  */
 public interface ConfigAccessor<T> {
 
-    
+
     /**
      * Returns the converted resolved filtered value.
      * @return the resolved value
@@ -56,30 +57,6 @@ public interface ConfigAccessor<T> {
      * @throws java.util.NoSuchElementException if the property isn't present in the configuration.
      */
     T getValue();
-
-
-    /**
-     * Returns the value from a previously taken {@link ConfigSnapshot}.
-     *
-     * @param configSnapshot previously taken via {@link Config#snapshotFor(ConfigAccessor[])}
-     * @return the resolved Value
-     * @see Config#snapshotFor(ConfigAccessor...)
-     * @throws IllegalArgumentException if the {@link ConfigSnapshot} hasn't been resolved
-     *          for this {@link ConfigAccessor}
-     */
-    T getValue(ConfigSnapshot configSnapshot);
-    
-    /**
-     * Returns the value from a previously taken {@link ConfigSnapshot}.
-     *
-     * @param configSnapshot previously taken via {@link Config#snapshotFor(ConfigAccessor[])}
-     * @return the resolved value as Optional
-     * @see Config#snapshotFor(ConfigAccessor...)
-     * @throws IllegalArgumentException if the {@link ConfigSnapshot} hasn't been resolved
-     *          for this {@link ConfigAccessor}
-     */
-    Optional<T> getOptionalValue(ConfigSnapshot configSnapshot);
-    
 
     /**
      * Returns the converted resolved filtered value.
@@ -130,14 +107,38 @@ public interface ConfigAccessor<T> {
      */
     interface Builder<T> {
 
-
         /**
          * Defines a specific {@link Converter} to be used instead of applying the default Converter resolving logic.
+         * This method only applies if a single config key needs to be converted.
          *
          * @param converter The converter for the target type
          * @return This builder as a typed ConfigAccessor
          */
-        Builder<T> useConverter(Converter<T> converter);
+        Builder<T> withPropertyConverter(Converter<T> converter);
+
+        /**
+         * Defines a specific bean converter function to be used.
+         * Use this method if the target type consists of information taken from multiple config keys.
+         * If you consider the following type:
+         * <pre>
+         *  public record ServerEndpoint(String host, Integer port, String path)
+         *
+         *  config.properties:
+         *  my.app.some.server.host=myserver
+         *  my.app.some.server.port=80
+         *  my.app.some.server.path=/myapp/endpoint1
+         *  my.app.other.server.host=otherserver
+         *  my.app.other.server.port=443
+         *  my.app.other.server.path=/otherapp/endpoint2
+         *
+         * </pre>
+         * This function will have access to all the underlying properties by using the given Config.
+         * When resolving the target type the system makes sure that access to all requested properties is atomic.
+         *
+         * @param converter
+         * @return This builder
+         */
+        Builder<T> withBeanConverter(BiFunction<Config /* the config itself */, String /* base key for the configured bean */, T> converter);
 
         /**
          * Sets the default value to use in case the resolution returns null.
@@ -208,7 +209,7 @@ public interface ConfigAccessor<T> {
          * </pre>
          *
          * Given the current tenant name is 'myComp' and the property
-         * {@code javaconfig.projectStage} is 'Production' this would lead to the following lookup order:
+         * {@code jakartaconfig.projectStage} is 'Production' this would lead to the following lookup order:
          *
          * <ul>
          *     <li>"some.server.url.myComp.Production"</li>

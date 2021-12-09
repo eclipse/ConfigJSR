@@ -20,7 +20,7 @@
 ---
 documentation:
   - title: Configuration API for Java
-    file: spec/src/main/asciidoc/javaconfig-spec.asciidoc
+    file: spec/src/main/asciidoc/jakartaconfig-spec.asciidoc
 
   - title: Architecture
     file: spec/src/main/asciidoc/architecture.asciidoc

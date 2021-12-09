@@ -54,7 +54,7 @@ public class ConfigAccessorTest extends Arquillian {
             .addAsServiceProvider(ConfigSource.class, ConfigurableConfigSource.class)
             .as(JavaArchive.class);
 
-        AbstractTest.addFile(testJar, "META-INF/javaconfig.properties");
+        AbstractTest.addFile(testJar, "META-INF/jakartaconfig.properties");
 
         WebArchive war = ShrinkWrap
             .create(WebArchive.class, "configValueTest.war")
@@ -65,12 +65,12 @@ public class ConfigAccessorTest extends Arquillian {
 
     @Test
     public void testGetValue() {
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.key1", String.class).build().getValue(), "value1");
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.key1", String.class).build().getValue(), "value1");
     }
 
     @Test
     public void testGetValueWithDefault() {
-        ConfigAccessor<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting", Integer.class)
+        ConfigAccessor<Integer> cfga = config.access("tck.config.test.jakartaconfig.configvalue.withdefault.notexisting", Integer.class)
                   .withDefault(Integer.valueOf(1234)).build();
 
         Assert.assertEquals(cfga.getValue(), Integer.valueOf(1234));
@@ -78,7 +78,7 @@ public class ConfigAccessorTest extends Arquillian {
 
     @Test
     public void testGetValueWithStringDefault() {
-        ConfigAccessor<Integer> cfga = config.access("tck.config.test.javaconfig.configvalue.withdefault.notexisting", Integer.class)
+        ConfigAccessor<Integer> cfga = config.access("tck.config.test.jakartaconfig.configvalue.withdefault.notexisting", Integer.class)
                 .withStringDefault("1234").build();
 
         Assert.assertEquals(cfga.getValue(), Integer.valueOf(1234));
@@ -86,7 +86,7 @@ public class ConfigAccessorTest extends Arquillian {
 
     /**
      * Checks whether variable substitution works.
-     * The following situation is configured in javaconfig.properties:
+     * The following situation is configured in jakartaconfig.properties:
      * <pre>
      * tck.config.variable.baseHost = some.host.name
      * tck.config.variable.firstEndpoint = http://${tck.config.variable.baseHost}/endpointOne
@@ -112,7 +112,7 @@ public class ConfigAccessorTest extends Arquillian {
     @Test
     public void testLookupChain() {
         // set the projectstage to 'Production'
-        ConfigurableConfigSource.configure(config, "javaconfig.projectStage", "Production");
+        ConfigurableConfigSource.configure(config, "jakartaconfig.projectStage", "Production");
 
         /**
          * 1  1 -> com.foo.myapp.mycorp.Production
@@ -123,7 +123,7 @@ public class ConfigAccessorTest extends Arquillian {
          */
         ConfigAccessor<String> cv = config.access("com.foo.myapp", String.class)
             .addLookupSuffix("mycorp")
-            .addLookupSuffix(config.access("javaconfig.projectStage", String.class).build()).build();
+            .addLookupSuffix(config.access("jakartaconfig.projectStage", String.class).build()).build();
 
         Assert.assertFalse(cv.getOptionalValue().isPresent());
 
@@ -146,77 +146,77 @@ public class ConfigAccessorTest extends Arquillian {
 
     @Test
     public void testIntegerConverter() {
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.integer", Integer.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.integer", Integer.class).build().getValue(),
             Integer.valueOf(1234));
     }
 
     @Test
     public void testLongConverter() {
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.long", Long.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.long", Long.class).build().getValue(),
             Long.valueOf(1234567890123456L));
     }
 
     @Test
     public void testFloatConverter() {
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.float", Float.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.float", Float.class).build().getValue(),
             Float.valueOf(12.34f));
     }
 
     @Test
     public void testDoubleonverter() {
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.double", Double.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.double", Double.class).build().getValue(),
             Double.valueOf(12.34567890123456));
     }
 
     @Test
     public void testBooleanConverter() {
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.true", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.true", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.true_uppercase", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.true_uppercase", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.true_mixedcase", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.true_mixedcase", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.false", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.false", Boolean.class).build().getValue(),
             Boolean.FALSE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.one", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.one", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.zero",Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.zero",Boolean.class).build().getValue(),
             Boolean.FALSE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.seventeen", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.seventeen", Boolean.class).build().getValue(),
             Boolean.FALSE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.yes", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.yes", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.yes_uppercase", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.yes_uppercase", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.yes_mixedcase", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.yes_mixedcase", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.y", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.y", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.y_uppercase", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.y_uppercase", Boolean.class).build().getValue(),
             Boolean.TRUE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.no", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.no", Boolean.class).build().getValue(),
             Boolean.FALSE);
 
-        Assert.assertEquals(config.access("tck.config.test.javaconfig.configvalue.boolean.no_mixedcase", Boolean.class).build().getValue(),
+        Assert.assertEquals(config.access("tck.config.test.jakartaconfig.configvalue.boolean.no_mixedcase", Boolean.class).build().getValue(),
             Boolean.FALSE);
 
     }
 
     @Test
     public void testCacheFor() throws Exception {
-        String key = "tck.config.test.javaconfig.cachefor.key";
+        String key = "tck.config.test.jakartaconfig.cachefor.key";
         System.setProperty(key, "firstvalue");
         ConfigAccessor<String> val = config.access(key, String.class).cacheFor(Duration.of(30, ChronoUnit.MILLIS)).build();
         Assert.assertEquals(val.getValue(), "firstvalue");
@@ -234,7 +234,7 @@ public class ConfigAccessorTest extends Arquillian {
 
     @Test
     public void testDefaultValue() {
-        String key = "tck.config.test.javaconfig.somerandom.default.key";
+        String key = "tck.config.test.jakartaconfig.somerandom.default.key";
 
         ConfigAccessor<String> val = config.access(key, String.class).build();
         Assert.assertNull(val.getDefaultValue());
@@ -254,7 +254,5 @@ public class ConfigAccessorTest extends Arquillian {
         System.setProperty(key, "666");
         Assert.assertEquals(vali2.getDefaultValue(), Integer.valueOf(123));
         Assert.assertEquals(vali2.getValue(), Integer.valueOf(666));
-
-
     }
 }

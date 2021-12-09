@@ -53,7 +53,7 @@ com.acme.myproject.someserver.url = http://more_important.server/some/endpoint
 [[default_configsources]]
 === Default ConfigSources
 
-A JavaConfig implementation must provide <<ConfigSource,ConfigSources>> for the following data out of the box:
+A jakartaconfig implementation must provide <<ConfigSource,ConfigSources>> for the following data out of the box:
 
 * System properties (default ordinal=400).
 
@@ -70,7 +70,7 @@ This `ConfigSource` searches 3 environment variables for a given property name (
 
 The first environment variable that is found is returned by this `ConfigSource`.
 
-* A `ConfigSource` for each property file `META-INF/javaconfig.properties` found on the classpath. (default ordinal = 100).
+* A `ConfigSource` for each property file `META-INF/jakartaconfig.properties` found on the classpath. (default ordinal = 100).
 
 [[custom_configsources]]
 === Custom ConfigSources

@@ -53,7 +53,7 @@ public class ImplicitConverterTest extends Arquillian {
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .as(JavaArchive.class);
 
-        addFile(testJar, "META-INF/javaconfig.properties");
+        addFile(testJar, "META-INF/jakartaconfig.properties");
 
         WebArchive war = ShrinkWrap
             .create(WebArchive.class, "implicitConverterTest.war")
@@ -66,7 +66,7 @@ public class ImplicitConverterTest extends Arquillian {
 
     @Test
     public void testImplicitConverterCharSequenceCt() {
-        ConvTestTypeWCharSequenceCt value = config.getValue("tck.config.test.javaconfig.converter.implicit.charSequenceCt",
+        ConvTestTypeWCharSequenceCt value = config.getValue("tck.config.test.jakartaconfig.converter.implicit.charSequenceCt",
             ConvTestTypeWCharSequenceCt.class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.getVal(), "charSequenceCt");
@@ -74,7 +74,7 @@ public class ImplicitConverterTest extends Arquillian {
 
     @Test
     public void testImplicitConverterCharSequenceParse() {
-        ConvTestTypeWCharSequenceParse value = config.getValue("tck.config.test.javaconfig.converter.implicit.charSequenceParse",
+        ConvTestTypeWCharSequenceParse value = config.getValue("tck.config.test.jakartaconfig.converter.implicit.charSequenceParse",
             ConvTestTypeWCharSequenceParse.class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.getVal(), "charSequenceParse");
@@ -82,14 +82,14 @@ public class ImplicitConverterTest extends Arquillian {
 
     @Test
     public void testImplicitConverterCharSequenceValueOf() {
-        ConvTestTypeWCharSequenceValueOf value = config.getValue("tck.config.test.javaconfig.converter.implicit.charSequenceValueOf",
+        ConvTestTypeWCharSequenceValueOf value = config.getValue("tck.config.test.jakartaconfig.converter.implicit.charSequenceValueOf",
             ConvTestTypeWCharSequenceValueOf.class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.getVal(), "charSequenceValueOf");
     }
     @Test
     public void testImplicitConverterStringCt() {
-        ConvTestTypeWStringCt value = config.getValue("tck.config.test.javaconfig.converter.implicit.stringCt",
+        ConvTestTypeWStringCt value = config.getValue("tck.config.test.jakartaconfig.converter.implicit.stringCt",
             ConvTestTypeWStringCt.class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.getVal(), "stringCt");
@@ -97,7 +97,7 @@ public class ImplicitConverterTest extends Arquillian {
 
     @Test
     public void testImplicitConverterStringParse() {
-        ConvTestTypeWStringParse value = config.getValue("tck.config.test.javaconfig.converter.implicit.stringParse",
+        ConvTestTypeWStringParse value = config.getValue("tck.config.test.jakartaconfig.converter.implicit.stringParse",
             ConvTestTypeWStringParse.class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.getVal(), "stringParse");
@@ -105,7 +105,7 @@ public class ImplicitConverterTest extends Arquillian {
 
     @Test
     public void testImplicitConverterStringValueOf() {
-        ConvTestTypeWStringValueOf value = config.getValue("tck.config.test.javaconfig.converter.implicit.stringValueOf",
+        ConvTestTypeWStringValueOf value = config.getValue("tck.config.test.jakartaconfig.converter.implicit.stringValueOf",
             ConvTestTypeWStringValueOf.class);
         Assert.assertNotNull(value);
         Assert.assertEquals(value.getVal(), "stringValueOf");

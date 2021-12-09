@@ -1,10 +1,10 @@
 =========================================================================
 ==  NOTICE file corresponding to section 4(d) of the Apache License,   ==
-==  Version 2.0, in this case for JavaConfig                           ==
+==  Version 2.0, in this case for jakartaconfig                           ==
 =========================================================================
 
 SPDXVersion: SPDX-2.1
-PackageName: JavaConfig
+PackageName: jakartaconfig
 PackageHomePage: http://www.eclipse.org/ConfigJSR
 PackageLicenseDeclared: Apache-2.0
 

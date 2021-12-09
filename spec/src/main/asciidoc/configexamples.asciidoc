@@ -64,7 +64,7 @@ When specifying the property `myPets=dog,cat,dog\\,cat` in a config source, the 
 
 === Simple Dependency Injection Example
 
-JavaConfig also provides ways to inject configured values into your beans using the `@Inject` and the `@ConfigProperty` qualifier.
+jakartaconfig also provides ways to inject configured values into your beans using the `@Inject` and the `@ConfigProperty` qualifier.
 This feature is only required to be supported in environments which provide dependency injection!
 
 [source, java]

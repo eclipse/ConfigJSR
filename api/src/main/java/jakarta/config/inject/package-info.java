@@ -19,9 +19,9 @@
  *******************************************************************************/
 
 /**
- * <p>CDI Support for JavaConfig
+ * <p>CDI Support for jakartaconfig
  *
- * <p>JavaConfig also supports injection via a JSR-330 DI container:
+ * <p>jakartaconfig also supports injection via a JSR-330 DI container:
  * <pre>
  *  &#064;Inject
  *  &#064;ConfigProperty(name="myproject.some.endpoint.url");

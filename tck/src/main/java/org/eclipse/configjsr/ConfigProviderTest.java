@@ -61,7 +61,7 @@ public class ConfigProviderTest extends Arquillian {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
                 .as(JavaArchive.class);
 
-        AbstractTest.addFile(testJar, "META-INF/javaconfig.properties");
+        AbstractTest.addFile(testJar, "META-INF/jakartaconfig.properties");
 
         WebArchive war = ShrinkWrap
                 .create(WebArchive.class, "configProviderTest.war")
@@ -99,8 +99,8 @@ public class ConfigProviderTest extends Arquillian {
     }
 
     @Test
-    public void testJavaConfigPropertyFilesConfigSource() {
-        Assert.assertEquals(config.getValue("tck.config.test.javaconfig.properties.key1", String.class), "VALue1");
+    public void testjakartaconfigPropertyFilesConfigSource() {
+        Assert.assertEquals(config.getValue("tck.config.test.jakartaconfig.properties.key1", String.class), "VALue1");
     }
 
     @Test

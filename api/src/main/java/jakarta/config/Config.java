@@ -26,9 +26,6 @@
  *      Extracted the Config part out of Apache DeltaSpike and proposed as Microprofile-Config
  *   2016-11-14 - Emily Jiang / IBM Corp
  *      Experiments with separate methods per type, JavaDoc, method renaming
- *   2018-04-04 - Mark Struberg, Manfred Huber, Alex Falb, Gerhard Petracek
- *      ConfigSnapshot added. Initially authored in Apache DeltaSpike fdd1e3dcd9a12ceed831dd
- *      Additional reviews and feedback by Tomas Langer.
  *
  *******************************************************************************/
 
@@ -50,7 +47,7 @@ import jakarta.config.spi.ConfigSource;
  * The config objects produced via the injection model <pre>@Inject Config</pre> are guaranteed to be serializable, while
  * the programmatically created ones are not required to be serializable.
  *
- * <h3>Usage</h3>
+ * <h2>Usage</h2>
  *
  * For accessing the config you can use the {@link ConfigProvider}:
  *
@@ -75,7 +72,7 @@ import jakarta.config.spi.ConfigSource;
  * }
  * </pre>
  *
- * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} and 
+ * <p>See {@link #getValue(String, Class)} and {@link #getOptionalValue(String, Class)} and
  * {@link #access(String, Class)} for accessing a configured value.
  *
  * <p>Configured values can also be accessed via injection.
@@ -101,15 +98,15 @@ public interface Config {
      * <p>Note that no variable replacement like in {@link ConfigAccessor.Builder#evaluateVariables(boolean)} will be performed!
      *
      * @param <T>  the property type
-     * @param propertyName
+     * @param key
      *             The configuration propertyName.
-     * @param propertyType
+     * @param valueType
      *             The type into which the resolve property value should get converted
      * @return the resolved property value as an object of the requested type.
      * @throws IllegalArgumentException if the property cannot be converted to the specified type.
      * @throws java.util.NoSuchElementException if the property isn't present in the configuration.
      */
-    <T> T getValue(String propertyName, Class<T> propertyType);
+    <T> T getValue(String key, Class<T> valueType);
 
     /**
      * Return the resolved property value with the specified type for the
@@ -120,70 +117,25 @@ public interface Config {
      * <p>Note that no variable replacement like in {@link ConfigAccessor.Builder#evaluateVariables(boolean)} will be performed!
      *
      * @param <T>  the property type
-     * @param propertyName
+     * @param key
      *             The configuration propertyName.
-     * @param propertyType
+     * @param valueType
      *             The type into which the resolve property value should be converted
      * @return the resolved property value as an Optional of the requested type.
      *
      * @throws IllegalArgumentException if the property cannot be converted to the specified type.
      */
-    <T> Optional<T> getOptionalValue(String propertyName, Class<T> propertyType);
+    <T> Optional<T> getOptionalValue(String key, Class<T> valueType);
 
     /**
      * Create a {@link ConfigAccessor} to access the underlying configuration.
      *
-     * @param propertyName the property key
-     * @param type type into which the resolve property value should get converted
-     * @param <T> the property type 
+     * @param key the property key
+     * @param valueType type into which the resolve property value should get converted
+     * @param <T> the property type
      * @return a {@code ConfigAccessor} to access the given propertyName
      */
-    <T> ConfigAccessor.Builder<T> access(String propertyName, Class<T> type);
-
-    /**
-     * <p>This method can be used to access multiple
-     * {@link ConfigAccessor} which must be consistent.
-     * The returned {@link ConfigSnapshot} is an immutable object which contains all the
-     * resolved values at the time of calling this method.
-     *
-     * <p>An example would be to access some {@code 'myapp.host'} and {@code 'myapp.port'}:
-     * The underlying values are {@code 'oldserver'} and {@code '8080'}.
-     *
-     * <pre>
-     *     // get the current host value
-     *     ConfigAccessor&lt;String&gt; hostCfg config.resolve("myapp.host")
-     *              .cacheFor(60, TimeUnit.MINUTES);
-     *
-     *     // and right inbetween the underlying values get changed to 'newserver' and port 8082
-     *
-     *     // get the current port for the host
-     *     ConfigAccessor&lt;Integer&gt; portCfg config.resolve("myapp.port")
-     *              .as(Integer.class)
-     *              .cacheFor(60, TimeUnit.MINUTES);
-     * </pre>
-     *
-     * In ths above code we would get the combination of {@code 'oldserver'} but with the new port {@code 8081}.
-     * And this will obviously blow up because that host+port combination doesn't exist.
-     *
-     * To consistently access n different config values we can start a {@link ConfigSnapshot} for those values.
-     *
-     * <pre>
-     *     ConfigSnapshot cfgSnap = config.createSnapshot(hostCfg, portCfg);
-     *
-     *     String host = hostCfg.getValue(cfgSnap);
-     *     Integer port = portCfg.getValue(cfgSnap);
-     * </pre>
-     *
-     * Note that there is no <em>close</em> on the snapshot.
-     * They should be used as local variables inside a method.
-     * Values will not be reloaded for an open {@link ConfigSnapshot}.
-     *
-     * @param configValues the list of {@link ConfigAccessor} to be accessed in an atomic way
-     *
-     * @return a new {@link ConfigSnapshot} which holds the resolved values of all the {@code configValues}.
-     */
-    ConfigSnapshot snapshotFor(ConfigAccessor<?>... configValues);
-
+    <T> ConfigAccessor.Builder<T> access(String key, Class<T> valueType);
 
     /**
      * Return all property names used in any of the underlying {@link ConfigSource ConfigSources}.

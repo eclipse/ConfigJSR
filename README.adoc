@@ -72,14 +72,14 @@ If the same property is defined in multiple ConfigSources, we apply a policy to 
 Under some circumstances, some data sources may change dynamically.
 The changed values should be fed into the client without the need for restarting the application.
 This requirement is particularly important for microservices running in a cloud environment.
-The JavaConfig approach allows to pick up configured values immediately after they got changed.
+The jakartaconfig approach allows to pick up configured values immediately after they got changed.
 
 == Influences and History
 
 There are a number of Config projects which directly influenced this proposal and acted as basis for this API, such as:
 
 * DeltaSpike Config (http://deltaspike.apache.org/documentation/configuration.html)
-* Extracted parts of DeltaSpike Config (https://github.com/struberg/javaConfig/)
+* Extracted parts of DeltaSpike Config (https://github.com/struberg/jakartaconfig/)
 * Apache Tamaya (https://tamaya.incubator.apache.org/)
 
 The approach of those got merged together into MicroProfile Config (https://github.com/eclipse/microprofile-config).
@@ -87,7 +87,7 @@ This now serves as a starting point for this very JSR.
 
 == Implementations
 
-JavaConfig does not contain an implementation itself but only provides the specified API and, a TCK and documentation.
+jakartaconfig does not contain an implementation itself but only provides the specified API and, a TCK and documentation.
 
 == Design
 
@@ -101,7 +101,7 @@ By default there are 3 default ConfigSources:
 
 * `System.getProperties()` (ordinal=400)
 * `System.getenv()` (ordinal=300)
-* all `META-INF/javaconfig.properties` files on the ClassPath.
+* all `META-INF/jakartaconfig.properties` files on the ClassPath.
 (default ordinal=100, separately configurable via a config_ordinal property inside each file)
 
 Therefore, the default values can be specified in the above files packaged with the application and the value can be overwritten later for each deployment. 
@@ -114,7 +114,7 @@ An example would be a ConfigSource which gets the configured values from a share
 
 == Building
 
-The whole JavaConfig project can be built via Apache Maven
+The whole jakartaconfig project can be built via Apache Maven
 
 `$> mvn clean install`
 

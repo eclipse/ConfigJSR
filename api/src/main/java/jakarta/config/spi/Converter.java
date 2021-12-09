@@ -54,7 +54,7 @@ package jakarta.config.spi;
  * All Built In Converters have a {@code javax.annotation.Priority} of 1
  * A Converter should handle null values returning either null or a valid Object of the specified type.
  *
- * <h3>Implicit Converters</h3>
+ * <h2>Implicit Converters</h2>
  *
  * <p>If no explicit Converter and no built-in Converter could be found for a certain type,
  * the {@code Config} provides an <em>Implicit Converter</em>, if</p>
@@ -75,7 +75,7 @@ package jakarta.config.spi;
  * They are thus all covered by an implicit converter!
  * <p>If an Implicit Converter cannot convert a value, a {@code java.lang.IllegalArgumentException} is to be thrown.
  *
- * <h3>Array Converters</h3>
+ * <h2>Array Converters</h2>
  *  The implementation must support the Array converter for each built-in converters, implicit converters and custom converters.
  *  The delimiter for the config value is ','. The escape character is '\'.
  *  <code>e.g. myPets=dog,cat,dog\,cat </code>
@@ -85,13 +85,9 @@ package jakarta.config.spi;
  *  <p>
  *  Usage:
  *  <p>
- *  <code>
- *  String[] myPets = ConfigProvider.getValue("myPet", String[].class);
- *  </code>
+ *  {@code String[] myPets = ConfigProvider.getValue("myPet", String[].class);};
  *  <p>
- *  <code>
- *  {@code @Inject @ConfigProperty(name="myPets") String[] myPets};
- *  </code>
+ *  {@code &#064;Inject @ConfigProperty(name="myPets") String[] myPets;};
  *  <p>
  *  {@code @Inject @ConfigProperty(name="myPets") List<String> myPets};
  *  <p>
@@ -99,7 +95,7 @@ package jakarta.config.spi;
  *  <p>
  *  myPets will be "dog", "cat", "dog,cat"
  *
- *  <h3>Cleanup</h3>
+ *  <h2>Cleanup</h2>
  *
  *  <p>If a Converter implements the {@link AutoCloseable} interface
  *  then the {@link AutoCloseable#close()} method will be called when

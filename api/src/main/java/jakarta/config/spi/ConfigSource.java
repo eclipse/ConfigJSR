@@ -52,12 +52,12 @@ import java.util.function.Consumer;
  *        <ol>
  *            <li>Exact match (i.e. {@code "com.ACME.size"})</li>
  *            <li>Replace the character that is neither alphanumeric nor '_' with '_' (i.e. {@code "com_ACME_size"})</li>
- *            <li>Replace the character that is neither alphanumeric nor '_' with '_' and convert to upper case 
+ *            <li>Replace the character that is neither alphanumeric nor '_' with '_' and convert to upper case
  *            (i.e. {@code "COM_ACME_SIZE"})</li>
  *        </ol>
  *    <p>The first environment variable that is found is returned by this ConfigSource.</p>
  * </li>
- * <li>/META-INF/javaconfig.properties (ordinal=100)</li>
+ * <li>/META-INF/jakartaconfig.properties (ordinal=100)</li>
  * </ol>
  *
  * <p>Custom ConfigSource will get picked up via the {@link java.util.ServiceLoader} mechanism and and can be registered by
@@ -119,7 +119,7 @@ public interface ConfigSource {
      * <ol>
      *  <li>System properties (default ordinal=400)</li>
      *  <li>Environment properties (default ordinal=300)</li>
-     *  <li>/META-INF/javaconfig.properties (default ordinal=100)</li>
+     *  <li>/META-INF/jakartaconfig.properties (default ordinal=100)</li>
      * </ol>
      *
      *

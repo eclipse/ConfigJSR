@@ -33,7 +33,7 @@ import jakarta.config.spi.ConfigSource;
  * @author <a href="mailto:struberg@yahoo.de">Mark Struberg</a>
  */
 public class DynamicChangeConfigSource implements ConfigSource, Closeable {
-    public static final String TEST_ATTRIBUTE = "tck.config.test.javaconfig.dynymic.testattrib";
+    public static final String TEST_ATTRIBUTE = "tck.config.test.jakartaconfig.dynymic.testattrib";
 
     private Consumer<Set<String>> reportAttributeChange;
     private AtomicInteger i = new AtomicInteger(0);

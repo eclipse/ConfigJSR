@@ -62,7 +62,7 @@ public class CDIPropertyNameMatchingTest extends Arquillian {
             .addAsManifestResource(new StringAsset(
                     "envconfig.my.int/property=3"+
                         "\nenvconfig.my.string/property=fake"),
-                "javaconfig.properties")
+                "jakartaconfig.properties")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             .as(JavaArchive.class);
 

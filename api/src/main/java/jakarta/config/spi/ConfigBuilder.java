@@ -46,7 +46,7 @@ public interface ConfigBuilder {
      * <ol>
      * <li>System properties</li>
      * <li>Environment properties</li>
-     * <li>/META-INF/javaconfig.properties</li>
+     * <li>/META-INF/jakartaconfig.properties</li>
      * </ol>
      *
      * @return the ConfigBuilder with the default config sources
